@@ -1,0 +1,57 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const guides = [
+  {
+    title: 'Federal Tax Brackets 2025',
+    description: 'Complete guide to the 2025 CRA federal income tax brackets, Basic Personal Amount, and how progressive rates work in Canada.',
+    href: '/guides/federal-tax-brackets-2025/',
+    date: '2025-01-15',
+  },
+  {
+    title: 'CPP and QPP Explained',
+    description: 'Everything you need to know about the Canada Pension Plan and Quebec Pension Plan: rates, maximums, CPP2, and retirement benefits.',
+    href: '/guides/cpp-explained/',
+    date: '2025-01-15',
+  },
+  {
+    title: 'RRSP Tax Savings Guide',
+    description: 'How RRSP contributions reduce your taxes and how to maximize your tax refund with strategic contributions.',
+    href: '/guides/rrsp-tax-savings/',
+    date: '2025-01-15',
+  },
+  {
+    title: 'Provincial Tax Comparison 2025',
+    description: 'Compare income tax rates across all 13 Canadian provinces and territories to see where taxes are lowest and highest.',
+    href: '/guides/provincial-tax-comparison/',
+    date: '2025-01-15',
+  },
+  {
+    title: 'Marginal vs Effective Tax Rate',
+    description: 'Understand the difference between marginal and effective tax rates and why your real tax burden is lower than you think.',
+    href: '/guides/marginal-vs-effective-tax-rate/',
+    date: '2025-01-15',
+  },
+];
+---
+
+<GuideLayout
+  title="Canadian Tax Guides 2025"
+  description="In-depth guides to help you understand your Canadian taxes, CPP, EI, RRSP savings, paycheque deductions, and provincial tax rates. Updated for 2025 tax year."
+  publishDate="2025-01-15"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides' }]}
+>
+  <div class="not-prose space-y-4 mt-8">
+    {guides.map((guide) => (
+      <a href={guide.href} class="block rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface p-6 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md transition-all group">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+          {guide.title}
+        </h2>
+        <p class="mt-2 text-gray-600 dark:text-gray-400">{guide.description}</p>
+        <p class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+          Published {new Date(guide.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+      </a>
+    ))}
+  </div>
+</GuideLayout>

@@ -1,0 +1,75 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import '../styles/global.css';
+import { SITE_NAME, SITE_URL, OG_IMAGE, OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT, organizationSchema, personSchema } from '../lib/seo';
+import type { Lang } from '../i18n/index';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogType?: string;
+  lang?: Lang;
+}
+
+const { title, description, canonical, ogType = 'website', lang = 'en' } = Astro.props;
+
+// Hreflang: EN <-> FR route mapping
+const enToFr: Record<string, string> = { '/': '/fr/', '/glossary/': '/fr/glossaire/' };
+const frToEn: Record<string, string> = { '/fr/': '/', '/fr/glossaire/': '/glossary/' };
+const currentPath = new URL(canonical).pathname;
+const enPath = lang === 'en' ? currentPath : (frToEn[currentPath] ?? null);
+const frPath = lang === 'fr' ? currentPath : (enToFr[currentPath] ?? null);
+const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
+---
+
+<!DOCTYPE html>
+<html lang={lang === 'fr' ? 'fr' : 'en'}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="author" content="Mottalib Radif" />
+  <link rel="canonical" href={canonical} />
+
+  <!-- Hreflang -->
+  {enPath && <link rel="alternate" hreflang="en" href={`${SITE_URL}${enPath}`} />}
+  {frPath && <link rel="alternate" hreflang="fr" href={`${SITE_URL}${frPath}`} />}
+  {enPath && <link rel="alternate" hreflang="x-default" href={`${SITE_URL}${enPath}`} />}
+
+  <meta property="og:type" content={ogType} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content={SITE_NAME} />
+  <meta property="og:locale" content={ogLocale} />
+  <meta property="og:image" content={OG_IMAGE} />
+  <meta property="og:image:width" content={OG_IMAGE_WIDTH} />
+  <meta property="og:image:height" content={OG_IMAGE_HEIGHT} />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={OG_IMAGE} />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter-700.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="manifest" href="/manifest.webmanifest" />
+
+  <script type="application/ld+json" set:html={JSON.stringify(organizationSchema())} />
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema())} />
+
+  <slot name="head" />
+</head>
+<body class="min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:rounded focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500">{lang === 'fr' ? 'Aller au contenu principal' : 'Skip to main content'}</a>
+  <Header lang={lang} />
+  <main id="main-content">
+    <slot />
+  </main>
+  <Footer />
+</body>
+</html>

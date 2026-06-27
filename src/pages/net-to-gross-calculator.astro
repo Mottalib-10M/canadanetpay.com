@@ -1,0 +1,49 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import NetToGrossCalculator from '../components/calculators/NetToGrossCalculator';
+
+const faqs = [
+  { question: 'What does net to gross mean?', answer: 'Net to gross (also called reverse tax calculation) determines the gross salary you need to earn in order to take home a specific amount after all taxes and deductions (federal tax, CPP, EI, provincial tax).' },
+  { question: 'How is the gross salary calculated from net?', answer: 'The calculator uses a binary search algorithm to find the gross salary that produces your target net pay after subtracting federal tax, CPP/QPP, EI/QPIP, and provincial tax. It iteratively narrows down the exact gross amount needed.' },
+  { question: 'Why do I need more than double my net to get my desired take-home?', answer: 'At higher income levels, the marginal tax rates in Canada can exceed 50% (combined federal and provincial). This means each additional dollar earned yields less than 50 cents of take-home pay, so the gross salary grows faster than the net.' },
+  { question: 'Does the province affect the required gross salary?', answer: 'Yes, significantly. Provinces with higher tax rates (like Quebec and Nova Scotia) require a higher gross salary to achieve the same take-home pay compared to lower-tax provinces like Alberta or Nunavut.' },
+  { question: 'Can I factor in RRSP contributions?', answer: 'This calculator shows the base gross-to-net relationship. RRSP contributions reduce your taxable income, so the required gross salary would be lower if you are making RRSP deductions. Use the main salary calculator to model RRSP impacts.' },
+];
+---
+
+<CalculatorLayout
+  slug="/net-to-gross-calculator"
+  title="Net to Gross Calculator"
+  metaTitle="Net to Gross Calculator Canada 2025 | Reverse Tax Calc"
+  metaDescription="Find the gross salary you need to earn in Canada to take home your desired net pay. Accounts for federal tax, CPP, EI, and all 13 provincial tax brackets."
+  h1="Net to Gross Salary Calculator Canada 2025"
+  intro="Enter your desired take-home pay and find out what gross salary you need to earn. Covers federal tax, CPP/QPP, EI, and provincial tax for all 13 provinces."
+  faqs={faqs}
+>
+  <NetToGrossCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>How the Net to Gross Calculator Works</h2>
+      <p>
+        Negotiating a job offer or freelance contract? This reverse tax calculator helps you determine the gross salary required to achieve a specific take-home (net) pay amount. Unlike a standard salary calculator that works top-down from gross to net, this tool works bottom-up from your desired net income to find the gross salary needed. It accounts for all four layers of Canadian tax deductions: federal income tax, CPP or QPP contributions, EI premiums, and provincial income tax. The algorithm uses binary search to converge on the exact gross amount within $0.50 accuracy.
+      </p>
+      <p>
+        The required gross salary varies significantly by province. For example, to take home $60,000 net in Alberta, you might need approximately $78,000 gross, while in Quebec, you could need $83,000 or more due to higher provincial tax rates and QPP contributions. Understanding this difference is crucial when comparing job offers across provinces.
+      </p>
+
+      <h2>When to Use This Calculator</h2>
+      <ul>
+        <li><strong>Salary negotiations</strong>: Know the gross salary to ask for to achieve your target lifestyle.</li>
+        <li><strong>Contract work</strong>: Set your rate to achieve your desired after-tax income.</li>
+        <li><strong>Relocation</strong>: Compare the gross salary needed in different provinces for the same lifestyle.</li>
+        <li><strong>Budgeting</strong>: Work backwards from your expenses to determine your required income.</li>
+      </ul>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency.html" target="_blank" rel="noopener">Canada Revenue Agency</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

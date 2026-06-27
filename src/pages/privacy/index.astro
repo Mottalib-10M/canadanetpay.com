@@ -1,0 +1,65 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+---
+
+<GuideLayout
+  title="Privacy Policy & Data Practices"
+  description="How Salary After Tax Canada handles your data. No personal salary or financial data is collected, stored, or transmitted. All calculations run in your browser."
+  publishDate="2025-01-15"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }]}
+>
+  <p><em>Last updated: January 15, 2025</em></p>
+
+  <h2>Summary</h2>
+  <p>
+    Salary After Tax Canada is a static website. All calculations run entirely in your browser.
+    We do not collect, store, or transmit any salary or personal information.
+  </p>
+
+  <h2>Data Collection</h2>
+  <p>
+    <strong>We do not collect any personal data.</strong> Specifically:
+  </p>
+  <ul>
+    <li>No salary, income, or financial information is sent to any server.</li>
+    <li>No account registration is required.</li>
+    <li>No cookies are used for tracking purposes.</li>
+    <li>No personal information is sold to third parties.</li>
+  </ul>
+
+  <h2>How the Calculator Works</h2>
+  <p>
+    All tax calculations are performed client-side in your web browser using JavaScript. The numbers you enter
+    never leave your device. When you share a URL with calculator parameters (e.g., salary amount and province),
+    that information is encoded in the URL hash fragment, which is not sent to servers.
+  </p>
+
+  <h2>Analytics</h2>
+  <p>
+    We may use privacy-respecting analytics (such as aggregate page view counts) that do not track individual
+    users or use cookies. No personally identifiable information is collected through analytics.
+  </p>
+
+  <h2>Local Storage</h2>
+  <p>
+    The website may use your browser's local storage to save your theme preference (light/dark mode).
+    This data stays on your device and is not transmitted anywhere.
+  </p>
+
+  <h2>Third-Party Services</h2>
+  <p>
+    The website is hosted on static hosting infrastructure. We do not use third-party advertising,
+    tracking pixels, or social media widgets that could collect your data.
+  </p>
+
+  <h2>Changes to This Policy</h2>
+  <p>
+    We may update this privacy policy from time to time. Any changes will be reflected on this page
+    with an updated date.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    If you have questions about this privacy policy, please <a href="/contact/">contact us</a>.
+  </p>
+</GuideLayout>

@@ -1,0 +1,164 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import SalaryCalculator from '../components/calculators/SalaryCalculator';
+import { PROVINCES, ALL_PROVINCES } from '../data/provinces';
+import { FEDERAL_BRACKETS, BASIC_PERSONAL_AMOUNT } from '../data/federal-tax-2025';
+import { formatCurrency } from '../lib/format';
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Mottalib Radif",
+  "jobTitle": "Personal Finance Expert",
+  "alumniOf": {
+    "@type": "EducationalOrganization",
+    "name": "INSEAD"
+  },
+  "url": "https://salaryaftertax.ca/about/"
+};
+
+const faqs = [
+  {
+    question: 'How is my federal income tax calculated in Canada?',
+    answer: 'Canadian federal income tax uses a progressive bracket system. For 2025, there are five brackets: 15% on the first $57,375, 20.5% on $57,375–$114,750, 26% on $114,750–$158,468, 29% on $158,468–$220,000, and 33% on income over $220,000. The Basic Personal Amount ($16,129) is a non-refundable tax credit at the lowest rate, effectively making the first $16,129 of income tax-free.'
+  },
+  {
+    question: 'What is CPP and how much do I pay?',
+    answer: 'The Canada Pension Plan (CPP) is a mandatory retirement savings contribution. In 2025, employees contribute 5.95% on earnings between $3,500 and $71,300 (maximum contribution: $4,034.10). CPP2 adds 4% on earnings between $71,300 and $79,400 (maximum: $324). Quebec residents pay into the Quebec Pension Plan (QPP) at 6.4% instead. Your employer matches your contributions.'
+  },
+  {
+    question: 'How does Employment Insurance (EI) work?',
+    answer: 'EI premiums are 1.58% of insurable earnings up to $65,700, with a maximum annual contribution of $1,049.12. Quebec residents pay a reduced EI rate (1.248%) because they also contribute to QPIP (Quebec Parental Insurance Plan) at 0.494%. EI provides temporary income support during unemployment, parental leave, or sickness.'
+  },
+  {
+    question: 'Which province has the lowest income tax?',
+    answer: 'Nunavut has the lowest provincial income tax rates, starting at just 4%. Alberta has a 10% flat rate on income up to $148,269, the highest threshold for a low rate. Among the larger provinces, Alberta and Ontario generally result in the lowest total tax burden for most income levels.'
+  },
+  {
+    question: 'How does Quebec tax differ from other provinces?',
+    answer: 'Quebec has its own distinct tax system. Residents pay into QPP (6.4%) instead of CPP (5.95%), contribute to QPIP for parental benefits, pay a reduced EI rate, and receive a 16.5% abatement (reduction) on federal tax. Quebec also has its own provincial tax return and higher overall provincial tax rates (14% to 25.75%), but provides more social services.'
+  },
+  {
+    question: 'What is the difference between effective and marginal tax rate?',
+    answer: 'Your marginal tax rate is the rate applied to your last dollar of , meaning the combined federal and provincial rate for the highest bracket you fall into. Your effective tax rate is the average rate you pay across all income (total tax divided by gross income). Due to the progressive system, your effective rate is always lower than your marginal rate.'
+  },
+  {
+    question: 'How accurate is this Canadian salary calculator?',
+    answer: 'This calculator uses the official 2025 CRA federal tax brackets, CPP/EI rates, and provincial tax data from each province\'s revenue department. It provides a close estimate of your take-home pay. However, individual circumstances (RRSP contributions, tax credits, deductions, union dues) may cause your actual paycheque to differ slightly. Quebec calculations include QPP, QPIP, and the federal abatement.'
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/"
+  title="Salary Calculator"
+  metaTitle="Canada Salary After Tax Calculator 2025 | Take-Home Pay"
+  metaDescription="Calculate your 2025 take-home pay in Canada after federal tax, CPP, EI, and provincial tax. Free salary calculator for all 13 provinces and territories."
+  h1="Canada Salary After Tax Calculator 2025"
+  intro="Calculate your take-home pay after federal income tax, CPP, EI, and provincial taxes. Updated with the latest 2025 CRA tax brackets for all 13 provinces and territories."
+  faqs={faqs}
+>
+  <SalaryCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>How the Canada Salary Calculator Works</h2>
+      <p>
+        This salary calculator estimates your take-home pay (the amount deposited in your bank account each pay period) after all federal and provincial deductions. It applies the official 2025 tax rules published by the Canada Revenue Agency (CRA) and individual provincial finance ministries. The calculator processes four main layers of deductions from your gross salary, giving you a comprehensive view of your net income across all pay periods.
+      </p>
+      <p>
+        The calculator processes four layers of deductions:
+      </p>
+      <ol>
+        <li><strong>Federal income tax</strong>: calculated using the 2025 progressive bracket system after applying the Basic Personal Amount non-refundable credit.</li>
+        <li><strong>CPP/QPP contributions</strong>: Canada Pension Plan (5.95% on earnings $3,500–$71,300) plus CPP2 (4% on $71,300–$79,400). Quebec residents pay QPP at 6.4% instead.</li>
+        <li><strong>EI premiums</strong>: Employment Insurance (1.58% on earnings up to $65,700). Quebec residents pay a lower EI rate plus QPIP.</li>
+        <li><strong>Provincial/territorial income tax</strong>: varies by province. Each province has its own brackets, rates, and credits.</li>
+      </ol>
+
+      <h2>2025 Federal Income Tax Brackets</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Tax Rate</th>
+              <th>Income Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            {FEDERAL_BRACKETS.map((b) => (
+              <tr>
+                <td>{(b.rate * 100).toFixed(1)}%</td>
+                <td>{formatCurrency(b.min)} – {b.max === Infinity ? 'and above' : formatCurrency(b.max)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <em>Source: Canada Revenue Agency. The Basic Personal Amount for 2025 is $16,129, which provides a non-refundable tax credit at the 15% rate, effectively making the first $16,129 of income tax-free for most Canadians.</em>
+      </p>
+
+      <h2>Provincial Tax Rates at a Glance</h2>
+      <p>
+        Each province and territory has its own income tax brackets. Here are the lowest and highest marginal rates for 2025:
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Province</th>
+              <th>Lowest Rate</th>
+              <th>Highest Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ALL_PROVINCES.map((code) => {
+              const p = PROVINCES[code];
+              return (
+                <tr>
+                  <td><a href={`/province/${p.slug}/`}>{p.name}</a></td>
+                  <td>{(p.brackets[0].rate * 100).toFixed(2)}%</td>
+                  <td>{(p.brackets[p.brackets.length - 1].rate * 100).toFixed(2)}%</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Understanding Your Canadian Paycheque Deductions</h2>
+      <h3>Canada Pension Plan (CPP)</h3>
+      <p>
+        CPP is a mandatory retirement savings program. In 2025, employees contribute 5.95% of pensionable earnings between the $3,500 exemption and the $71,300 maximum, for a maximum contribution of $4,034.10. The new CPP2 adds 4% on earnings between $71,300 and $79,400. Your employer matches these contributions. Quebec residents contribute to QPP instead, at a slightly higher rate of 6.4%.
+      </p>
+
+      <h3>Employment Insurance (EI)</h3>
+      <p>
+        EI provides temporary income when you lose your job, are on parental leave, or are unable to work due to illness. The 2025 employee premium rate is 1.58% on insurable earnings up to $65,700, with a maximum annual premium of $1,049.12. Employers pay 1.4 times the employee rate. Quebec residents pay a reduced EI rate because QPIP covers parental benefits separately.
+      </p>
+
+      <h3>Provincial Income Tax</h3>
+      <p>
+        Provincial tax is calculated separately from federal tax, using each province's own brackets and rates. Most provinces use a progressive system similar to the federal government, though some have additional surtaxes (Ontario) or unique programs (Quebec's QPIP). Alberta historically had a flat tax but now uses a progressive system starting at 10%.
+      </p>
+
+      <h2>Tips to Maximize Your Take-Home Pay in Canada</h2>
+      <ul>
+        <li><strong>Contribute to an RRSP</strong>: Registered Retirement Savings Plan contributions reduce your taxable income for both federal and provincial taxes. The 2025 limit is 18% of earned income, up to $32,490.</li>
+        <li><strong>Use a TFSA</strong>: Tax-Free Savings Account investment income and withdrawals are completely tax-free. The 2025 contribution limit is $7,000.</li>
+        <li><strong>Claim all deductions</strong>: Union dues, child care expenses, moving expenses for work, and professional dues are all deductible.</li>
+        <li><strong>Consider province of residence</strong>: Your tax burden varies significantly by province. Alberta and Ontario generally have lower combined rates than Quebec or the Atlantic provinces.</li>
+      </ul>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: 2025 Federal Tax Rates</a></li>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp.html" target="_blank" rel="noopener">CRA: CPP Contribution Rates</a></li>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei.html" target="_blank" rel="noopener">CRA: EI Premium Rates</a></li>
+        <li><a href="https://www.revenuquebec.ca/en/" target="_blank" rel="noopener">Revenu Qu&eacute;bec: QPP and QPIP Rates</a></li>
+      </ul>
+    </section>
+  </Fragment>
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+</CalculatorLayout>

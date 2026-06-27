@@ -1,0 +1,35 @@
+---
+interface Props {
+  current?: string;
+}
+
+const { current } = Astro.props;
+
+const calculators = [
+  { title: 'Salary Calculator', description: 'Calculate your take-home pay after federal and provincial taxes', href: '/' },
+  { title: 'Net to Gross', description: 'Find the gross salary needed for your desired take-home pay', href: '/net-to-gross/' },
+  { title: 'Income Tax Calculator', description: 'Break down your federal and provincial income tax by bracket', href: '/income-tax-calculator/' },
+  { title: 'CPP / QPP Calculator', description: 'Calculate your Canada or Quebec Pension Plan contributions', href: '/cpp-calculator/' },
+  { title: 'Bonus Tax Calculator', description: 'See how much of your bonus you actually keep after tax', href: '/bonus-tax-calculator/' },
+  { title: 'Hourly to Salary', description: 'Convert between hourly rate and annual salary', href: '/hourly-to-salary/' },
+  { title: 'Employer Cost', description: 'Calculate the true cost of employing someone in Canada', href: '/employer-cost-calculator/' },
+];
+
+const related = calculators.filter(c => c.href !== current).slice(0, 4);
+---
+
+<section class="mt-12" aria-labelledby="related-heading">
+  <h2 id="related-heading" class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+    Related Calculators
+  </h2>
+  <div class="grid gap-4 sm:grid-cols-2">
+    {related.map((calc) => (
+      <a href={calc.href} class="group rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface p-5 hover:border-brand-500 dark:hover:border-brand-400 hover:shadow-md transition-all">
+        <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+          {calc.title}
+        </h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{calc.description}</p>
+      </a>
+    ))}
+  </div>
+</section>

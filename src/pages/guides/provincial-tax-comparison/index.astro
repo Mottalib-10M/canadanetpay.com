@@ -1,0 +1,234 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import { PROVINCES, ALL_PROVINCES } from '../../../data/provinces';
+import { calculateTakeHome } from '../../../lib/tax-engine-ca';
+import { formatCurrency } from '../../../lib/format';
+
+const comparisonSalaries = [50000, 75000, 100000, 150000];
+const provinceData = ALL_PROVINCES.map((code) => ({
+  code,
+  name: PROVINCES[code].name,
+  slug: PROVINCES[code].slug,
+  lowestRate: (PROVINCES[code].brackets[0].rate * 100).toFixed(2),
+  highestRate: (PROVINCES[code].brackets[PROVINCES[code].brackets.length - 1].rate * 100).toFixed(2),
+  bpa: PROVINCES[code].basicPersonalAmount,
+  results: comparisonSalaries.map((salary) => {
+    const r = calculateTakeHome({ grossAnnual: salary, provinceCode: code, payFrequency: 'annual' });
+    return { salary, net: r.netAnnual, rate: r.effectiveTaxRate };
+  }),
+}));
+---
+
+<GuideLayout
+  title="Provincial Tax Comparison 2025"
+  description="Compare income tax rates and take-home pay across all 13 Canadian provinces and territories for 2025. Side-by-side comparison at multiple salary levels."
+  publishDate="2025-01-15"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Provincial Tax Comparison' }]}
+>
+  <h2>Provincial Tax Rates at a Glance</h2>
+  <p>
+    Each Canadian province and territory sets its own income tax brackets and rates. Combined with federal tax,
+    your total tax burden varies significantly depending on where you live. The difference can be substantial:
+    a worker earning $100,000 could take home anywhere from about $70,000 in Quebec to over $78,000 in
+    Nunavut, a gap of roughly $8,000 per year purely due to provincial tax differences.
+  </p>
+  <p>
+    Canada's provincial tax system is layered on top of the federal system. You file a single tax return that
+    calculates both federal and provincial tax, and your provincial tax is determined by the province where you
+    reside on December 31 of the tax year. This means if you move provinces mid-year, you pay the full year's
+    provincial tax to the province where you live at year-end, not a prorated amount split between provinces.
+  </p>
+  <p>
+    Here is a comprehensive comparison of all 13 jurisdictions for 2025, including rate ranges, basic personal
+    amounts, and take-home pay at multiple salary levels.
+  </p>
+
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Province</th>
+          <th>Lowest Rate</th>
+          <th>Highest Rate</th>
+          <th>Basic Personal Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {provinceData.map((p) => (
+          <tr>
+            <td><a href={`/province/${p.slug}/`}>{p.name}</a></td>
+            <td>{p.lowestRate}%</td>
+            <td>{p.highestRate}%</td>
+            <td>{formatCurrency(p.bpa)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Take-Home Pay Comparison: $75,000 Salary</h2>
+  <p>
+    On a $75,000 salary, your take-home pay ranges from about {formatCurrency(Math.min(...provinceData.map(p => p.results[1].net)))}
+    to {formatCurrency(Math.max(...provinceData.map(p => p.results[1].net)))} depending on , a difference
+    of over {formatCurrency(Math.max(...provinceData.map(p => p.results[1].net)) - Math.min(...provinceData.map(p => p.results[1].net)))}.
+  </p>
+
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Province</th>
+          {comparisonSalaries.map((s) => <th>{formatCurrency(s)}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {provinceData
+          .sort((a, b) => b.results[1].net - a.results[1].net)
+          .map((p) => (
+            <tr>
+              <td><a href={`/province/${p.slug}/`}>{p.name}</a></td>
+              {p.results.map((r) => <td>{formatCurrency(r.net)}</td>)}
+            </tr>
+          ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Lowest-Tax Provinces</h2>
+  <p>
+    For most income levels, these provinces and territories offer the lowest combined federal plus provincial
+    tax burden. However, the "lowest tax" label comes with important caveats about cost of living and
+    accessibility.
+  </p>
+  <ol>
+    <li><strong>Nunavut</strong>: Has the lowest provincial rates in Canada (4 percent to 11.5 percent) and the
+      highest basic personal amount ($18,767). A worker earning $75,000 in Nunavut keeps more of their income
+      than in any other jurisdiction. However, the cost of living in Nunavut is dramatically higher than
+      southern Canada: groceries can cost two to three times the national average due to remote shipping
+      requirements, and housing costs are heavily influenced by limited supply.</li>
+    <li><strong>Northwest Territories</strong>: Low rates (5.9 percent to 14.05 percent) and a high BPA ($17,373)
+      make the NWT the second-lowest-tax jurisdiction. Similar to Nunavut, living costs are elevated, though
+      Yellowknife has better infrastructure and supply chain access than most northern communities.</li>
+    <li><strong>Alberta</strong>: The only province with a flat-rate first bracket. Alberta's lowest rate starts at
+      10 percent with a very high threshold ($148,269) before the rate increases to 12 percent. This means
+      most Albertans pay a flat 10 percent provincial rate. Combined with no provincial sales tax (PST),
+      Alberta consistently ranks as the lowest-tax province for typical Canadian workers. On a $100,000
+      salary, an Albertan keeps roughly $3,500 more per year than an Ontarian.</li>
+    <li><strong>Saskatchewan</strong>: Offers moderate rates (10.5 percent to 14.5 percent) with a high BPA
+      ($18,491), one of the highest in the country. Saskatchewan also has a relatively low cost of living,
+      making it attractive on an after-tax, after-expenses basis.</li>
+    <li><strong>Yukon</strong>: Mirrors federal bracket thresholds at lower rates (6.4 percent to 15 percent).
+      The territory also offers the Yukon First Nations Tax Credit for eligible residents, further reducing
+      the tax burden.</li>
+  </ol>
+
+  <h2>Highest-Tax Provinces</h2>
+  <p>
+    These provinces have the highest overall income tax burden. In many cases, the higher taxes fund more
+    generous public services, which can offset some of the financial impact.
+  </p>
+  <ol>
+    <li><strong>Quebec</strong>: Has the highest provincial income tax rates in Canada (14 percent to 25.75 percent)
+      plus the Quebec Pension Plan (QPP) at 6.4 percent (higher than CPP's 5.95 percent) and the Quebec
+      Parental Insurance Plan (QPIP). However, Quebec residents receive a 16.5 percent federal tax abatement
+      that partially offsets the higher provincial rates. Quebec also offers subsidized daycare ($8.70 per day),
+      generous parental leave, and lower university tuition, which can make a significant difference for
+      families. On a $100,000 salary, a Quebec resident pays roughly $5,000 to $7,000 more in combined income
+      tax than an Albertan, but the subsidized services can offset much of this difference.</li>
+    <li><strong>Nova Scotia</strong>: Provincial rates reach 21 percent on income above $150,000, combined with one
+      of the lowest basic personal amounts in the country ($8,481). A worker earning $150,000 in Nova Scotia
+      faces a combined marginal rate exceeding 54 percent, one of the highest in Canada.</li>
+    <li><strong>Newfoundland and Labrador</strong>: Eight brackets reaching 21.8 percent, with the lowest BPA
+      ($10,818) among the provinces. The province also charges a temporary deficit reduction levy on higher
+      incomes, adding another layer of taxation.</li>
+    <li><strong>Prince Edward Island</strong>: Three brackets with rates reaching 16.7 percent, plus a provincial
+      surtax of 10 percent on basic provincial tax exceeding $12,500. The surtax effectively creates a
+      steeper marginal rate at higher income levels.</li>
+    <li><strong>Manitoba</strong>: Reaches 17.4 percent above $100,000. Manitoba also has the second-highest
+      combined marginal tax rate in Canada at the $100,000 income level when federal tax is included. The
+      province's basic personal amount ($15,780) is moderate.</li>
+  </ol>
+
+  <h2>Historical Context and Year-Over-Year Changes</h2>
+  <p>
+    Provincial tax rates and brackets are adjusted periodically, though not as predictably as federal brackets.
+    Alberta, for instance, introduced higher brackets in 2015 after decades of a flat 10 percent rate.
+    British Columbia added a temporary top rate of 20.5 percent on income above $240,716. Quebec's rates have
+    remained relatively stable but its bracket thresholds are indexed annually to inflation.
+  </p>
+  <p>
+    For 2025, most provinces have made modest inflation adjustments to their bracket thresholds and basic
+    personal amounts. The most significant recent change was Alberta's increase of the BPA and the continued
+    phase-out of the Ontario surtax at higher income levels. Taxpayers should check their province's
+    specific 2025 rates, as changes can occur in provincial budgets released in the spring.
+  </p>
+
+  <h2>Health Premiums by Province</h2>
+  <p>
+    When comparing provincial tax burdens, it is important to look beyond income tax rates and consider
+    province-specific health premiums and levies that are effectively additional taxes. These premiums vary
+    dramatically by province and can add hundreds or even thousands of dollars to your annual tax bill,
+    narrowing or widening the gap between provinces in ways that bracket rates alone do not capture.
+  </p>
+  <p>
+    Ontario imposes the Ontario Health Premium, a surtax on income that rises progressively from $0 for
+    individuals earning under $20,000 to a maximum of $900 for those earning over $200,000. The premium
+    is phased in gradually: someone earning $48,000 pays approximately $300, while someone earning $72,000
+    pays about $450, and someone earning $150,000 pays $750. Unlike a flat-rate premium, this graduated
+    structure means it functions much like an additional income tax bracket, raising the effective marginal
+    rate within the phase-in ranges. The Ontario Health Premium is calculated automatically on your tax
+    return and is not deducted from your paycheque; it adds to your balance owing or reduces your refund.
+  </p>
+  <p>
+    British Columbia eliminated its Medical Services Plan (MSP) premiums entirely in January 2020, which
+    had previously cost individuals up to $900 per year and families up to $1,800 per year. To replace this
+    revenue, BC introduced the Employer Health Tax (EHT), shifting the burden from individuals to employers
+    with payrolls exceeding $500,000. This change effectively reduced the personal tax burden for BC
+    residents, though some economists argue that the employer tax is ultimately passed on to workers through
+    lower wage growth. BC residents today pay no direct health premium, making it more competitive with
+    Alberta on an after-health-premium basis than the income tax rates alone would suggest.
+  </p>
+  <p>
+    Quebec's health contribution system is the most complex. Quebec residents pay the Quebec Health Contribution,
+    which was simplified in 2017 and is now integrated into the provincial income tax calculation. Additionally,
+    Quebec administers its own drug insurance plan (RAMQ) for residents who are not covered by a private group
+    plan. The annual RAMQ premium is up to approximately $731 per adult, calculated based on income and payable
+    with your provincial tax return. This means a Quebec household with two adults not covered by employer
+    drug plans could pay up to $1,462 annually in drug insurance premiums alone, on top of the already-higher
+    provincial income tax rates. When comparing take-home pay across provinces, these health-related premiums
+    should be factored in alongside income tax, sales tax, and cost of living to give a complete picture
+    of the true financial burden in each jurisdiction.
+  </p>
+
+  <h2>Should You Move for Lower Taxes?</h2>
+  <p>
+    While the tax differences between provinces are real and can amount to thousands of dollars per year,
+    relocating solely for tax reasons requires careful analysis of the full financial picture.
+  </p>
+  <ul>
+    <li><strong>Cost of living:</strong> Low-tax territories like Nunavut and the NWT have significantly higher
+      living costs for food, heating, and housing. A $5,000 annual tax saving is meaningless if groceries cost
+      $10,000 more per year. Even among southern provinces, housing costs vary dramatically: a detached home
+      in Vancouver averages over $1.8 million, while a comparable home in Regina might cost $350,000.</li>
+    <li><strong>Salaries:</strong> Provinces with higher taxes (Ontario, BC, Quebec) generally have higher
+      salaries and more job opportunities, particularly in technology, finance, and professional services. A
+      $10,000 salary premium in Toronto versus Saskatoon could more than offset the $3,000 to $4,000 tax
+      difference.</li>
+    <li><strong>Services:</strong> Higher-tax provinces may offer more generous public services. Quebec's
+      subsidized daycare saves families roughly $10,000 to $15,000 per year per child compared to market rates
+      in Ontario or BC. These service-level differences can dwarf the income tax gap.</li>
+    <li><strong>Sales tax:</strong> Provincial sales taxes (PST, HST, or QST) also affect your overall burden.
+      Alberta has no PST, while provinces like Nova Scotia charge a combined HST of 15 percent. On $30,000 of
+      annual taxable purchases, the HST difference between Alberta (5 percent GST only) and Nova Scotia (15
+      percent HST) is $3,000.</li>
+    <li><strong>Tax residency:</strong> You pay provincial tax to the province where you live on December 31,
+      not where you work. If you are considering a move, timing it before year-end can save a full year of
+      higher provincial tax. However, provinces can challenge your residency claim if you maintain significant
+      residential ties (home, spouse, dependents) in the higher-tax province.</li>
+  </ul>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Provincial Tax Rates</a></li>
+  </ul>
+</GuideLayout>

@@ -1,0 +1,51 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import EICalculator from '../components/calculators/EICalculator';
+
+const faqs = [
+  { question: 'What is the EI premium rate for 2025?', answer: 'The employee EI premium rate for 2025 is 1.58% on insurable earnings up to $65,700, resulting in a maximum annual premium of $1,049.12. Employers pay 1.4 times the employee rate (2.212%).' },
+  { question: 'Why is the EI rate lower for Quebec?', answer: 'Quebec residents pay a reduced EI rate of 1.248% (max $834.24) because they also contribute to QPIP (Quebec Parental Insurance Plan) at 0.494% (max $484.12). QPIP covers maternity and parental benefits, which are handled by EI in other provinces.' },
+  { question: 'What does EI cover?', answer: 'Employment Insurance provides temporary income support for: regular benefits (job loss), maternity and parental benefits, sickness benefits (up to 26 weeks), compassionate care benefits, and family caregiver benefits. The benefit rate is 55% of your average insurable earnings, up to a maximum of $695/week in 2025.' },
+  { question: 'Do I pay EI on all my income?', answer: 'No. EI premiums are only charged on insurable earnings up to $65,700. Once your year-to-date earnings reach this maximum, no further EI premiums are deducted for the rest of the year. This is why you may notice slightly higher paycheques toward the end of the year.' },
+  { question: 'Is EI mandatory for self-employed individuals?', answer: 'EI is not mandatory for self-employed workers, but you can opt in for special benefits (maternity, parental, sickness, compassionate care). If you opt in, you pay the employee portion only. You cannot access regular (unemployment) benefits as self-employed.' },
+  { question: 'What is QPIP and who pays it?', answer: 'The Quebec Parental Insurance Plan (QPIP) provides maternity, paternity, parental, and adoption benefits to Quebec workers. Employees contribute 0.494% on insurable earnings up to $98,000 (max $484.12). Employers pay a separate rate. QPIP replaced the maternity/parental portion of EI for Quebec residents.' },
+];
+---
+
+<CalculatorLayout
+  slug="/ei-calculator"
+  title="EI Calculator"
+  metaTitle="EI Premium Calculator Canada 2025 | Employment Insurance"
+  metaDescription="Calculate your 2025 Employment Insurance (EI) premiums in Canada. Includes QPIP for Quebec residents. See your EI contribution breakdown based on salary."
+  h1="EI Premium Calculator 2025"
+  intro="Calculate your Employment Insurance (EI) premiums for 2025. Quebec residents also see QPIP contributions. Select your province for accurate rates."
+  faqs={faqs}
+>
+  <EICalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>Employment Insurance Premiums Explained</h2>
+      <p>
+        Employment Insurance (EI) is a federal program funded by employee and employer premiums. It provides temporary income support during periods of unemployment, parental leave, sickness, and other qualifying events. For 2025, employees contribute 1.58% on insurable earnings up to the maximum insurable earnings of $65,700, resulting in a maximum annual premium of $1,049.12. Your employer pays 1.4 times your premium, making the total EI funding rate approximately 3.79% of insurable earnings. Once your annual earnings reach the maximum, no further premiums are deducted.
+      </p>
+      <p>
+        Quebec residents pay a reduced EI rate of 1.248% because their parental benefits are covered by the separate Quebec Parental Insurance Plan (QPIP). QPIP provides more generous maternity and parental benefits than the federal EI program. Quebec employees contribute 0.494% to QPIP on earnings up to $98,000 (max $484.12). The combined EI + QPIP contribution for Quebec residents is typically similar to or slightly higher than the EI premium in other provinces, but provides enhanced parental coverage.
+      </p>
+
+      <h2>EI Benefits Overview</h2>
+      <ul>
+        <li><strong>Regular benefits:</strong> Up to 45 weeks of income replacement (55% of earnings, max $695/week) when you lose your job through no fault of your own.</li>
+        <li><strong>Maternity benefits:</strong> 15 weeks for the birth parent.</li>
+        <li><strong>Parental benefits:</strong> 35 standard weeks (55%) or 61 extended weeks (33%).</li>
+        <li><strong>Sickness benefits:</strong> Up to 26 weeks if you are unable to work due to illness, injury, or quarantine.</li>
+      </ul>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei.html" target="_blank" rel="noopener">CRA: EI Premium Rates</a></li>
+        <li><a href="https://www.rqap.gouv.qc.ca/en" target="_blank" rel="noopener">QPIP: Quebec Parental Insurance Plan</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

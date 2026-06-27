@@ -1,0 +1,70 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import HourlyToSalaryCalculator from '../../components/calculators/HourlyToSalaryCalculator';
+
+const faqs = [
+  {
+    question: 'How do I convert my hourly wage to annual salary?',
+    answer: 'Multiply your hourly rate by the number of hours you work per week, then multiply by 52 weeks. For example, $25/hour at 40 hours/week = $25 × 40 × 52 = $52,000 per year. This calculator also shows what you take home after taxes.',
+  },
+  {
+    question: 'What is a good hourly wage in Canada in 2025?',
+    answer: 'The median hourly wage in Canada is approximately $28–$30/hour. Minimum wages range from $15.00 to $19.00 depending on province. An hourly wage of $35+/hour puts you above the median in most provinces.',
+  },
+  {
+    question: 'Does this calculation include overtime?',
+    answer: 'This calculator assumes regular hours only with no overtime premium. In most provinces, overtime (typically above 44 hours/week) is paid at 1.5x your regular rate. If you regularly work overtime, your actual annual income will be higher.',
+  },
+  {
+    question: 'How does part-time vs full-time affect my taxes?',
+    answer: 'Your tax rate depends on total annual income, not hours worked. A part-time worker earning $30,000/year pays the same tax rates as a full-time worker at $30,000/year. However, part-time workers typically have lower annual incomes and therefore lower effective tax rates.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/hourly-to-salary"
+  title="Hourly to Salary Calculator"
+  metaTitle="Hourly to Salary Calculator Canada 2025 | Wage Converter"
+  metaDescription="Convert your hourly wage to annual salary and see your after-tax take-home pay in Canada. Quick conversion table for all hourly rates with tax breakdown."
+  h1="Hourly to Annual Salary Calculator Canada 2025"
+  intro="Convert your hourly wage to an annual salary and see your take-home pay after federal and provincial taxes. Includes a conversion table for common hourly rates."
+  faqs={faqs}
+>
+  <HourlyToSalaryCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>Hourly to Salary Conversion Formula</h2>
+      <p>
+        The standard formula to convert an hourly wage to an annual salary is:
+      </p>
+      <p class="font-mono bg-gray-100 dark:bg-gray-800 p-3 rounded-lg text-center">
+        Annual Salary = Hourly Rate &times; Hours per Week &times; 52 weeks
+      </p>
+      <p>
+        This assumes you work every week of the year. If you receive paid vacation, the formula still applies since you're paid during vacation. If unpaid, subtract the vacation weeks from 52.
+      </p>
+
+      <h2>Common Hourly to Annual Conversions (40 hrs/wk)</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Hourly</th><th>Annual</th><th>Monthly</th><th>Bi-Weekly</th></tr></thead>
+          <tbody>
+            <tr><td>$15/hr</td><td>$31,200</td><td>$2,600</td><td>$1,200</td></tr>
+            <tr><td>$20/hr</td><td>$41,600</td><td>$3,467</td><td>$1,600</td></tr>
+            <tr><td>$25/hr</td><td>$52,000</td><td>$4,333</td><td>$2,000</td></tr>
+            <tr><td>$30/hr</td><td>$62,400</td><td>$5,200</td><td>$2,400</td></tr>
+            <tr><td>$40/hr</td><td>$83,200</td><td>$6,933</td><td>$3,200</td></tr>
+            <tr><td>$50/hr</td><td>$104,000</td><td>$8,667</td><td>$4,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/employment-social-development/services/labour-standards/reports/hours-work.html" target="_blank" rel="noopener">ESDC: Standard Hours of Work</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

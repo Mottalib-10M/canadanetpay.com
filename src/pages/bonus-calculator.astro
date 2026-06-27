@@ -1,0 +1,48 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import BonusCalculator from '../components/calculators/BonusCalculator';
+
+const faqs = [
+  { question: 'How are bonuses taxed in Canada?', answer: 'In Canada, bonuses are added to your regular income and taxed at your marginal rate. Unlike the US, Canada does not have a flat supplemental withholding rate. Your employer uses CRA payroll tables or the bonus method to calculate withholding, which considers your year-to-date income plus the bonus.' },
+  { question: 'Do I pay CPP on my bonus?', answer: 'Yes. Bonuses are considered pensionable earnings for CPP/QPP purposes. If you have not yet reached the maximum pensionable earnings ($71,300 for CPP, $79,400 for CPP2) for the year, CPP contributions will be deducted from your bonus.' },
+  { question: 'Do I pay EI on my bonus?', answer: 'Yes. Bonuses are insurable earnings for EI purposes. If your year-to-date insurable earnings have not reached $65,700, EI premiums will be deducted from your bonus at the applicable rate.' },
+  { question: 'Will I get some of the bonus tax back?', answer: 'Possibly. If the withholding on your bonus was higher than your actual annual tax liability (which can happen with the bonus method), you will receive a refund when you file your tax return. This is common when the bonus pushes your periodic withholding into a higher bracket temporarily.' },
+  { question: 'How does this calculator estimate bonus tax?', answer: 'This calculator uses the marginal method: it calculates your total tax with and without the bonus, and the difference is the tax on your bonus. This gives you the most accurate estimate of the additional tax triggered by the bonus payment.' },
+];
+---
+
+<CalculatorLayout
+  slug="/bonus-calculator"
+  title="Bonus Calculator"
+  metaTitle="Bonus Tax Calculator Canada 2025 | After-Tax Bonus Amount"
+  metaDescription="Calculate how much of your bonus you keep after Canadian federal tax, CPP, EI, and provincial tax. See your net bonus amount for all 13 provinces in 2025."
+  h1="Bonus Tax Calculator Canada 2025"
+  intro="See how much of your bonus you actually take home after federal tax, CPP/QPP, EI, and provincial tax. Enter your salary and bonus amount for a detailed breakdown."
+  faqs={faqs}
+>
+  <BonusCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>How Bonus Tax Works in Canada</h2>
+      <p>
+        Unlike the United States, Canada does not have a flat supplemental withholding rate for bonuses. Instead, bonuses are treated as additional employment income and taxed at your marginal rate. When your employer processes a bonus payment, they typically use one of two methods: adding the bonus to a regular pay period and calculating tax as if you earned that amount every period (periodic method), or calculating the tax on your annual income with and without the bonus (bonus method). The result can mean significant tax is withheld from large bonuses, especially if the bonus pushes your total income into higher federal and provincial brackets.
+      </p>
+      <p>
+        This calculator uses the marginal approach, computing the total annual tax with and without the bonus to determine the incremental tax cost. This method provides the most accurate estimate of how much you will actually keep from your bonus when you file your annual return. Keep in mind that CPP/QPP and EI premiums also apply to bonus income, subject to annual maximums.
+      </p>
+
+      <h2>Strategies for Bonus Income</h2>
+      <ul>
+        <li><strong>RRSP contribution:</strong> Contribute your bonus to an RRSP to offset the tax impact. You can contribute up to your available RRSP room.</li>
+        <li><strong>Timing:</strong> If you are near the CPP or EI maximum for the year, a late-year bonus may incur fewer payroll deductions.</li>
+        <li><strong>TFSA:</strong> After-tax bonus funds can go into a TFSA for tax-free investment growth.</li>
+      </ul>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions.html" target="_blank" rel="noopener">CRA: Payroll Deductions</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

@@ -1,0 +1,138 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import FAQAccordion from '../components/ui/FAQAccordion.astro';
+import RelatedCalculators from '../components/ui/RelatedCalculators.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+import '../styles/global.css';
+import { buildCanonical, SITE_NAME, SITE_URL, OG_IMAGE, OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT, LAST_UPDATED, webApplicationSchema, faqSchema, breadcrumbSchema, websiteSearchSchema, organizationSchema, personSchema } from '../lib/seo';
+import type { Lang } from '../i18n/index';
+
+interface Props {
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  intro: string;
+  faqs: { question: string; answer: string }[];
+  lang?: Lang;
+}
+
+const { slug, title, metaTitle, metaDescription, h1, intro, faqs, lang = 'en' } = Astro.props;
+const canonical = buildCanonical(slug);
+
+const breadcrumbItems = [
+  { name: 'Home', url: SITE_URL },
+  { name: title, url: canonical },
+];
+
+const schemas: object[] = [
+  webApplicationSchema(title, metaDescription, canonical),
+  faqSchema(faqs),
+  breadcrumbSchema(breadcrumbItems),
+  organizationSchema(),
+  personSchema(),
+];
+
+if (slug === '/') {
+  schemas.push(websiteSearchSchema());
+}
+
+// Hreflang: EN <-> FR route mapping
+const enToFr: Record<string, string> = { '/': '/fr/', '/glossary/': '/fr/glossaire/' };
+const frToEn: Record<string, string> = { '/fr/': '/', '/fr/glossaire/': '/glossary/' };
+const enPath = lang === 'en' ? slug : (frToEn[slug] ?? null);
+const frPath = lang === 'fr' ? slug : (enToFr[slug] ?? null);
+const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
+---
+
+<!DOCTYPE html>
+<html lang={lang === 'fr' ? 'fr' : 'en'}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{metaTitle}</title>
+  <meta name="description" content={metaDescription} />
+  <meta name="author" content="Mottalib Radif" />
+  <link rel="canonical" href={canonical} />
+
+  <!-- Hreflang -->
+  {enPath && <link rel="alternate" hreflang="en" href={`${SITE_URL}${enPath}`} />}
+  {frPath && <link rel="alternate" hreflang="fr" href={`${SITE_URL}${frPath}`} />}
+  {enPath && <link rel="alternate" hreflang="x-default" href={`${SITE_URL}${enPath}`} />}
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={metaTitle} />
+  <meta property="og:description" content={metaDescription} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content={SITE_NAME} />
+  <meta property="og:locale" content={ogLocale} />
+  <meta property="og:image" content={OG_IMAGE} />
+  <meta property="og:image:width" content={OG_IMAGE_WIDTH} />
+  <meta property="og:image:height" content={OG_IMAGE_HEIGHT} />
+  <meta property="og:image:alt" content={`${metaTitle} - Canada Salary Calculator`} />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={metaTitle} />
+  <meta name="twitter:description" content={metaDescription} />
+  <meta name="twitter:image" content={OG_IMAGE} />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter-700.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="manifest" href="/manifest.webmanifest" />
+
+  {schemas.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))}
+</head>
+<body class="min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:rounded focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500">{lang === 'fr' ? 'Aller au contenu principal' : 'Skip to main content'}</a>
+
+  <Header lang={lang} />
+
+  <main id="main-content" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
+    <div class="mb-8">
+      {slug !== '/' && <Breadcrumbs items={breadcrumbItems} />}
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+        {h1}
+      </h1>
+      <p class="mt-3 text-lg text-gray-500 dark:text-gray-400">
+        {intro}
+      </p>
+    </div>
+
+    <slot />
+
+    <div class="mt-8 flex items-center gap-4 rounded-lg border border-gray-200 dark:border-gray-700 px-5 py-4">
+      <img src="/team/mottalib-radif.jpg" alt="Mottalib Radif" class="h-12 w-12 rounded-full object-cover" width="48" height="48" loading="lazy" />
+      <div class="text-sm">
+        <p class="font-semibold text-gray-900 dark:text-white">By <a href="/about/" class="text-brand-600 hover:underline dark:text-brand-400">Mottalib Radif</a></p>
+        <p class="text-gray-500 dark:text-gray-400">MBA INSEAD &middot; Finance Enthusiast</p>
+      </div>
+    </div>
+
+    <p class="mt-4 text-sm text-gray-400 dark:text-gray-500">
+      Updated for tax year 2025 &middot; Last verified {LAST_UPDATED} &middot; Sources: CRA, Revenu Qu&eacute;bec
+    </p>
+
+    <slot name="content" />
+
+    {faqs.length > 0 && (
+      <section class="mt-12" aria-labelledby="faq-heading">
+        <h2 id="faq-heading" class="text-2xl font-bold text-gray-900 dark:text-white">
+          Frequently Asked Questions
+        </h2>
+        <div class="mt-6">
+          <FAQAccordion faqs={faqs} />
+        </div>
+      </section>
+    )}
+
+    <RelatedCalculators current={slug} />
+  </main>
+
+  <Footer />
+</body>
+</html>

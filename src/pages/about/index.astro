@@ -1,0 +1,58 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+---
+
+<GuideLayout
+  title="About Salary After Tax Canada"
+  description="Learn about the team behind Canada's most accurate salary after tax calculator and our mission to make tax transparency accessible to every Canadian worker."
+  publishDate="2025-01-15"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
+>
+  <h2>Our Mission</h2>
+  <p>
+    Salary After Tax Canada provides free, accurate salary calculators for Canadian workers. Our goal is to make tax
+    transparency accessible to everyone, whether you're negotiating a new salary, planning your budget, or simply
+    curious about where your money goes.
+  </p>
+  <p>
+    We believe every Canadian should be able to understand their paycheque without needing an accounting degree.
+    Our calculators break down every deduction (federal tax, provincial tax, CPP/QPP, EI, QPIP) into clear,
+    understandable numbers.
+  </p>
+
+  <h2>About the Author</h2>
+  <div class="not-prose flex items-start gap-6 my-8 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+    <div class="flex-shrink-0 h-20 w-20 rounded-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center text-brand-600 dark:text-brand-400 font-bold text-2xl">
+      MR
+    </div>
+    <div>
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white">Mottalib Radif</h3>
+      <p class="text-sm text-brand-600 dark:text-brand-400 font-medium">MBA, INSEAD</p>
+      <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        Finance professional with an MBA from INSEAD. Passionate about making financial tools accessible and
+        transparent. Built Salary After Tax Canada to help Canadians understand their take-home pay with precision
+        and clarity.
+      </p>
+    </div>
+  </div>
+
+  <h2>Data Accuracy</h2>
+  <p>
+    All tax calculations are based on official data from:
+  </p>
+  <ul>
+    <li><a href="https://www.canada.ca/en/revenue-agency.html" target="_blank" rel="noopener">Canada Revenue Agency (CRA)</a>: Federal tax brackets, CPP rates, EI rates</li>
+    <li><a href="https://www.revenuquebec.ca/en/" target="_blank" rel="noopener">Revenu Qu&eacute;bec</a>: QPP and QPIP rates</li>
+    <li>Provincial finance ministries: Provincial tax brackets and credits</li>
+  </ul>
+  <p>
+    Calculations are updated each January when new rates are published. While we strive for accuracy, this tool
+    provides estimates and should not replace professional tax advice.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Have questions, feedback, or found an error? Reach out at
+    <a href="/contact/">our contact page</a>.
+  </p>
+</GuideLayout>

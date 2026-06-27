@@ -1,0 +1,226 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import { FEDERAL_BRACKETS, BASIC_PERSONAL_AMOUNT } from '../../../data/federal-tax-2025';
+import { formatCurrency } from '../../../lib/format';
+---
+
+<GuideLayout
+  title="Canadian Federal Tax Brackets 2025"
+  description="Complete guide to the 2025 CRA federal income tax brackets with examples showing how progressive taxation works in Canada. Includes BPA and tax credits."
+  publishDate="2025-01-15"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Federal Tax Brackets 2025' }]}
+>
+  <h2>2025 Federal Income Tax Brackets</h2>
+  <p>
+    The Canada Revenue Agency (CRA) adjusts federal tax brackets annually for inflation. For the 2025 tax year,
+    Canada uses five progressive tax brackets:
+  </p>
+
+  <div class="overflow-x-auto">
+    <table>
+      <thead><tr><th>Tax Rate</th><th>Taxable Income Range</th><th>Tax on Maximum</th></tr></thead>
+      <tbody>
+        {FEDERAL_BRACKETS.map((b, i) => {
+          const prevMax = i > 0 ? FEDERAL_BRACKETS[i-1].max : 0;
+          const bracketWidth = b.max === Infinity ? 0 : b.max - b.min;
+          const taxOnBracket = bracketWidth > 0 ? bracketWidth * b.rate : 0;
+          return (
+            <tr>
+              <td>{(b.rate * 100).toFixed(1)}%</td>
+              <td>{formatCurrency(b.min)} – {b.max === Infinity ? 'and above' : formatCurrency(b.max)}</td>
+              <td>{b.max === Infinity ? '—' : formatCurrency(taxOnBracket)}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>How Progressive Taxation Works</h2>
+  <p>
+    A common misconception is that earning more moves your entire income into a higher tax bracket. In reality,
+    only the income <em>within</em> each bracket is taxed at that rate. This is called progressive or marginal
+    taxation. The system works like a staircase: as your income climbs each step, only the income on that
+    particular step is taxed at that step's rate. Your income on lower steps continues to be taxed at the
+    lower rates, regardless of how much you earn in total.
+  </p>
+  <p>
+    For example, if you earn $80,000 in 2025:
+  </p>
+  <ul>
+    <li>First $57,375 is taxed at 15% = $8,606</li>
+    <li>Remaining $22,625 ($80,000 – $57,375) is taxed at 20.5% = $4,638</li>
+    <li><strong>Total federal tax before credits: $13,244</strong></li>
+  </ul>
+  <p>
+    Your <strong>marginal rate</strong> is 20.5 percent (the rate on your last dollar), but your
+    <strong>effective rate</strong> is only 16.6 percent ($13,244 divided by $80,000). This distinction
+    is crucial for financial planning. When evaluating a raise, bonus, or RRSP contribution, you should
+    think in terms of your marginal rate. When budgeting or comparing your overall tax burden, the
+    effective rate is more meaningful.
+  </p>
+
+  <h2>How Federal Tax Affects Different Income Levels</h2>
+  <p>
+    The progressive structure ensures that lower-income earners face a significantly lighter tax burden
+    than higher earners. Here is how federal tax (before credits) scales across income levels:
+  </p>
+  <ul>
+    <li><strong>$40,000 income:</strong> Entirely within the 15 percent bracket. Federal tax before credits:
+      $6,000. Effective rate: 15 percent. After the BPA credit of approximately $2,498, net federal tax
+      drops to about $3,502 (effective rate: 8.8 percent).</li>
+    <li><strong>$75,000 income:</strong> Straddles the 15 percent and 20.5 percent brackets. Federal tax
+      before credits: $12,215. After credits, net federal tax is approximately $9,717 (effective rate:
+      13.0 percent).</li>
+    <li><strong>$120,000 income:</strong> Reaches the 26 percent bracket. Federal tax before credits:
+      $20,544. After credits, net federal tax is approximately $18,046 (effective rate: 15.0 percent).</li>
+    <li><strong>$200,000 income:</strong> Deep into the 29 percent bracket. Federal tax before credits:
+      $38,224. After credits, net federal tax is approximately $35,726 (effective rate: 17.9 percent).</li>
+    <li><strong>$300,000 income:</strong> Reaches the top 33 percent bracket. Federal tax before credits:
+      $62,474. After credits, net federal tax is approximately $59,976 (effective rate: 20.0 percent).</li>
+  </ul>
+  <p>
+    Notice how the effective rate rises gradually from 8.8 percent at $40,000 to 20 percent at $300,000.
+    Even at $300,000, the effective federal rate is well below the 33 percent top marginal rate, because
+    the bulk of income is taxed at lower rates.
+  </p>
+
+  <h2>Basic Personal Amount (BPA)</h2>
+  <p>
+    The federal Basic Personal Amount for 2025 is <strong>{formatCurrency(BASIC_PERSONAL_AMOUNT)}</strong>.
+    This provides a non-refundable tax credit at 15%, effectively making the first {formatCurrency(BASIC_PERSONAL_AMOUNT)}
+    of income tax-free for most Canadians.
+  </p>
+  <p>
+    High-income earners ($177,882+) receive a reduced BPA through a clawback. At $253,414 and above, the BPA is
+    reduced to $14,538. This means very high earners effectively pay more federal tax on their lower income brackets.
+  </p>
+
+  <h2>Tax Calculation Example: $100,000 Salary</h2>
+  <p>
+    On a $100,000 salary (before deductions):
+  </p>
+  <ol>
+    <li>15% on first $57,375 = $8,606</li>
+    <li>20.5% on $57,375 to $100,000 ($42,625) = $8,738</li>
+    <li>Gross federal tax: $17,344</li>
+    <li>BPA credit: {formatCurrency(BASIC_PERSONAL_AMOUNT)} &times; 15% = {formatCurrency(Math.round(BASIC_PERSONAL_AMOUNT * 0.15))}</li>
+    <li>CPP credit: ~$4,034 &times; 15% = ~$605</li>
+    <li>EI credit: ~$1,038 &times; 15% = ~$156</li>
+    <li><strong>Net federal tax: ~$14,164</strong></li>
+  </ol>
+
+  <h2>How Brackets Have Changed Over Time</h2>
+  <p>
+    Federal brackets are indexed annually to inflation using the Consumer Price Index (CPI). The 2025 brackets
+    are approximately 2.7 percent higher than 2024, meaning you can earn slightly more before entering higher
+    brackets. This prevents "bracket creep," where inflation-driven raises push you into higher tax brackets
+    without increasing your real purchasing power.
+  </p>
+  <p>
+    Looking back over recent years, the indexation rates have varied: 6.3 percent for 2023 (reflecting high
+    post-pandemic inflation), 4.7 percent for 2024, and 2.7 percent for 2025 as inflation moderated. The
+    rate itself has not changed since 2016, when the government added the fifth bracket at 33 percent for
+    income above approximately $200,000 (now $253,414 after indexation). Before 2016, Canada had four
+    federal brackets with a top rate of 29 percent.
+  </p>
+  <p>
+    For historical perspective, Canada introduced its modern income tax system in 1917 as a "temporary"
+    wartime measure with rates ranging from 4 percent to 25 percent. The number of brackets has varied
+    from as many as 16 in the 1980s to the current five, with significant simplification occurring in the
+    tax reforms of 1987 and 2000.
+  </p>
+
+  <h2>How Federal Tax Interacts with Provincial Tax</h2>
+  <p>
+    It is important to understand that federal tax brackets are only part of your total income tax burden.
+    Each province and territory sets its own brackets and rates, which are calculated separately and added
+    to your federal tax. For example, a worker earning $100,000 in Ontario pays approximately $14,164 in
+    net federal tax plus approximately $4,100 in Ontario provincial tax, for a combined income tax of about
+    $18,264. The same worker in Alberta would pay the same federal tax but only about $3,200 in provincial
+    tax, for a combined total of about $17,364, roughly $900 less.
+  </p>
+  <p>
+    Quebec is unique because it administers its own income tax separately (you file a separate Quebec return),
+    and Quebec residents receive a 16.5 percent federal tax abatement. This means their federal tax is
+    reduced by 16.5 percent, but the Quebec provincial tax rates are significantly higher than other provinces.
+  </p>
+
+  <h2>Common Misconceptions</h2>
+  <ul>
+    <li><strong>"A raise will push all my income into a higher bracket."</strong> False. Only the income above
+      the bracket threshold is taxed at the higher rate. A raise always increases your after-tax income.</li>
+    <li><strong>"The BPA means I do not pay tax on my first {formatCurrency(BASIC_PERSONAL_AMOUNT)}."</strong>
+      Technically, the BPA is a non-refundable tax credit at 15 percent, not a deduction. The effect is similar
+      (effectively making the first {formatCurrency(BASIC_PERSONAL_AMOUNT)} tax-free), but the mechanism is
+      different. High-income earners ($177,882 and above) receive a reduced BPA, so the tax-free amount is
+      smaller for them.</li>
+    <li><strong>"Capital gains are taxed at these rates."</strong> Capital gains receive preferential treatment
+      in Canada. Only 50 percent of capital gains (for the first $250,000 annually as of 2024) are included
+      in taxable income. Gains above $250,000 have a 66.67 percent inclusion rate. This means the effective
+      tax rate on capital gains is roughly half the regular income tax rate for most Canadians.</li>
+    <li><strong>"Everyone pays 33 percent on high income."</strong> The 33 percent rate only applies to taxable
+      income above $253,414. Even someone earning $300,000 pays 33 percent only on the $46,586 above that
+      threshold, not on their entire income.</li>
+  </ul>
+
+  <h2>Changes from 2024 to 2025: Specific Bracket Adjustments</h2>
+  <p>
+    The CRA applied a 2.7 percent indexation factor for 2025, based on the average monthly Consumer Price Index
+    data from the 12-month period ending September 2024. This rate is significantly lower than the 4.7 percent
+    indexation used for 2024 and the 6.3 percent applied for 2023, reflecting the moderation of inflation from
+    the elevated post-pandemic levels. For each bracket, the threshold adjustments are as follows: the first
+    bracket ceiling increased from $55,867 in 2024 to $57,375 in 2025, a jump of $1,508. The second bracket
+    threshold rose from $111,733 to $114,750, the third bracket ceiling increased from $154,906 to $159,147,
+    and the top bracket threshold moved from $220,000 to $253,414. These increases mean that a worker who
+    received a 2.7 percent cost-of-living raise will remain in approximately the same bracket position and
+    face a similar effective tax rate as the prior year.
+  </p>
+  <p>
+    The Basic Personal Amount (BPA) also increased with indexation. For 2025, the maximum BPA is
+    {formatCurrency(BASIC_PERSONAL_AMOUNT)}, up from $15,705 in 2024. This means the non-refundable tax credit
+    at 15 percent is now approximately {formatCurrency(Math.round(BASIC_PERSONAL_AMOUNT * 0.15))}, effectively
+    shielding more of your income from federal tax. The increased BPA benefits all taxpayers, though high-income
+    earners (above $177,882) receive a gradually reduced BPA through a clawback mechanism that reaches its
+    minimum of $14,538 at incomes of $253,414 and above.
+  </p>
+  <p>
+    Other notable changes for 2025 include increases to the RRSP dollar limit (now $32,490, up from $31,560),
+    the TFSA annual contribution room ($7,000, unchanged from 2024), and the CPP maximum pensionable earnings
+    ($71,300, up from $68,500). The EI maximum insurable earnings also rose to $65,700 from $63,200. Together,
+    these adjustments ensure that inflation does not erode the real value of tax relief measures or force
+    Canadians into higher brackets without any increase in real purchasing power. Workers and financial planners
+    should update their tax projections annually to account for these indexation changes.
+  </p>
+
+  <h2>Practical Tax Planning Tips</h2>
+  <ul>
+    <li><strong>Maximize RRSP contributions at high income.</strong> If your marginal rate is 29 percent or
+      higher (income above $114,750), RRSP contributions provide substantial tax savings. A $10,000
+      contribution saves $2,900 to $3,300 in federal tax alone, plus provincial tax savings.</li>
+    <li><strong>Use TFSA at lower income levels.</strong> If your income is below $57,375 (the 15 percent
+      bracket), the RRSP deduction saves only 15 percent per dollar. A TFSA may be more valuable because
+      withdrawals in retirement will be tax-free regardless of your future income.</li>
+    <li><strong>Income splitting for couples.</strong> Pension income splitting allows retirees to shift up to
+      50 percent of eligible pension income to a lower-income spouse, potentially saving thousands in combined
+      tax. Spousal RRSP contributions during working years achieve a similar result.</li>
+    <li><strong>Time your income.</strong> If you expect a significantly different income next year (due to
+      retirement, maternity leave, or a career change), consider shifting income or deductions across the
+      year boundary to minimize total tax.</li>
+  </ul>
+
+  <h2>Key Takeaways</h2>
+  <ul>
+    <li>Canada has 5 federal tax brackets from 15 percent to 33 percent.</li>
+    <li>Only income <em>within</em> each bracket is taxed at that rate (progressive system).</li>
+    <li>The first {formatCurrency(BASIC_PERSONAL_AMOUNT)} is effectively tax-free via the BPA credit.</li>
+    <li>Provincial tax is separate and additional (varies by province).</li>
+    <li>Brackets are indexed annually to inflation, preventing bracket creep.</li>
+    <li>Use our <a href="/">salary calculator</a> to see your exact take-home pay.</li>
+  </ul>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Federal Tax Rates for 2025</a></li>
+  </ul>
+</GuideLayout>

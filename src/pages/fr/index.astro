@@ -1,0 +1,68 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import SalaryCalculator from '../../components/calculators/SalaryCalculator';
+
+const faqs = [
+  {
+    question: 'Comment l\'impot federal est-il calcule au Canada?',
+    answer: 'L\'impot federal canadien utilise un systeme progressif a cinq paliers en 2025 : 15 % sur les premiers 57 375 $, 20,5 % de 57 375 $ a 114 750 $, 26 % de 114 750 $ a 158 468 $, 29 % de 158 468 $ a 220 000 $, et 33 % au-dessus de 220 000 $. Le montant personnel de base (16 129 $) offre un credit d\'impot non remboursable au taux le plus bas.',
+  },
+  {
+    question: 'Qu\'est-ce que le RPC/RRQ et combien dois-je payer?',
+    answer: 'Le Regime de pensions du Canada (RPC) est une cotisation obligatoire d\'epargne-retraite. En 2025, les employes cotisent 5,95 % sur les revenus entre 3 500 $ et 71 300 $ (max : 4 034,10 $). Le RPC2 ajoute 4 % sur les revenus de 71 300 $ a 79 400 $. Les residents du Quebec cotisent au RRQ a 6,4 % plutot qu\'au RPC.',
+  },
+  {
+    question: 'Comment fonctionne l\'assurance-emploi (AE)?',
+    answer: 'Les cotisations d\'AE sont de 1,58 % des gains assurables jusqu\'a 65 700 $, pour une cotisation annuelle maximale de 1 049,12 $. Les residents du Quebec paient un taux d\'AE reduit (1,248 %) car ils cotisent aussi au RQAP (0,494 %).',
+  },
+  {
+    question: 'Comment le Quebec differe-t-il des autres provinces?',
+    answer: 'Les residents du Quebec cotisent au RRQ (6,4 %) au lieu du RPC (5,95 %), paient le RQAP, beneficient d\'un abattement federal de 16,5 %, et produisent une declaration provinciale separee. Les taux provinciaux du Quebec sont plus eleves (14 % a 25,75 %) mais compensent par des services sociaux plus etendus.',
+  },
+  {
+    question: 'Quelle est la difference entre le taux effectif et le taux marginal?',
+    answer: 'Le taux marginal est le taux applique a votre dernier dollar de revenu. Le taux effectif est le taux moyen sur l\'ensemble de vos revenus (impot total divise par revenu brut). Grace au systeme progressif, votre taux effectif est toujours inferieur a votre taux marginal.',
+  },
+  {
+    question: 'Ce calculateur est-il precis?',
+    answer: 'Ce calculateur utilise les donnees officielles de l\'ARC pour 2025. Il fournit une estimation precise de votre salaire net. Cependant, des facteurs individuels (REER, credits d\'impot, deductions) peuvent faire varier votre resultat reel.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/fr/"
+  title="Calculateur de salaire"
+  metaTitle="Calculateur de Salaire Net Canada 2025 | Apres Impots"
+  metaDescription="Calculez votre salaire net au Canada apres impots federaux, RPC, AE et impots provinciaux. Mis a jour avec les taux officiels 2025 pour les 13 provinces."
+  h1="Calculateur de Salaire Net Canada 2025"
+  intro="Calculez votre salaire net apres impots federaux, RPC/RRQ, assurance-emploi et impots provinciaux. Mis a jour avec les taux officiels de l'ARC 2025."
+  lang="fr"
+  faqs={faqs}
+>
+  <SalaryCalculator client:idle defaultProvince="QC" />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>Comment fonctionne le calculateur de salaire</h2>
+      <p>
+        Ce calculateur estime votre salaire net (le montant depose dans votre compte bancaire) apres toutes les deductions federales et provinciales. Il applique les regles fiscales officielles de 2025 publiees par l'Agence du revenu du Canada (ARC).
+      </p>
+      <p>
+        Le calculateur traite quatre couches de deductions :
+      </p>
+      <ol>
+        <li><strong>Impot federal sur le revenu</strong>: calcule selon les paliers progressifs de 2025, apres application du credit pour montant personnel de base.</li>
+        <li><strong>RPC/RRQ</strong>: Regime de pensions du Canada (5,95 % sur 3 500 $ a 71 300 $) ou Regime de rentes du Quebec (6,4 %).</li>
+        <li><strong>AE</strong>: Assurance-emploi (1,58 % jusqu'a 65 700 $). Les residents du Quebec paient un taux reduit plus le RQAP.</li>
+        <li><strong>Impot provincial</strong>: varie selon la province avec des paliers et taux propres.</li>
+      </ol>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/fr/agence-revenu/services/impot/particuliers/foire-questions-particuliers/taux-imposition-canadiens-revenu-particuliers-annee-courante-annees-passees.html" target="_blank" rel="noopener">ARC: Taux d'imposition federaux 2025</a></li>
+        <li><a href="https://www.revenuquebec.ca/fr/" target="_blank" rel="noopener">Revenu Quebec: RRQ et RQAP</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

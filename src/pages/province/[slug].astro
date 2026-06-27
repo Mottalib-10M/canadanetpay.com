@@ -1,0 +1,111 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import SalaryCalculator from '../../components/calculators/SalaryCalculator';
+import { PROVINCES } from '../../data/provinces';
+import { formatCurrency } from '../../lib/format';
+import { calculateTakeHome } from '../../lib/tax-engine-ca';
+
+export function getStaticPaths() {
+  return Object.values(PROVINCES).map((province) => ({
+    params: { slug: province.slug },
+    props: { province },
+  }));
+}
+
+const { province } = Astro.props;
+
+const examples = [50000, 75000, 100000, 150000].map((gross) => {
+  const r = calculateTakeHome({ grossAnnual: gross, provinceCode: province.abbreviation, payFrequency: 'annual' });
+  return { gross, net: r.netAnnual, rate: r.effectiveTaxRate, monthly: r.netMonthly };
+});
+
+const faqs = [
+  {
+    question: `What are the ${province.name} provincial tax brackets for 2025?`,
+    answer: `${province.name} has ${province.brackets.length} tax brackets in 2025, ranging from ${(province.brackets[0].rate * 100).toFixed(2)}% to ${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%. The provincial basic personal amount is $${province.basicPersonalAmount.toLocaleString()}.${province.notes ? ' ' + province.notes : ''}`,
+  },
+  {
+    question: `What is the total tax rate in ${province.name}?`,
+    answer: `Your total tax rate in ${province.name} includes federal income tax (15%–33%), ${province.isQuebec ? 'QPP (6.4%)' : 'CPP (5.95%)'}, EI (${province.isQuebec ? '1.248% + QPIP 0.494%' : '1.58%'}), and ${province.name} provincial tax (${(province.brackets[0].rate * 100).toFixed(2)}%–${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%). Use the calculator above for your exact rate.`,
+  },
+  {
+    question: `How much tax do I pay on $75,000 in ${province.name}?`,
+    answer: `On a $75,000 salary in ${province.name}, your approximate take-home pay is ${formatCurrency(examples[1].net)}/year (${formatCurrency(examples[1].monthly)}/month), with an effective tax rate of about ${examples[1].rate.toFixed(1)}%.`,
+  },
+  {
+    question: `What is the ${province.name} basic personal amount?`,
+    answer: `The ${province.name} basic personal amount for 2025 is $${province.basicPersonalAmount.toLocaleString()}. This provides a non-refundable tax credit at the lowest provincial rate, effectively making this amount of income exempt from provincial tax.`,
+  },
+  {
+    question: `How does ${province.name} compare to other provinces for taxes?`,
+    answer: `${province.name}'s top marginal provincial rate is ${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%. ${province.brackets[province.brackets.length - 1].rate > 0.15 ? 'This is among the higher provincial rates in Canada.' : province.brackets[province.brackets.length - 1].rate > 0.12 ? 'This is a moderate rate compared to other provinces.' : 'This is among the lower provincial rates in Canada.'} The lowest-tax provinces are generally Nunavut, Alberta, and Northwest Territories.`,
+  },
+  {
+    question: `Does ${province.name} have any additional taxes or premiums?`,
+    answer: province.healthPremium ? `Yes. ${province.name} levies an Ontario Health Premium on taxable incomes above $20,000, ranging from $0 to $900 per year. The province also has a surtax on higher provincial tax amounts.` : province.isQuebec ? `Yes. Quebec residents pay QPP instead of CPP (at a higher rate), QPIP for parental insurance, and receive a 16.5% federal tax abatement. Quebec also has its own separate tax return.` : `${province.name} does not have major additional payroll taxes beyond the standard federal and provincial income tax, CPP, and EI.`,
+  },
+];
+---
+
+<CalculatorLayout
+  slug={`/province/${province.slug}`}
+  title={`${province.name} Salary Calculator`}
+  metaTitle={province.name.length <= 11 ? `${province.name} Salary After Tax Calculator 2025 | Net ${province.abbreviation} Pay` : province.name.length <= 16 ? `${province.name} Salary After Tax Calculator 2025 | ${province.abbreviation}` : `${province.name} Salary Calculator 2025 | After Tax`}
+  metaDescription={province.name.length <= 8 ? `Calculate your 2025 take-home pay in ${province.name} (${province.abbreviation}) after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Free ${province.abbreviation} salary calculator with detailed breakdown.` : province.name.length <= 16 ? `Calculate your 2025 take-home pay in ${province.name} (${province.abbreviation}) after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.abbreviation} provincial tax. Free salary calculator with full tax breakdown.` : `Calculate your 2025 take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.abbreviation} provincial tax. Free salary calculator with full breakdown.`}
+  h1={`${province.name} Salary After Tax Calculator 2025`}
+  intro={`Calculate your take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Updated with 2025 ${province.abbreviation} tax brackets.`}
+  faqs={faqs}
+>
+  <SalaryCalculator client:idle defaultProvince={province.abbreviation} />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>{province.name} Income Tax Overview</h2>
+      <p>
+        {province.name} uses a progressive provincial income tax system with {province.brackets.length} tax brackets in 2025.
+        The rates range from {(province.brackets[0].rate * 100).toFixed(2)}% on the first {formatCurrency(province.brackets[0].max)} of taxable income
+        to {(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}% on income above {formatCurrency(province.brackets[province.brackets.length - 2].max)}.
+        {province.notes ? ` ${province.notes}` : ''}
+      </p>
+
+      <h3>{province.name} Tax Brackets 2025</h3>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Rate</th><th>Income Range</th></tr></thead>
+          <tbody>
+            {province.brackets.map((b) => (
+              <tr>
+                <td>{(b.rate * 100).toFixed(2)}%</td>
+                <td>{formatCurrency(b.min)} – {b.max === Infinity ? 'and above' : formatCurrency(b.max)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Basic Personal Amount:</strong> {formatCurrency(province.basicPersonalAmount)}</p>
+
+      <h2>Take-Home Pay Examples in {province.name}</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Gross Salary</th><th>Net Annual</th><th>Net Monthly</th><th>Effective Rate</th></tr></thead>
+          <tbody>
+            {examples.map((ex) => (
+              <tr>
+                <td>{formatCurrency(ex.gross)}</td>
+                <td>{formatCurrency(ex.net)}</td>
+                <td>{formatCurrency(ex.monthly)}</td>
+                <td>{ex.rate.toFixed(1)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Provincial Tax Rates</a></li>
+        {province.isQuebec && <li><a href="https://www.revenuquebec.ca/en/" target="_blank" rel="noopener">Revenu Qu&eacute;bec</a></li>}
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

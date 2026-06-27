@@ -1,0 +1,129 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+---
+
+<GuideLayout
+  title="Our Methodology"
+  description="How Salary After Tax Canada calculates your take-home pay, the official CRA data sources we use, and our commitment to accuracy and transparency."
+  publishDate="2026-01-15"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Methodology' }]}
+>
+  <h2>Introduction</h2>
+  <p>
+    Salary After Tax Canada exists to answer one simple question: how much of your gross salary actually reaches your bank account? The Canadian tax system involves multiple layers of deductions -- federal income tax, provincial income tax, Canada Pension Plan (CPP) or Quebec Pension Plan (QPP) contributions, Employment Insurance (EI) premiums, and in Quebec, the Quebec Parental Insurance Plan (QPIP). Understanding how each layer works and interacts is essential for budgeting, salary negotiation, and financial planning.
+  </p>
+  <p>
+    This page documents our calculation methodology in detail. We explain every data source, every calculation step, and every assumption built into our system. Our goal is full transparency: you should be able to reproduce our results using the same official publications we reference, and you should understand exactly where our estimates might differ from your actual paycheque.
+  </p>
+  <p>
+    All calculations run entirely in your web browser. No salary data is transmitted to our servers or shared with any third party. Your financial information stays on your device and is discarded when you close the page.
+  </p>
+
+  <h2>Data Sources</h2>
+  <p>
+    Every rate, threshold, and exemption in our calculator comes from an official Canadian government source. We do not rely on news articles, third-party aggregators, or secondary databases. Here are the specific publications and agencies we reference:
+  </p>
+
+  <h3>Canada Revenue Agency (CRA)</h3>
+  <ul>
+    <li><strong>T4032 Payroll Deductions Tables:</strong> Published annually by the CRA, these tables contain the federal tax bracket thresholds, rates, and claim code amounts used to compute income tax withholding. We use the Section A (tax) tables as the primary reference for our federal tax calculation. For 2025, the five federal brackets are: 15% on income up to $57,375; 20.5% on $57,375 to $114,750; 26% on $114,750 to $158,468; 29% on $158,468 to $220,000; and 33% above $220,000.</li>
+    <li><strong>Basic Personal Amount (BPA):</strong> The CRA publishes the annual BPA, which is the amount of income you can earn before federal tax applies. For 2025, the enhanced BPA is up to $16,129 for taxpayers with net income of $177,882 or less, gradually reduced for higher incomes. We apply this as a non-refundable tax credit at the lowest marginal rate (15%).</li>
+    <li><strong>CPP Contribution Rates and Maximums:</strong> The CRA publishes annual CPP parameters including the employee contribution rate (5.95% for 2025), the basic exemption ($3,500), the first earnings ceiling ($71,300), and the maximum annual employee contribution ($4,034.10). We also incorporate CPP2, which adds a 4% contribution on earnings between the first ceiling ($71,300) and the second ceiling ($79,400), with a maximum CPP2 contribution of $324.00.</li>
+    <li><strong>EI Premium Rates:</strong> The CRA sets the annual EI premium rate for employees. For 2025, the rate is 1.58% on insurable earnings up to $65,700, with a maximum annual premium of $1,049.12. Quebec residents pay a reduced EI rate of 1.248% because they also contribute to QPIP.</li>
+  </ul>
+
+  <h3>Revenu Quebec</h3>
+  <ul>
+    <li><strong>QPP Contribution Rates:</strong> Quebec administers its own pension plan (QPP) in place of CPP. For 2025, the QPP employee rate is 6.4% on earnings between $3,500 and $71,300 (maximum contribution: $4,339.20). QPP2 applies at 4% on earnings between $71,300 and $79,400.</li>
+    <li><strong>QPIP Premiums:</strong> The Quebec Parental Insurance Plan premium for employees is 0.494% on insurable earnings up to $94,000, with a maximum annual premium of $464.36.</li>
+    <li><strong>Quebec Provincial Tax Brackets:</strong> Revenu Quebec publishes its own progressive bracket structure. For 2025, four brackets apply: 14% on income up to $51,780; 19% on $51,780 to $103,545; 24% on $103,545 to $126,000; and 25.75% above $126,000. Quebec residents also receive a 16.5% federal tax abatement to partially offset the higher provincial rates.</li>
+  </ul>
+
+  <h3>Provincial Finance Ministries</h3>
+  <ul>
+    <li><strong>Provincial tax brackets and personal amounts:</strong> Each province and territory publishes its own tax bracket structure and basic personal amount. For example, Ontario has five brackets ranging from 5.05% to 13.16%, while Alberta has five brackets from 10% to 15%. We source these rates directly from each province's finance ministry or official gazette.</li>
+    <li><strong>Provincial surtaxes:</strong> Some provinces levy surtaxes on higher-income earners. Ontario, for instance, applies a surtax of 20% on basic provincial tax between $5,315 and $6,802, and 36% on amounts exceeding $6,802. We include all applicable provincial surtaxes in our calculations.</li>
+  </ul>
+
+  <h2>Calculation Steps</h2>
+  <p>
+    Our calculator follows a systematic process that mirrors how Canadian payroll systems compute deductions. Here is the step-by-step sequence:
+  </p>
+
+  <h3>Step 1: Determine Annual Gross Income</h3>
+  <p>
+    You enter your salary as an annual, monthly, biweekly, weekly, or hourly figure. We convert all inputs to an annual gross amount, which serves as the base for every subsequent calculation. For hourly rates, we multiply by the standard work week (typically 37.5 or 40 hours) and 52 weeks per year.
+  </p>
+
+  <h3>Step 2: Calculate CPP/QPP Contributions</h3>
+  <p>
+    We subtract the basic exemption ($3,500) from your annual pensionable earnings. CPP contributions are 5.95% on the remainder up to the first earnings ceiling ($71,300). For earnings between the first ceiling and the second ceiling ($79,400), CPP2 contributions of 4% apply. Quebec residents pay QPP at 6.4% instead of CPP at 5.95%, with the same ceiling structure. These contributions are capped at the published annual maximums.
+  </p>
+
+  <h3>Step 3: Calculate EI Premiums</h3>
+  <p>
+    EI premiums are calculated at 1.58% of insurable earnings up to the annual maximum insurable amount ($65,700 for 2025). Quebec residents pay a reduced rate of 1.248% because they also contribute to QPIP (0.494% on earnings up to $94,000). Both premiums are capped at their respective annual maximums.
+  </p>
+
+  <h3>Step 4: Calculate Federal Income Tax</h3>
+  <p>
+    We compute federal income tax using the progressive bracket system. Taxable income is gross income less any applicable deductions (such as RRSP contributions, if entered). Tax is calculated by applying each bracket's rate to the income falling within that bracket. We then subtract the basic personal amount tax credit (15% of the BPA). For Quebec residents, we apply the 16.5% federal tax abatement, reducing the net federal tax accordingly.
+  </p>
+
+  <h3>Step 5: Calculate Provincial Income Tax</h3>
+  <p>
+    Provincial tax is computed using the specific bracket structure for your selected province. Each province has its own rates, thresholds, basic personal amount, and in some cases, surtaxes. We apply the province's brackets to your taxable income, subtract the provincial basic personal amount credit at the province's lowest rate, and add any applicable surtaxes.
+  </p>
+
+  <h3>Step 6: Compute Net Salary</h3>
+  <p>
+    Net salary equals gross income minus all deductions: CPP/QPP contributions, EI premiums, QPIP premiums (Quebec only), federal income tax, and provincial income tax. We display this as an annual, monthly, biweekly, weekly, daily, and hourly figure for easy comparison.
+  </p>
+
+  <h2>Accuracy and Limitations</h2>
+  <p>
+    Our calculator provides reliable estimates, but several factors may cause your actual paycheque to differ:
+  </p>
+  <ul>
+    <li><strong>Employer-specific deductions:</strong> Group benefits, pension plan contributions, union dues, and other employer-administered deductions are not included unless you enter them manually. These items can significantly affect your net pay.</li>
+    <li><strong>RRSP contributions:</strong> If you make RRSP contributions through payroll, your employer may reduce tax withholding to account for the deduction. Our calculator includes an RRSP input field, but the actual withholding reduction depends on your employer's approach and whether they have a CRA-authorized reduction letter.</li>
+    <li><strong>Tax credits beyond the BPA:</strong> We apply the basic personal amount credit. However, other credits (such as the Canada Employment Credit, disability tax credit, tuition amounts, medical expenses, or charitable donations) are not included in the default calculation. These credits reduce your tax liability but are typically claimed when you file your T1 return rather than being reflected in each paycheque.</li>
+    <li><strong>Multiple income sources:</strong> The calculator assumes the entered salary is your only source of employment income. If you have multiple jobs, self-employment income, rental income, or investment income, your actual tax situation may differ significantly.</li>
+    <li><strong>Provincial health premiums:</strong> Some provinces levy health premiums (e.g., Ontario Health Premium). These are included in our calculations for applicable provinces, but the thresholds and rates may change annually.</li>
+    <li><strong>Not professional tax advice:</strong> This tool provides estimates for planning and educational purposes. It does not replace advice from a certified professional accountant (CPA), chartered professional accountant, or other qualified tax advisor.</li>
+  </ul>
+
+  <h2>Update Schedule</h2>
+  <p>
+    We follow a structured update process tied to the Canadian tax calendar:
+  </p>
+  <ul>
+    <li><strong>November - December:</strong> The CRA announces CPP/QPP rates and maximums, EI premium rates, and the inflation-adjusted federal brackets for the upcoming year. We update our federal parameters as soon as these figures are confirmed.</li>
+    <li><strong>December - January:</strong> Provincial budgets and rate changes are typically finalized by year-end. We update provincial brackets, personal amounts, and surtaxes for all 13 provinces and territories.</li>
+    <li><strong>January 1:</strong> New rates go live on the site. The previous year remains available for reference.</li>
+    <li><strong>Throughout the year:</strong> If a province announces a mid-year rate change or the federal government enacts emergency legislation affecting payroll deductions, we update the affected parameters within two weeks of official publication.</li>
+  </ul>
+  <p>
+    Our goal is to have all data updated and verified before the first pay period of the new calendar year, ensuring that users see accurate figures from day one.
+  </p>
+
+  <h2>Quality Assurance</h2>
+  <p>
+    We verify our calculations through multiple methods:
+  </p>
+  <ul>
+    <li><strong>CRA Payroll Deductions Online Calculator (PDOC):</strong> We compare our results against the CRA's own online payroll calculator for a range of salary levels, provinces, and pay frequencies. The PDOC uses the same T4032 tables we reference, making it an authoritative benchmark.</li>
+    <li><strong>Manual computation:</strong> For each province, we manually calculate taxes for at least three income levels (low, median, and high) using the published tables and compare results against our automated system.</li>
+    <li><strong>Cross-year validation:</strong> When updating for a new tax year, we first verify that our previous year's calculations still match CRA expectations for that year, confirming no regression was introduced.</li>
+  </ul>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4032-payroll-deductions-tables.html" target="_blank" rel="noopener">CRA: T4032 Payroll Deductions Tables</a></li>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-30000-basic-personal-amount.html" target="_blank" rel="noopener">CRA: Basic Personal Amount</a></li>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp.html" target="_blank" rel="noopener">CRA: CPP Contribution Rates</a></li>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei.html" target="_blank" rel="noopener">CRA: EI Premium Rates</a></li>
+    <li><a href="https://www.revenuquebec.ca/en/online-services/forms-and-publications/current-details/tp-1015.tl-v/" target="_blank" rel="noopener">Revenu Quebec: Source Deduction Tables</a></li>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/e-services/digital-services-businesses/payroll-deductions-online-calculator.html" target="_blank" rel="noopener">CRA: Payroll Deductions Online Calculator (PDOC)</a></li>
+  </ul>
+</GuideLayout>

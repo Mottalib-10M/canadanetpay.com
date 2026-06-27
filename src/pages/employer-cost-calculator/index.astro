@@ -1,0 +1,63 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import EmployerCostCalculator from '../../components/calculators/EmployerCostCalculator';
+
+const faqs = [
+  {
+    question: 'What does it cost to employ someone in Canada?',
+    answer: 'Beyond the salary, employers must pay matching CPP/QPP contributions, 1.4x the employee\'s EI premium, and workers\' compensation (WCB) premiums. The total employer cost is typically 10–15% above the employee\'s gross salary, depending on income level and province.',
+  },
+  {
+    question: 'Do employers match CPP contributions?',
+    answer: 'Yes. Employers pay the exact same CPP (or QPP) amount as the employee. In 2025, the maximum employer CPP contribution is $4,034.10 plus $324 for CPP2. For QPP, it\'s $4,341.80 plus $324 for QPP2.',
+  },
+  {
+    question: 'How much EI does the employer pay?',
+    answer: 'Employers pay 1.4 times the employee\'s EI premium. If the employee pays $1,049.12 (the 2025 max), the employer pays $1,468.77. Quebec employers also pay QPIP at a slightly higher rate than employees (0.692% vs 0.494%).',
+  },
+  {
+    question: 'What is WCB / workers\' compensation?',
+    answer: 'Workers\' Compensation Board (WCB) insurance is a mandatory employer-paid premium covering workplace injuries. Rates vary widely by industry (from 0.1% to over 10%) and province. This calculator uses an estimated average rate of 1.5%.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/employer-cost-calculator"
+  title="Employer Cost Calculator"
+  metaTitle="Employer Cost Calculator Canada 2025 | True Cost to Hire"
+  metaDescription="Calculate the true cost of employing someone in Canada for 2025. See employer CPP, EI, WCB, and QPP contributions on top of salary for all 13 provinces."
+  h1="Employer Cost Calculator Canada 2025"
+  intro="Calculate the total cost of employing someone in Canada, including employer CPP/QPP contributions, EI premiums, and workers' compensation."
+  faqs={faqs}
+>
+  <EmployerCostCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>What Employers Pay Beyond Salary</h2>
+      <p>
+        The gross salary an employee sees on their offer letter is not the full cost to the employer. Canadian employers must make additional mandatory contributions that add 10–15% on top of the base salary:
+      </p>
+      <ul>
+        <li><strong>CPP/QPP match</strong>: Employers contribute the same CPP or QPP amount as the employee.</li>
+        <li><strong>EI premium (1.4x)</strong>: Employers pay 1.4 times the employee's EI contribution.</li>
+        <li><strong>QPIP (Quebec only)</strong>: Quebec employers pay QPIP at a higher rate (0.692%) than employees (0.494%).</li>
+        <li><strong>Workers' compensation</strong>: Mandatory insurance covering workplace injuries. Rates vary by industry.</li>
+      </ul>
+      <p>
+        This doesn't include optional costs like group health benefits, pension matching, training budgets, or office space, which can add another 15–30% on top.
+      </p>
+
+      <h2>Disclaimer</h2>
+      <p>
+        The WCB rate used in this calculator (1.5%) is an estimate. Actual rates depend on your industry classification, province, and claims history. Contact your provincial WCB for exact rates.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions.html" target="_blank" rel="noopener">CRA: Employer Payroll Deductions</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

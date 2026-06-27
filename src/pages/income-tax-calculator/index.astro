@@ -1,0 +1,69 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import IncomeTaxCalculator from '../../components/calculators/IncomeTaxCalculator';
+import { FEDERAL_BRACKETS } from '../../data/federal-tax-2025';
+import { formatCurrency } from '../../lib/format';
+
+const faqs = [
+  {
+    question: 'What is the difference between federal and provincial income tax?',
+    answer: 'Canada has a two-level income tax system. Federal income tax is the same across the country, with 5 progressive brackets ranging from 15% to 33%. Provincial income tax is set by each province separately, with different brackets and rates. Both are calculated on your taxable income (gross income minus deductions like RRSP contributions).',
+  },
+  {
+    question: 'What income is tax-free in Canada in 2025?',
+    answer: 'The federal Basic Personal Amount (BPA) for 2025 is $16,129, which provides a 15% non-refundable tax credit. Combined with provincial BPAs (which vary), most Canadians pay no income tax on roughly the first $10,000–$22,000 of income, depending on province.',
+  },
+  {
+    question: 'How do RRSP contributions reduce my income tax?',
+    answer: 'RRSP contributions are deducted from your gross income before calculating both federal and provincial income tax. The tax savings depend on your marginal tax rate, so the higher your income, the more tax you save per dollar contributed. For example, at a 30% marginal rate, a $10,000 RRSP contribution saves $3,000 in taxes.',
+  },
+  {
+    question: 'Does this calculator include CPP and EI?',
+    answer: 'This calculator focuses specifically on income tax (federal + provincial). CPP and EI are payroll deductions, not income taxes. For a complete picture including CPP, EI, and all deductions, use the main salary calculator.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/income-tax-calculator"
+  title="Income Tax Calculator"
+  metaTitle="Canadian Income Tax Calculator 2025 | Federal & Provincial"
+  metaDescription="Calculate your 2025 Canadian income tax with federal and provincial brackets. See tax paid on each bracket for all 13 provinces. RRSP deduction supported."
+  h1="Canadian Income Tax Calculator 2025"
+  intro="Calculate your federal and provincial income tax for 2025. See how much tax you owe on each bracket and how RRSP contributions reduce your bill."
+  faqs={faqs}
+>
+  <IncomeTaxCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>2025 Federal Tax Brackets</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Rate</th><th>Income Range</th></tr></thead>
+          <tbody>
+            {FEDERAL_BRACKETS.map((b) => (
+              <tr>
+                <td>{(b.rate * 100).toFixed(1)}%</td>
+                <td>{formatCurrency(b.min)} – {b.max === Infinity ? 'and above' : formatCurrency(b.max)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>How Federal Income Tax Works</h2>
+      <p>
+        Federal income tax in Canada is progressive: you don't pay 33% on your entire income just because you're in the top bracket. Instead, each bracket applies only to the income within that range. The first $57,375 is always taxed at 15%, regardless of your total income.
+      </p>
+      <p>
+        The Basic Personal Amount ($16,129 in 2025) provides a non-refundable tax credit at 15%, effectively making the first $16,129 of income tax-free. High-income earners ($177,882+) receive a reduced BPA through a clawback mechanism.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: 2025 Federal Tax Rates</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

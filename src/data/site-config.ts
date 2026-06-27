@@ -1,0 +1,10 @@
+export const SITE_NAME = 'Salary After Tax Canada';
+export const SITE_URL = 'https://salaryaftertax.ca';
+export const SITE_LOCALE = 'en-CA';
+export const SITE_LANGUAGE = 'en';
+export const TAX_YEAR = 2025;
+export const LAST_UPDATED = '2025-01-01';
+export const CURRENCY = 'CAD';
+export const CURRENCY_SYMBOL = '$';
+export const BING_VERIFY_CODE = '';
+export const CLARITY_PROJECT_ID = '';

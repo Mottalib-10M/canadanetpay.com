@@ -1,0 +1,66 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FederalTaxCalculator from '../components/calculators/FederalTaxCalculator';
+import { FEDERAL_BRACKETS, BASIC_PERSONAL_AMOUNT } from '../data/federal-tax-2025';
+import { formatCurrency } from '../lib/format';
+
+const faqs = [
+  { question: 'What are the 2025 Canadian federal tax brackets?', answer: 'For 2025, Canada has five federal tax brackets: 15% on the first $57,375, 20.5% on $57,375–$114,750, 26% on $114,750–$158,468, 29% on $158,468–$220,000, and 33% on income over $220,000.' },
+  { question: 'What is the Basic Personal Amount for 2025?', answer: 'The Basic Personal Amount (BPA) for 2025 is $16,129. This is a non-refundable tax credit at the 15% rate, meaning you get a credit of $2,419 against your federal tax. High-income earners (above $177,882) receive a reduced BPA.' },
+  { question: 'How does the RRSP deduction affect federal tax?', answer: 'RRSP contributions directly reduce your taxable income, lowering your federal (and provincial) tax. For example, contributing $10,000 to an RRSP at a 26% marginal rate saves $2,600 in federal tax alone.' },
+  { question: 'Does federal tax differ by province?', answer: 'Federal tax brackets and rates are the same across all provinces. However, Quebec residents receive a 16.5% abatement (reduction) on federal tax because Quebec administers its own income tax system.' },
+  { question: 'What is the federal tax on a $100,000 salary?', answer: 'On $100,000, the federal income tax before credits is approximately $15,931. After the Basic Personal Amount credit ($2,419), CPP credit, and EI credit, the net federal tax is approximately $12,800–$13,200 depending on province.' },
+  { question: 'How do non-refundable credits work?', answer: 'Non-refundable credits (like the BPA, CPP, and EI credits) reduce your federal tax payable, but cannot create a refund on their own. They are calculated at the lowest tax rate (15%) multiplied by the credit amount.' },
+];
+---
+
+<CalculatorLayout
+  slug="/federal-tax-calculator"
+  title="Federal Tax Calculator"
+  metaTitle="Federal Income Tax Calculator Canada 2025 | Brackets"
+  metaDescription="Calculate your 2025 Canadian federal income tax with a bracket-by-bracket breakdown. See how RRSP contributions reduce your tax and your effective rate."
+  h1="Canada Federal Income Tax Calculator 2025"
+  intro="Calculate your federal income tax with a detailed bracket breakdown. See exactly how much tax you pay at each rate and how RRSP contributions reduce your bill."
+  faqs={faqs}
+>
+  <FederalTaxCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>Understanding Canadian Federal Income Tax</h2>
+      <p>
+        Canada uses a progressive federal income tax system where higher portions of your income are taxed at higher rates. For 2025, there are five tax brackets ranging from 15% to 33%. Unlike a flat tax system, only the income within each bracket is taxed at that bracket's rate, not your entire income. This is a common misconception that leads many Canadians to overestimate their tax burden. The progressive system ensures that taxpayers at every income level pay a fair share relative to their earnings.
+      </p>
+      <p>
+        The Basic Personal Amount (BPA) of $16,129 provides every taxpayer with a non-refundable credit at the 15% rate, effectively making the first $16,129 of income tax-free. High-income earners (above $177,882) receive a gradually reduced BPA, reaching a minimum of $14,538 at incomes of $253,414 and above. This clawback mechanism ensures the full BPA benefit is targeted at low- and middle-income Canadians.
+      </p>
+
+      <h2>2025 Federal Tax Bracket Table</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Rate</th><th>Income Range</th><th>Tax on Bracket</th></tr></thead>
+          <tbody>
+            <tr><td>15%</td><td>$0 – $57,375</td><td>$8,606</td></tr>
+            <tr><td>20.5%</td><td>$57,375 – $114,750</td><td>$11,762</td></tr>
+            <tr><td>26%</td><td>$114,750 – $158,468</td><td>$11,367</td></tr>
+            <tr><td>29%</td><td>$158,468 – $220,000</td><td>$17,844</td></tr>
+            <tr><td>33%</td><td>Over $220,000</td><td>Varies</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>How to Reduce Your Federal Tax</h2>
+      <ul>
+        <li><strong>RRSP contributions</strong> directly reduce taxable income.</li>
+        <li><strong>Charitable donations</strong> provide a 15% credit on the first $200 and 29%+ on amounts above.</li>
+        <li><strong>Medical expenses</strong> above a threshold are eligible for a non-refundable credit.</li>
+        <li><strong>Employment expenses</strong> such as union dues and professional fees are deductible.</li>
+      </ul>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Federal Tax Rates for 2025</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

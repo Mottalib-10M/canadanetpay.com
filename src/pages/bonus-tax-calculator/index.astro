@@ -1,0 +1,57 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import BonusCalculator from '../../components/calculators/BonusCalculator';
+
+const faqs = [
+  {
+    question: 'How are bonuses taxed in Canada?',
+    answer: 'Bonuses in Canada are taxed at your marginal tax , meaning the combined federal and provincial rate for your top bracket. Unlike regular pay, your entire bonus typically falls within one bracket (your highest), so the effective tax rate on a bonus is usually higher than on your regular paycheque. CPP and EI also apply if you haven\'t reached the annual maximums.',
+  },
+  {
+    question: 'Is my bonus taxed at a higher rate than my salary?',
+    answer: 'Not exactly. Bonuses are taxed at your marginal rate, which is the rate for the bracket your total income falls into. Since your regular salary already "fills up" the lower brackets, the bonus sits entirely in higher brackets. It\'s not a different tax rate, just the natural result of progressive taxation.',
+  },
+  {
+    question: 'Do I pay CPP on my bonus?',
+    answer: 'Yes, if you haven\'t reached the CPP maximum pensionable earnings ($71,300) and maximum contribution ($4,034.10) with your regular salary alone. Once you hit the cap, no additional CPP is deducted from your bonus. The same applies to EI (capped at $65,700 insurable earnings).',
+  },
+  {
+    question: 'Can I reduce tax on my bonus?',
+    answer: 'You can redirect part of your bonus to your RRSP before year-end to reduce your taxable income. Other strategies include contributing to a spousal RRSP, making charitable donations for tax credits, or timing the bonus to a lower-income year if possible.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/bonus-tax-calculator"
+  title="Bonus Tax Calculator"
+  metaTitle="Bonus Tax Calculator Canada 2025 | How Your Bonus Is Taxed"
+  metaDescription="Calculate how much tax you'll pay on your bonus in Canada for 2025. See federal, provincial, CPP, and EI deductions on lump-sum bonuses for all provinces."
+  h1="Bonus Tax Calculator Canada 2025"
+  intro="Calculate the tax on your bonus. See how federal tax, provincial tax, CPP, and EI are applied to lump-sum bonus payments."
+  faqs={faqs}
+>
+  <BonusCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>How Bonus Tax Works in Canada</h2>
+      <p>
+        When you receive a bonus, the CRA treats it as additional income on top of your regular salary. Your bonus is taxed at the marginal rates (federal and provincial) that apply at your total income level (salary + bonus). This means if your salary alone puts you in the 26% federal bracket, your entire bonus is federally taxed at 26% (or higher if the bonus pushes you into a new bracket).
+      </p>
+      <p>
+        This calculator computes the incremental tax on your bonus by comparing total tax at salary + bonus vs. salary alone. This gives you the exact additional tax attributable to the bonus, which is more accurate than applying a flat withholding rate.
+      </p>
+
+      <h2>Payroll Withholding vs. Actual Tax</h2>
+      <p>
+        Your employer may withhold tax on your bonus using a flat rate method (often close to your marginal rate) or the "bonus method" prescribed by the CRA. The withholding may differ from your actual tax liability. Any over-withholding is refunded when you file your tax return; any under-withholding results in tax owing.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/special-payments/bonuses-retroactive-pay-increases-irregular-amounts.html" target="_blank" rel="noopener">CRA: Bonuses and Irregular Payments</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

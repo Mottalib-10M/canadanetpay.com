@@ -1,0 +1,33 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const articles = [
+  {
+    title: 'CRA 2025 Tax Rate Updates: What Changed',
+    description: 'The CRA has updated federal and provincial tax brackets, CPP rates, and EI premiums for 2025. Here is a complete breakdown of every change affecting your paycheque.',
+    href: '/updates/cra-2025-rates-update/',
+    date: '2025-01-15',
+  },
+];
+---
+
+<GuideLayout
+  title="Canadian Tax Updates"
+  description="Stay current with CRA tax changes, new federal and provincial rates, CPP and EI updates that affect your take-home pay. Updated regularly for Canadian workers."
+  publishDate="2025-01-15"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Updates' }]}
+>
+  <div class="not-prose space-y-4 mt-8">
+    {articles.map((article) => (
+      <a href={article.href} class="block rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface p-6 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md transition-all group">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+          {article.title}
+        </h2>
+        <p class="mt-2 text-gray-600 dark:text-gray-400">{article.description}</p>
+        <p class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+          Published {new Date(article.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+      </a>
+    ))}
+  </div>
+</GuideLayout>

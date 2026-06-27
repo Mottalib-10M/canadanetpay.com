@@ -1,0 +1,57 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import NetToGrossCalculator from '../../components/calculators/NetToGrossCalculator';
+
+const faqs = [
+  {
+    question: 'How does the net-to-gross calculator work?',
+    answer: 'The calculator uses binary search to find the gross salary that results in your desired net (take-home) pay. It factors in federal tax, provincial tax, CPP/QPP, EI, and any additional premiums like the Ontario Health Premium, then iterates until the resulting net pay matches your target within $1.',
+  },
+  {
+    question: 'Why do I need to specify my province?',
+    answer: 'Provincial tax rates vary significantly across Canada, from as low as 4% in Nunavut to over 25% in Quebec. A target net salary of $50,000 requires a different gross salary in each province. Quebec residents also pay QPP instead of CPP and contribute to QPIP, which changes the calculation further.',
+  },
+  {
+    question: 'Can I use this to negotiate my salary?',
+    answer: 'Yes. If you know the take-home pay you need each month, this calculator helps you determine the minimum gross salary to ask for. Remember that employer benefits (RRSP matching, health insurance, etc.) also have value beyond your cash salary.',
+  },
+  {
+    question: 'Does the calculator account for RRSP contributions?',
+    answer: 'The basic net-to-gross calculation does not include RRSP contributions. If you make RRSP contributions, your required gross may be lower because RRSPs reduce your taxable income. Use the main salary calculator with the RRSP field for that scenario.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/net-to-gross"
+  title="Net to Gross Calculator"
+  metaTitle="Net to Gross Salary Calculator Canada 2025 | Reverse Tax"
+  metaDescription="Find the gross salary you need to earn to achieve your desired take-home pay in Canada. Reverse tax calculator for all 13 provinces, updated for 2025."
+  h1="Net to Gross Salary Calculator Canada 2025"
+  intro="Enter your desired take-home pay and find out what gross salary you need to earn. Updated with 2025 CRA tax rules for all 13 provinces and territories."
+  faqs={faqs}
+>
+  <NetToGrossCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>How to Calculate Gross Salary from Net Pay</h2>
+      <p>
+        Converting net salary to gross isn't as simple as reversing a percentage, because Canada's tax system is progressive, meaning different portions of your income are taxed at different rates. Multiple deductions (federal tax, provincial tax, CPP, EI) each have their own thresholds and caps, making a simple formula impossible.
+      </p>
+      <p>
+        This calculator uses an iterative approach: it tests different gross salaries, calculates the net result for each, and narrows down until it finds the exact gross that produces your target net pay. The result accounts for all federal and provincial deductions applicable in 2025.
+      </p>
+
+      <h2>Why Gross Salary Varies by Province</h2>
+      <p>
+        A target net salary of $50,000 requires different gross salaries depending on your province because each province has different tax brackets. For example, achieving $50,000 net might require approximately $66,000 gross in Alberta but over $72,000 in Quebec, due to Quebec's higher provincial rates and QPP contributions.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: 2025 Tax Rates</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>

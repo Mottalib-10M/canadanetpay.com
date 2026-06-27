@@ -1,0 +1,237 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import { formatCurrency } from '../../../lib/format';
+---
+
+<GuideLayout
+  title="CPP and QPP Explained 2025"
+  description="Complete guide to Canada Pension Plan contributions in 2025, including CPP2 rates, QPP differences, employer matching, and how it affects your paycheque."
+  publishDate="2025-01-15"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'CPP Explained' }]}
+>
+  <h2>What is CPP?</h2>
+  <p>
+    The Canada Pension Plan (CPP) is a mandatory social insurance program that provides retirement income,
+    disability benefits, and survivor benefits to Canadians and their families. Established in 1966, the CPP
+    is one of the three pillars of Canada's retirement income system, alongside Old Age Security (OAS) and
+    private savings (RRSPs, workplace pensions, and TFSAs). Every employed Canadian between ages 18 and 65
+    contributes a portion of their earnings to CPP, and their employer matches those contributions
+    dollar-for-dollar.
+  </p>
+  <p>
+    The CPP is managed by the CPP Investments Board (CPPIB), one of the largest pension fund managers in the
+    world, with over $570 billion in assets. Unlike a pay-as-you-go system, the CPP is partially funded,
+    meaning contributions are invested and the returns help fund future benefits. The Chief Actuary of Canada
+    has confirmed that the CPP is financially sustainable for at least the next 75 years under current
+    contribution rates, providing Canadians with a high degree of confidence in the program's long-term
+    viability.
+  </p>
+  <p>
+    For most employees, CPP contributions are the second-largest payroll deduction after income tax.
+    Understanding how CPP is calculated, how the new CPP2 enhancement works, and how your contributions
+    translate into retirement benefits is essential for financial planning.
+  </p>
+
+  <h2>2025 CPP Contribution Rates</h2>
+  <div class="overflow-x-auto">
+    <table>
+      <thead><tr><th>Component</th><th>CPP (Rest of Canada)</th><th>QPP (Quebec)</th></tr></thead>
+      <tbody>
+        <tr><td>Employee Rate</td><td>5.95%</td><td>6.40%</td></tr>
+        <tr><td>Basic Exemption</td><td>$3,500</td><td>$3,500</td></tr>
+        <tr><td>Maximum Pensionable Earnings (YMPE)</td><td>$71,300</td><td>$71,300</td></tr>
+        <tr><td>Maximum Employee Contribution</td><td>$4,034.10</td><td>$4,341.80</td></tr>
+        <tr><td>Employer Contribution</td><td>Matches employee</td><td>Matches employee</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>What is CPP2?</h2>
+  <p>
+    Starting in 2024, a second additional CPP contribution (CPP2) applies to earnings above the first ceiling
+    ($71,300) up to a second ceiling ($79,400). The CPP2 rate is 4% for both employee and employer.
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead><tr><th>CPP2 Detail</th><th>2025</th></tr></thead>
+      <tbody>
+        <tr><td>Second Ceiling (YAMPE)</td><td>$79,400</td></tr>
+        <tr><td>CPP2 Rate</td><td>4.00%</td></tr>
+        <tr><td>Maximum CPP2 Contribution</td><td>$324.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    CPP2 means employees earning above $71,300 will pay additional contributions on the portion between
+    $71,300 and $79,400. The maximum additional contribution is $324 per year.
+  </p>
+
+  <h2>How CPP Is Calculated</h2>
+  <p>
+    CPP contributions are calculated using this formula:
+  </p>
+  <p class="font-mono bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
+    CPP = (min(gross, $71,300) - $3,500) &times; 5.95%<br/>
+    CPP2 = (min(gross, $79,400) - $71,300) &times; 4.00%
+  </p>
+  <p>
+    If your gross income is $75,000:
+  </p>
+  <ul>
+    <li>CPP: ($71,300 - $3,500) &times; 5.95% = $4,034.10 (at maximum)</li>
+    <li>CPP2: ($75,000 - $71,300) &times; 4% = $148.00</li>
+    <li>Total: $4,182.10</li>
+  </ul>
+
+  <h2>Historical Context: How CPP Rates Have Changed</h2>
+  <p>
+    When the CPP was introduced in 1966, the combined employee-employer rate was just 3.6 percent (1.8 percent
+    each). The rate increased gradually over the decades as demographics shifted and benefits expanded. A major
+    reform in 1997 raised rates significantly to ensure long-term sustainability, bringing the combined rate to
+    9.9 percent by 2003. The CPP Enhancement, agreed to by the federal and provincial governments in 2016,
+    added further increases starting in 2019, bringing the current rate to 5.95 percent for employees
+    (11.90 percent combined).
+  </p>
+  <p>
+    The introduction of CPP2 in 2024 represents the latest evolution, creating a second earnings ceiling to
+    capture more income for pension purposes. This phased approach ensures that future retirees will receive
+    higher CPP benefits proportional to their additional contributions.
+  </p>
+
+  <h2>CPP vs QPP: Key Differences</h2>
+  <p>
+    Quebec opted out of the CPP when it was created in 1966, establishing the Quebec Pension Plan (QPP) as a
+    parallel program. The two plans are coordinated so that workers who move between Quebec and other provinces
+    receive full credit for all contributions. Key differences include:
+  </p>
+  <ul>
+    <li><strong>Higher rate:</strong> QPP charges 6.4 percent versus CPP's 5.95 percent. This means Quebec
+      employees pay about $307 more per year in pension contributions at the maximum pensionable earnings.</li>
+    <li><strong>Higher maximum contribution:</strong> QPP maximum employee contribution is $4,341.80 versus
+      CPP's $4,034.10.</li>
+    <li><strong>Same benefit levels:</strong> Both plans provide similar retirement pension amounts, with the
+      maximum monthly benefit at age 65 being approximately $1,364 in 2025.</li>
+    <li><strong>Portability:</strong> Years contributed to either plan count toward your pension. If you work
+      in Quebec for 10 years and then move to Ontario for 25 years, all 35 years of contributions are combined
+      when calculating your retirement benefit.</li>
+    <li><strong>Administration:</strong> CPP is administered by Service Canada and the CRA. QPP is administered
+      by Retraite Quebec.</li>
+  </ul>
+
+  <h2>Self-Employed CPP</h2>
+  <p>
+    Self-employed individuals must pay <strong>both</strong> the employee and employer portions of CPP,
+    effectively double the rate: 11.90 percent for CPP or 12.80 percent for QPP. The maximum self-employed CPP
+    contribution in 2025 is $8,068.20 ($4,034.10 multiplied by 2) plus $648.00 for CPP2 ($324.00 multiplied
+    by 2), for a total of $8,716.20.
+  </p>
+  <p>
+    For a self-employed individual earning $75,000, the CPP calculation would be: ($71,300 minus $3,500)
+    multiplied by 11.90 percent equals $8,068.20, plus CPP2 of ($75,000 minus $71,300) multiplied by 8 percent
+    equals $296.00, for a total of $8,364.20. The employer-equivalent half of the CPP contribution is deductible
+    as a business expense, reducing your net self-employment income for income tax purposes.
+  </p>
+
+  <h2>When You Stop Paying CPP</h2>
+  <ul>
+    <li><strong>Mandatory contributions (ages 18 to 65):</strong> All employed and self-employed Canadians must
+      contribute if their earnings exceed the $3,500 basic exemption.</li>
+    <li><strong>Optional contributions (ages 65 to 70):</strong> If you continue working after age 65, you can
+      elect to stop contributing by filing a CPT30 form with your employer. However, continuing to contribute
+      increases your retirement benefit through the Post-Retirement Benefit (PRB), which adds up to an
+      additional $40 per month per year of contributions after 65.</li>
+    <li><strong>Automatic cessation (age 70):</strong> Contributions stop automatically at age 70, regardless
+      of employment status.</li>
+    <li><strong>Below the exemption:</strong> If your annual earnings are below the $3,500 basic exemption,
+      you do not contribute and the year does not count toward your pension calculation.</li>
+  </ul>
+
+  <h2>CPP Retirement Benefits</h2>
+  <p>
+    The maximum CPP retirement pension at age 65 in 2025 is approximately $1,364 per month, or $16,368 per year.
+    However, the average CPP retirement pension is significantly lower, at about $816 per month, because most
+    Canadians have not contributed at the maximum level for the required 39 contributory years. Your actual
+    benefit depends on how much you contributed and for how many years.
+  </p>
+  <h3>Early and Deferred CPP</h3>
+  <p>
+    You can start receiving CPP as early as age 60 or as late as age 70. Taking it early or late permanently
+    adjusts your monthly payment:
+  </p>
+  <ul>
+    <li><strong>Early (age 60):</strong> Your pension is reduced by 0.6 percent for each month before your
+      65th birthday, for a maximum reduction of 36 percent at age 60. On a $1,000 monthly pension at 65, that
+      means $640 per month at 60.</li>
+    <li><strong>Deferred (age 70):</strong> Your pension is increased by 0.7 percent for each month after your
+      65th birthday, for a maximum increase of 42 percent at age 70. The same $1,000 monthly pension becomes
+      $1,420 per month at 70.</li>
+  </ul>
+  <p>
+    The breakeven point between taking CPP at 60 versus 65 is approximately age 74. If you expect to live
+    beyond 74, deferring to 65 typically provides a higher total lifetime benefit. The breakeven between 65
+    and 70 is approximately age 82. These calculations do not account for the time value of money or
+    investment returns on early payments, which can shift the breakeven point.
+  </p>
+
+  <h2>CPP Enhancement and Future Benefits</h2>
+  <p>
+    The CPP Enhancement (2019-2025) and CPP2 (2024 onward) are designed to increase the replacement rate of
+    CPP from 25 percent to 33.33 percent of pensionable earnings. This means future retirees who contribute
+    under the enhanced rates for a full career will receive about one-third of their average career earnings
+    (up to the ceiling) in CPP retirement benefits, compared to one-quarter under the old system. The full
+    impact of the enhancement will be felt by workers who contribute for 40 years under the new rates,
+    meaning the maximum enhanced benefit will not be fully realized until approximately 2065.
+  </p>
+
+  <h2>CPP2: The Second Additional CPP Contribution</h2>
+  <p>
+    CPP2 represents a significant evolution of Canada's pension system, introduced on January 1, 2024.
+    While the original CPP Enhancement (2019-2023) increased the base contribution rate from 4.95 percent to
+    5.95 percent, CPP2 goes further by creating a second earnings ceiling above the Year's Maximum Pensionable
+    Earnings (YMPE). For 2025, this second ceiling, called the Year's Additional Maximum Pensionable Earnings
+    (YAMPE), is set at $79,400, compared to the first ceiling (YMPE) of $71,300. Employees earning between
+    $71,300 and $79,400 pay an additional 4 percent on that income (matched by their employer), resulting in a
+    maximum CPP2 contribution of $324 per year. This is separate from and in addition to the base CPP
+    contribution of up to $4,034.10.
+  </p>
+  <p>
+    The introduction of CPP2 means that higher-earning workers will see a slightly larger payroll deduction than
+    in previous years. For someone earning $79,400 or more, the total maximum CPP contribution (base plus CPP2)
+    is $4,358.10 per year. For an employee earning exactly $75,000, the base CPP contribution is maxed at
+    $4,034.10 and the CPP2 contribution is ($75,000 minus $71,300) multiplied by 4 percent, which equals $148,
+    for a combined total of $4,182.10. This additional contribution is modest on a per-paycheque basis --
+    roughly $12.50 per biweekly pay period for someone at the CPP2 maximum -- but it accumulates over a full
+    career to provide meaningfully higher retirement benefits.
+  </p>
+  <p>
+    The purpose of CPP2 is to extend enhanced pension coverage to a broader portion of earnings. Before CPP2,
+    income above the YMPE was not covered by CPP at all, meaning higher earners had to rely entirely on private
+    savings (RRSPs, TFSAs, and workplace pensions) for retirement income replacement above the first earnings
+    ceiling. CPP2 partially addresses this gap by capturing an additional $8,100 of earnings for pension
+    purposes. Workers who contribute to CPP2 for a full career will receive a higher CPP retirement benefit
+    that replaces a greater portion of their pre-retirement income. The CPP2 contribution also qualifies for
+    a non-refundable tax credit at 15 percent (similar to base CPP contributions), reducing your federal tax
+    by approximately $48.60 per year at the maximum CPP2 contribution level. Self-employed individuals pay
+    both the employee and employer shares of CPP2, meaning their maximum CPP2 contribution is $648 per year.
+  </p>
+
+  <h2>Common Misconceptions</h2>
+  <ul>
+    <li><strong>"CPP is going bankrupt."</strong> The Chief Actuary's most recent report confirms that the
+      CPP is sustainable for at least 75 years. The fund is partially funded and professionally managed,
+      unlike pay-as-you-go systems in some other countries.</li>
+    <li><strong>"I should take CPP at 60 because the government might reduce benefits."</strong> CPP benefits
+      are protected by federal-provincial agreement and require consent from two-thirds of provinces to change.
+      Benefit reductions are extremely unlikely given the fund's strong financial position.</li>
+    <li><strong>"CPP contributions are a tax."</strong> While CPP contributions are deducted from your pay like
+      a tax, they are fundamentally different: you receive a direct, calculable benefit in retirement based on
+      your contribution history. CPP is social insurance, not a tax.</li>
+  </ul>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp.html" target="_blank" rel="noopener">CRA: CPP Contribution Rates</a></li>
+    <li><a href="https://www.canada.ca/en/services/benefits/publicpensions/cpp.html" target="_blank" rel="noopener">Service Canada: CPP Benefits</a></li>
+    <li><a href="https://www.revenuquebec.ca/en/" target="_blank" rel="noopener">Revenu Qu&eacute;bec: QPP</a></li>
+  </ul>
+</GuideLayout>

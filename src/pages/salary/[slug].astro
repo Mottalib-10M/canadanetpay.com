@@ -1,0 +1,139 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import SalaryCalculator from '../../components/calculators/SalaryCalculator';
+import { SALARY_PAGES, getSalaryBand, SALARY_BAND_NARRATIVES } from '../../data/salary-pages';
+import { calculateTakeHome } from '../../lib/tax-engine-ca';
+import { formatCurrency } from '../../lib/format';
+
+export function getStaticPaths() {
+  return SALARY_PAGES.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const gross = page.grossAnnual;
+const formatted = formatCurrency(gross);
+
+const examples = [
+  { prov: 'ON', label: 'Ontario' },
+  { prov: 'QC', label: 'Quebec' },
+  { prov: 'BC', label: 'British Columbia' },
+  { prov: 'AB', label: 'Alberta' },
+  { prov: 'MB', label: 'Manitoba' },
+].map(({ prov, label }) => {
+  const r = calculateTakeHome({ grossAnnual: gross, provinceCode: prov, payFrequency: 'annual' });
+  return { label, net: r.netAnnual, rate: r.effectiveTaxRate, monthly: r.netMonthly };
+});
+
+const hourly = Math.round((gross / 2080) * 100) / 100;
+const monthly = Math.round((gross / 12) * 100) / 100;
+
+const band = getSalaryBand(gross);
+const narrative = SALARY_BAND_NARRATIVES[band];
+
+const faqs = [
+  {
+    question: `How much is ${formatted} a year after taxes in Canada?`,
+    answer: `On a ${formatted} salary, your take-home pay varies by province. In Alberta, you keep about ${formatCurrency(examples[3].net)}/year. In Ontario, about ${formatCurrency(examples[0].net)}/year. In Quebec, about ${formatCurrency(examples[1].net)}/year. The difference is due to varying provincial tax rates, and Quebec's QPP/QPIP contributions.`,
+  },
+  {
+    question: `What is ${formatted} a year per month in Canada?`,
+    answer: `${formatted}/year equals ${formatCurrency(monthly)}/month before taxes. After federal and provincial taxes, your monthly take-home ranges from about ${formatCurrency(examples[1].monthly)} (Quebec) to ${formatCurrency(examples[3].monthly)} (Alberta).`,
+  },
+  {
+    question: `What is ${formatted} a year per hour?`,
+    answer: `${formatted}/year equals $${hourly.toFixed(2)}/hour based on a standard 40-hour work week (2,080 hours/year).`,
+  },
+  {
+    question: `Is ${formatted} a good salary in Canada?`,
+    answer: `The median individual income in Canada is approximately $40,500. ${gross >= 80000 ? `At ${formatted}, you are well above the national median and in the top income brackets.` : gross >= 50000 ? `At ${formatted}, you are above the national median.` : `At ${formatted}, this is ${gross >= 40000 ? 'near' : 'below'} the national median.`} Cost of living varies significantly between cities like Toronto, Vancouver, and smaller centres.`,
+  },
+  {
+    question: `What is the federal tax on ${formatted}?`,
+    answer: `For a single individual in 2025, the federal income tax on ${formatted} is approximately ${formatCurrency(calculateTakeHome({ grossAnnual: gross, provinceCode: 'AB', payFrequency: 'annual' }).federalIncomeTax)}, after the Basic Personal Amount credit, CPP credit, and EI credit.`,
+  },
+];
+---
+
+<CalculatorLayout
+  slug={`/salary/${page.slug}`}
+  title={page.title}
+  metaTitle={page.metaTitle}
+  metaDescription={page.metaDescription}
+  h1={page.h1}
+  intro={`See exactly how much you take home on a ${formatted} annual salary in Canada. Compare your net pay across all 13 provinces with a detailed tax breakdown.`}
+  faqs={faqs}
+>
+  <SalaryCalculator client:idle />
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>{formatted} Salary: Take-Home Pay by Province</h2>
+      <p>Your actual take-home pay on a {formatted} salary depends on which province or territory you live in. Here is a comparison for 2025:</p>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Province</th>
+              <th>Net Annual Pay</th>
+              <th>Net Monthly</th>
+              <th>Effective Tax Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {examples.map((ex) => (
+              <tr>
+                <td>{ex.label}</td>
+                <td>{formatCurrency(ex.net)}</td>
+                <td>{formatCurrency(ex.monthly)}</td>
+                <td>{ex.rate.toFixed(1)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>{formatted} a Year is How Much Per Hour?</h2>
+      <p>
+        Based on a standard 40-hour work week (2,080 hours per year), a {formatted} salary equals <strong>${hourly.toFixed(2)} per hour</strong> before taxes.
+      </p>
+
+      <h2>{formatted} Salary Breakdown</h2>
+      <ul>
+        <li>Gross monthly pay: {formatCurrency(monthly)}</li>
+        <li>Gross bi-weekly pay: {formatCurrency(Math.round(gross / 26))}</li>
+        <li>Gross weekly pay: {formatCurrency(Math.round(gross / 52))}</li>
+        <li>Gross hourly rate: ${hourly.toFixed(2)}</li>
+      </ul>
+
+      <h2>Typical Careers Earning {formatted} in Canada</h2>
+      <p>{narrative.careers}</p>
+
+      <h2>Tax Overview at {formatted}</h2>
+      <p>{narrative.taxes}</p>
+
+      <h2>Budgeting on a {formatted} Salary</h2>
+      <p>{narrative.budgeting}</p>
+
+      <h2>Saving and Investing on {formatted}</h2>
+      <p>{narrative.savings}</p>
+
+      <h2>How to Maximize Your Take-Home Pay on {formatted}</h2>
+      <ul>
+        <li><strong>Contribute to an RRSP</strong> to reduce your federal and provincial taxable income.</li>
+        <li><strong>Use a TFSA</strong> for tax-free investment growth on your savings.</li>
+        <li><strong>Claim all eligible deductions</strong> such as union dues, child care, and professional fees.</li>
+        <li><strong>Consider your province</strong>: moving from a high-tax to a low-tax province could save thousands annually.</li>
+      </ul>
+
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: 2025 Tax Rates</a></li>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp.html" target="_blank" rel="noopener">CRA: CPP Rates</a></li>
+      </ul>
+    </section>
+  </Fragment>
+</CalculatorLayout>
