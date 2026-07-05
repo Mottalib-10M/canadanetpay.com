@@ -21,8 +21,8 @@ const examples = [50000, 75000, 100000, 150000].map((gross) => {
 
 const faqs = [
   {
-    question: `What are the ${province.name} provincial tax brackets for 2025?`,
-    answer: `${province.name} has ${province.brackets.length} tax brackets in 2025, ranging from ${(province.brackets[0].rate * 100).toFixed(2)}% to ${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%. The provincial basic personal amount is $${province.basicPersonalAmount.toLocaleString()}.${province.notes ? ' ' + province.notes : ''}`,
+    question: `What are the ${province.name} provincial tax brackets for 2026?`,
+    answer: `${province.name} has ${province.brackets.length} tax brackets in 2026, ranging from ${(province.brackets[0].rate * 100).toFixed(2)}% to ${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%. The provincial basic personal amount is $${province.basicPersonalAmount.toLocaleString()}.${province.notes ? ' ' + province.notes : ''}`,
   },
   {
     question: `What is the total tax rate in ${province.name}?`,
@@ -34,7 +34,7 @@ const faqs = [
   },
   {
     question: `What is the ${province.name} basic personal amount?`,
-    answer: `The ${province.name} basic personal amount for 2025 is $${province.basicPersonalAmount.toLocaleString()}. This provides a non-refundable tax credit at the lowest provincial rate, effectively making this amount of income exempt from provincial tax.`,
+    answer: `The ${province.name} basic personal amount for 2026 is $${province.basicPersonalAmount.toLocaleString()}. This provides a non-refundable tax credit at the lowest provincial rate, effectively making this amount of income exempt from provincial tax.`,
   },
   {
     question: `How does ${province.name} compare to other provinces for taxes?`,
@@ -50,10 +50,10 @@ const faqs = [
 <CalculatorLayout
   slug={`/province/${province.slug}`}
   title={`${province.name} Salary Calculator`}
-  metaTitle={province.name.length <= 11 ? `${province.name} Salary After Tax Calculator 2025 | Net ${province.abbreviation} Pay` : province.name.length <= 16 ? `${province.name} Salary After Tax Calculator 2025 | ${province.abbreviation}` : `${province.name} Salary Calculator 2025 | After Tax`}
-  metaDescription={province.name.length <= 8 ? `Calculate your 2025 take-home pay in ${province.name} (${province.abbreviation}) after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Free ${province.abbreviation} salary calculator with detailed breakdown.` : province.name.length <= 16 ? `Calculate your 2025 take-home pay in ${province.name} (${province.abbreviation}) after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.abbreviation} provincial tax. Free salary calculator with full tax breakdown.` : `Calculate your 2025 take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.abbreviation} provincial tax. Free salary calculator with full breakdown.`}
-  h1={`${province.name} Salary After Tax Calculator 2025`}
-  intro={`Calculate your take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Updated with 2025 ${province.abbreviation} tax brackets.`}
+  metaTitle={province.name.length <= 11 ? `${province.name} Salary After Tax Calculator 2026 | Net ${province.abbreviation} Pay` : province.name.length <= 16 ? `${province.name} Salary After Tax Calculator 2026 | ${province.abbreviation}` : `${province.name} Salary Calculator 2026 | After Tax`}
+  metaDescription={province.name.length <= 8 ? `Calculate your 2026 take-home pay in ${province.name} (${province.abbreviation}) after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Free ${province.abbreviation} salary calculator with detailed breakdown.` : province.name.length <= 16 ? `Calculate your 2026 take-home pay in ${province.name} (${province.abbreviation}) after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.abbreviation} provincial tax. Free salary calculator with full tax breakdown.` : `Calculate your 2026 take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.abbreviation} provincial tax. Free salary calculator with full breakdown.`}
+  h1={`${province.name} Salary After Tax Calculator 2026`}
+  intro={`Calculate your take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Updated with 2026 ${province.abbreviation} tax brackets.`}
   faqs={faqs}
 >
   <SalaryCalculator client:idle defaultProvince={province.abbreviation} />
@@ -62,13 +62,13 @@ const faqs = [
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
       <h2>{province.name} Income Tax Overview</h2>
       <p>
-        {province.name} uses a progressive provincial income tax system with {province.brackets.length} tax brackets in 2025.
+        {province.name} uses a progressive provincial income tax system with {province.brackets.length} tax brackets in 2026.
         The rates range from {(province.brackets[0].rate * 100).toFixed(2)}% on the first {formatCurrency(province.brackets[0].max)} of taxable income
         to {(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}% on income above {formatCurrency(province.brackets[province.brackets.length - 2].max)}.
         {province.notes ? ` ${province.notes}` : ''}
       </p>
 
-      <h3>{province.name} Tax Brackets 2025</h3>
+      <h3>{province.name} Tax Brackets 2026</h3>
       <div class="overflow-x-auto">
         <table>
           <thead><tr><th>Rate</th><th>Income Range</th></tr></thead>

@@ -1,9 +1,10 @@
 ---
 import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
 import SalaryCalculator from '../../components/calculators/SalaryCalculator';
-import { SALARY_PAGES, getSalaryBand, SALARY_BAND_NARRATIVES } from '../../data/salary-pages';
+import { SALARY_PAGES } from '../../data/salary-pages';
 import { calculateTakeHome } from '../../lib/tax-engine-ca';
 import { formatCurrency } from '../../lib/format';
+import { getBandContext, getCareers, buildFaqs, getBudgetBreakdown, getProgressionContext, getEducationalContent, getTaxOverview, getSavingsStrategy, getMaximiseTips, getProvincialIntro } from '../../lib/salary-content';
 
 export function getStaticPaths() {
   return SALARY_PAGES.map((page) => ({
@@ -15,46 +16,47 @@ export function getStaticPaths() {
 const { page } = Astro.props;
 const gross = page.grossAnnual;
 const formatted = formatCurrency(gross);
+const fmt = formatCurrency;
 
-const examples = [
-  { prov: 'ON', label: 'Ontario' },
-  { prov: 'QC', label: 'Quebec' },
-  { prov: 'BC', label: 'British Columbia' },
-  { prov: 'AB', label: 'Alberta' },
-  { prov: 'MB', label: 'Manitoba' },
-].map(({ prov, label }) => {
-  const r = calculateTakeHome({ grossAnnual: gross, provinceCode: prov, payFrequency: 'annual' });
-  return { label, net: r.netAnnual, rate: r.effectiveTaxRate, monthly: r.netMonthly };
-});
-
-const hourly = Math.round((gross / 2080) * 100) / 100;
-const monthly = Math.round((gross / 12) * 100) / 100;
-
-const band = getSalaryBand(gross);
-const narrative = SALARY_BAND_NARRATIVES[band];
-
-const faqs = [
-  {
-    question: `How much is ${formatted} a year after taxes in Canada?`,
-    answer: `On a ${formatted} salary, your take-home pay varies by province. In Alberta, you keep about ${formatCurrency(examples[3].net)}/year. In Ontario, about ${formatCurrency(examples[0].net)}/year. In Quebec, about ${formatCurrency(examples[1].net)}/year. The difference is due to varying provincial tax rates, and Quebec's QPP/QPIP contributions.`,
-  },
-  {
-    question: `What is ${formatted} a year per month in Canada?`,
-    answer: `${formatted}/year equals ${formatCurrency(monthly)}/month before taxes. After federal and provincial taxes, your monthly take-home ranges from about ${formatCurrency(examples[1].monthly)} (Quebec) to ${formatCurrency(examples[3].monthly)} (Alberta).`,
-  },
-  {
-    question: `What is ${formatted} a year per hour?`,
-    answer: `${formatted}/year equals $${hourly.toFixed(2)}/hour based on a standard 40-hour work week (2,080 hours/year).`,
-  },
-  {
-    question: `Is ${formatted} a good salary in Canada?`,
-    answer: `The median individual income in Canada is approximately $40,500. ${gross >= 80000 ? `At ${formatted}, you are well above the national median and in the top income brackets.` : gross >= 50000 ? `At ${formatted}, you are above the national median.` : `At ${formatted}, this is ${gross >= 40000 ? 'near' : 'below'} the national median.`} Cost of living varies significantly between cities like Toronto, Vancouver, and smaller centres.`,
-  },
-  {
-    question: `What is the federal tax on ${formatted}?`,
-    answer: `For a single individual in 2025, the federal income tax on ${formatted} is approximately ${formatCurrency(calculateTakeHome({ grossAnnual: gross, provinceCode: 'AB', payFrequency: 'annual' }).federalIncomeTax)}, after the Basic Personal Amount credit, CPP credit, and EI credit.`,
-  },
+const provs = [
+  { code: 'ON', label: 'Ontario' },
+  { code: 'QC', label: 'Quebec' },
+  { code: 'BC', label: 'British Columbia' },
+  { code: 'AB', label: 'Alberta' },
+  { code: 'MB', label: 'Manitoba' },
 ];
+const results = Object.fromEntries(
+  provs.map(({ code }) => [
+    code,
+    calculateTakeHome({ grossAnnual: gross, provinceCode: code, payFrequency: 'annual' }),
+  ])
+);
+
+const onResult = results['ON'];
+const abResult = results['AB'];
+const qcResult = results['QC'];
+const bcResult = results['BC'];
+const mbResult = results['MB'];
+
+const hourly = (gross / 2080).toFixed(2);
+const monthly = Math.round(gross / 12);
+
+const bandText = getBandContext(gross, formatted, onResult, abResult, qcResult);
+const careers = getCareers(gross, formatted);
+const faqs = buildFaqs(formatted, gross, onResult, abResult, qcResult);
+const budget = getBudgetBreakdown(onResult.netMonthly);
+const progression = getProgressionContext(gross, onResult, abResult, qcResult);
+const edu = getEducationalContent(gross, onResult, abResult, qcResult);
+const taxOverview = getTaxOverview(gross, onResult, abResult, qcResult);
+const savingsStrategy = getSavingsStrategy(gross, onResult);
+const maximiseTips = getMaximiseTips(gross, onResult, abResult, qcResult);
+const provincialIntro = getProvincialIntro(gross, onResult, abResult, qcResult);
+
+const allPages = [...SALARY_PAGES];
+const idx = allPages.findIndex((p) => p.grossAnnual === gross);
+const prevPage = idx > 0 ? allPages[idx - 1] : null;
+const nextPage = idx < allPages.length - 1 ? allPages[idx + 1] : null;
+const otherPages = allPages.filter((p) => p.grossAnnual !== gross);
 ---
 
 <CalculatorLayout
@@ -63,15 +65,41 @@ const faqs = [
   metaTitle={page.metaTitle}
   metaDescription={page.metaDescription}
   h1={page.h1}
-  intro={`See exactly how much you take home on a ${formatted} annual salary in Canada. Compare your net pay across all 13 provinces with a detailed tax breakdown.`}
+  intro={`See exactly how much you take home on a ${formatted} annual salary in Canada. Compare your net pay across all provinces with a detailed tax breakdown for 2026.`}
   faqs={faqs}
 >
   <SalaryCalculator client:idle />
 
+  <!-- Stat Cards -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10">
+    <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-center">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Net Annual (ON)</p>
+      <p class="text-2xl font-bold text-green-600 dark:text-green-400">{fmt(onResult.netAnnual)}</p>
+      <p class="text-xs text-gray-400">{fmt(onResult.netMonthly)}/month</p>
+    </div>
+    <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-center">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Federal Tax</p>
+      <p class="text-2xl font-bold text-red-600 dark:text-red-400">{fmt(onResult.federalIncomeTax)}</p>
+      <p class="text-xs text-gray-400">{(onResult.federalIncomeTax / gross * 100).toFixed(1)}% of gross</p>
+    </div>
+    <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-center">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Provincial Tax (ON)</p>
+      <p class="text-2xl font-bold text-red-600 dark:text-red-400">{fmt(onResult.provincialTax)}</p>
+      <p class="text-xs text-gray-400">{(onResult.provincialTax / gross * 100).toFixed(1)}% of gross</p>
+    </div>
+    <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-center">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">CPP + EI</p>
+      <p class="text-2xl font-bold text-orange-600 dark:text-orange-400">{fmt(onResult.cpp + onResult.cpp2 + onResult.ei)}</p>
+      <p class="text-xs text-gray-400">Payroll deductions</p>
+    </div>
+  </div>
+
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+
+      <!-- Provincial comparison table -->
       <h2>{formatted} Salary: Take-Home Pay by Province</h2>
-      <p>Your actual take-home pay on a {formatted} salary depends on which province or territory you live in. Here is a comparison for 2025:</p>
+      <p>{provincialIntro}</p>
 
       <div class="overflow-x-auto">
         <table>
@@ -80,60 +108,201 @@ const faqs = [
               <th>Province</th>
               <th>Net Annual Pay</th>
               <th>Net Monthly</th>
-              <th>Effective Tax Rate</th>
+              <th>Federal Tax</th>
+              <th>Provincial Tax</th>
+              <th>CPP/QPP + EI</th>
+              <th>Effective Rate</th>
             </tr>
           </thead>
           <tbody>
-            {examples.map((ex) => (
-              <tr>
-                <td>{ex.label}</td>
-                <td>{formatCurrency(ex.net)}</td>
-                <td>{formatCurrency(ex.monthly)}</td>
-                <td>{ex.rate.toFixed(1)}%</td>
-              </tr>
-            ))}
+            {provs.map(({ code, label }) => {
+              const r = results[code];
+              return (
+                <tr>
+                  <td>{label}</td>
+                  <td>{fmt(r.netAnnual)}</td>
+                  <td>{fmt(r.netMonthly)}</td>
+                  <td>{fmt(r.federalIncomeTax)}</td>
+                  <td>{fmt(r.provincialTax)}</td>
+                  <td>{fmt(r.cpp + r.cpp2 + r.ei + r.qpip)}</td>
+                  <td>{r.effectiveTaxRate.toFixed(1)}%</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
-      <h2>{formatted} a Year is How Much Per Hour?</h2>
       <p>
-        Based on a standard 40-hour work week (2,080 hours per year), a {formatted} salary equals <strong>${hourly.toFixed(2)} per hour</strong> before taxes.
+        On {formatted}, Alberta gives you the highest net at {fmt(abResult.netAnnual)} annually ({fmt(abResult.netMonthly)}/month),
+        which is {fmt(abResult.netAnnual - onResult.netAnnual)} more than Ontario and {fmt(abResult.netAnnual - qcResult.netAnnual)} more
+        than Quebec each year. Quebec has the highest deductions at {fmt(qcResult.grossAnnual - qcResult.netAnnual)} total, leaving
+        only {fmt(qcResult.netAnnual)} net ({fmt(qcResult.netMonthly)}/month). Ontario's effective rate of {onResult.effectiveTaxRate.toFixed(1)}%
+        on your {formatted} salary includes the Ontario Health Premium of {fmt(onResult.ontarioHealthPremium)} and produces monthly
+        take-home of {fmt(onResult.netMonthly)}, or {fmt(onResult.netBiWeekly)} per bi-weekly pay period.
       </p>
 
+      <!-- Band context paragraph -->
+      <h2>{formatted} Salary: Context and Purchasing Power</h2>
+      <p>{bandText}</p>
+
+      <!-- Typical careers -->
+      <h2>Typical Careers Earning {formatted} in Canada</h2>
+      <p>{careers}</p>
+
+      <!-- Progression & Raise Simulation -->
+      <h2>Salary Progression From {formatted}</h2>
+      <h3>Raise Simulation</h3>
+      <p>{progression.raiseSimulation}</p>
+      <h3>Province Arbitrage</h3>
+      <p>{progression.provinceArbitrage}</p>
+      <h3>RRSP Contribution Impact</h3>
+      <p>{progression.rrspImpact}</p>
+
+      <!-- How Canadian Tax Works -->
+      <h2>How Canadian Tax Works at {formatted}</h2>
+      <p>{taxOverview}</p>
+
+      <h3>Federal Income Tax Brackets at {formatted}</h3>
+      <p>{edu.federalBrackets}</p>
+      <p>{edu.federalCalculation}</p>
+
+      <h3>Provincial Income Tax on {formatted}</h3>
+      <p>{edu.provincialTax}</p>
+
+      <h3>CPP, CPP2, and EI on {formatted}</h3>
+      <p>{edu.cppEi}</p>
+
+      <!-- Salary Breakdown -->
       <h2>{formatted} Salary Breakdown</h2>
       <ul>
-        <li>Gross monthly pay: {formatCurrency(monthly)}</li>
-        <li>Gross bi-weekly pay: {formatCurrency(Math.round(gross / 26))}</li>
-        <li>Gross weekly pay: {formatCurrency(Math.round(gross / 52))}</li>
-        <li>Gross hourly rate: ${hourly.toFixed(2)}</li>
+        <li>Gross annual pay: {formatted}</li>
+        <li>Gross monthly pay: {fmt(monthly)}</li>
+        <li>Gross bi-weekly pay: {fmt(Math.round(gross / 26))}</li>
+        <li>Gross weekly pay: {fmt(Math.round(gross / 52))}</li>
+        <li>Gross hourly rate: ${hourly} (based on 2,080 hours per year)</li>
+        <li>Net annual pay (Ontario): {fmt(onResult.netAnnual)}</li>
+        <li>Net monthly pay (Ontario): {fmt(onResult.netMonthly)}</li>
+        <li>Net bi-weekly pay (Ontario): {fmt(onResult.netBiWeekly)}</li>
+        <li>Net weekly pay (Ontario): {fmt(onResult.netWeekly)}</li>
       </ul>
 
-      <h2>Typical Careers Earning {formatted} in Canada</h2>
-      <p>{narrative.careers}</p>
+      <!-- Monthly budget table -->
+      <h2>Monthly Budget on {formatted} (Ontario)</h2>
+      <p>{edu.budgetIntro}</p>
+    </section>
 
-      <h2>Tax Overview at {formatted}</h2>
-      <p>{narrative.taxes}</p>
+    <div class="overflow-x-auto mt-4">
+      <table class="w-full text-sm rounded-xl border border-gray-200 dark:border-gray-800">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+            <th class="px-4 py-3 text-left font-semibold">Expense</th>
+            <th class="px-4 py-3 text-right font-semibold">Amount</th>
+            <th class="px-4 py-3 text-right font-semibold">% of Net</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-2">Housing (rent/mortgage)</td>
+            <td class="px-4 py-2 text-right">{fmt(budget.housing)}</td>
+            <td class="px-4 py-2 text-right">30%</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-2">Groceries &amp; food</td>
+            <td class="px-4 py-2 text-right">{fmt(budget.groceries)}</td>
+            <td class="px-4 py-2 text-right">{Math.round(budget.groceries / onResult.netMonthly * 100)}%</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-2">Transport (car, transit, gas)</td>
+            <td class="px-4 py-2 text-right">{fmt(budget.transport)}</td>
+            <td class="px-4 py-2 text-right">{Math.round(budget.transport / onResult.netMonthly * 100)}%</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-2">Utilities (hydro, gas, internet)</td>
+            <td class="px-4 py-2 text-right">{fmt(budget.utilities)}</td>
+            <td class="px-4 py-2 text-right">{Math.round(budget.utilities / onResult.netMonthly * 100)}%</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-2">Insurance (health, auto, home)</td>
+            <td class="px-4 py-2 text-right">{fmt(budget.insurance)}</td>
+            <td class="px-4 py-2 text-right">{Math.round(budget.insurance / onResult.netMonthly * 100)}%</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-2">Phone &amp; subscriptions</td>
+            <td class="px-4 py-2 text-right">{fmt(budget.phone)}</td>
+            <td class="px-4 py-2 text-right">{Math.round(budget.phone / onResult.netMonthly * 100)}%</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900 font-semibold">
+            <td class="px-4 py-2 text-green-700 dark:text-green-400">Savings &amp; discretionary</td>
+            <td class="px-4 py-2 text-right text-green-700 dark:text-green-400">{fmt(budget.savings)}</td>
+            <td class="px-4 py-2 text-right text-green-700 dark:text-green-400">{Math.round(budget.savings / onResult.netMonthly * 100)}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <h2>Budgeting on a {formatted} Salary</h2>
-      <p>{narrative.budgeting}</p>
-
+    <section class="mt-10 prose prose-gray dark:prose-invert max-w-none">
+      <!-- Saving and Investing -->
       <h2>Saving and Investing on {formatted}</h2>
-      <p>{narrative.savings}</p>
+      <p>{savingsStrategy}</p>
 
-      <h2>How to Maximize Your Take-Home Pay on {formatted}</h2>
-      <ul>
-        <li><strong>Contribute to an RRSP</strong> to reduce your federal and provincial taxable income.</li>
-        <li><strong>Use a TFSA</strong> for tax-free investment growth on your savings.</li>
-        <li><strong>Claim all eligible deductions</strong> such as union dues, child care, and professional fees.</li>
-        <li><strong>Consider your province</strong>: moving from a high-tax to a low-tax province could save thousands annually.</li>
-      </ul>
+      <h3>TFSA on a {formatted} Salary</h3>
+      <p>{edu.tfsaSection}</p>
+
+      <h3>RRSP on a {formatted} Salary</h3>
+      <p>{edu.rrspSection}</p>
+
+      <h3>FHSA on a {formatted} Salary</h3>
+      <p>{edu.fhsaSection}</p>
+
+      <h2>How to Maximise Your Take-Home Pay on {formatted}</h2>
+      <p>{maximiseTips}</p>
 
       <h2>Sources</h2>
       <ul>
-        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: 2025 Tax Rates</a></li>
-        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp.html" target="_blank" rel="noopener">CRA: CPP Rates</a></li>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: 2026 Federal Tax Rates</a></li>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp.html" target="_blank" rel="noopener">CRA: CPP Contribution Rates and Maximums</a></li>
+        <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei.html" target="_blank" rel="noopener">CRA: EI Premium Rates</a></li>
+        <li><a href="https://www.revenuquebec.ca/en/" target="_blank" rel="noopener">Revenu Qu&eacute;bec: Provincial Tax Information</a></li>
       </ul>
+    </section>
+
+    <!-- Cross-links -->
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        Calculate Other Canadian Salaries
+      </h2>
+
+      {(prevPage || nextPage) && (
+        <div class="flex gap-4 mb-6">
+          {prevPage && (
+            <a href={'/salary/' + prevPage.slug + '/'} class="flex-1 rounded-lg border border-gray-200 dark:border-gray-800 p-4 text-center hover:border-blue-500 transition-colors">
+              <span class="text-sm text-gray-500">&larr; Previous</span>
+              <span class="block text-lg font-bold text-gray-900 dark:text-white">{formatCurrency(prevPage.grossAnnual)}</span>
+            </a>
+          )}
+          {nextPage && (
+            <a href={'/salary/' + nextPage.slug + '/'} class="flex-1 rounded-lg border border-gray-200 dark:border-gray-800 p-4 text-center hover:border-blue-500 transition-colors">
+              <span class="text-sm text-gray-500">Next &rarr;</span>
+              <span class="block text-lg font-bold text-gray-900 dark:text-white">{formatCurrency(nextPage.grossAnnual)}</span>
+            </a>
+          )}
+        </div>
+      )}
+
+      <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+        {otherPages.map((p) => (
+          <a href={'/salary/' + p.slug + '/'} class="rounded-lg border border-gray-200 dark:border-gray-800 p-3 text-center hover:border-blue-500 hover:shadow-sm transition-all">
+            <span class="text-sm font-bold text-gray-900 dark:text-white">{formatCurrency(p.grossAnnual)}</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3 text-sm">
+        <a href="/" class="text-blue-600 font-medium hover:underline dark:text-blue-400">Salary Calculator</a>
+        <span class="text-gray-300 dark:text-gray-600">|</span>
+        <a href="/about/" class="text-blue-600 font-medium hover:underline dark:text-blue-400">About</a>
+      </div>
     </section>
   </Fragment>
 </CalculatorLayout>
