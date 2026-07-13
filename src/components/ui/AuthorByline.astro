@@ -1,24 +1,6 @@
 ---
-interface Props {
-  publishDate: string;
-  modifiedDate?: string;
-}
-
-const { publishDate, modifiedDate } = Astro.props;
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-CA', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-}
 ---
 
 <p class="text-xs text-gray-600 dark:text-gray-400 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-  By <span class="font-medium text-gray-900 dark:text-white">Mottalib Radif</span>, MBA
-  &middot; Published {formatDate(publishDate)}
-  {modifiedDate && modifiedDate !== publishDate && (
-    <span> &middot; Updated {formatDate(modifiedDate)}</span>
-  )}
+  By <span class="font-medium text-gray-900 dark:text-white">Mottalib Radif</span>, MBA &middot; Updated June 2026
 </p>
