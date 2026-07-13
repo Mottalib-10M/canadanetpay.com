@@ -1,0 +1,201 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+---
+
+<GuideLayout
+  title="Average Salary in Canada 2025"
+  description="Average and median salaries in Canada based on Statistics Canada data. Earnings by province, industry, age group, and gender with take-home pay breakdowns."
+  publishDate="2025-07-10"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Average Salary Canada' }]}
+>
+  <h2>Average and Median Salary in Canada</h2>
+  <p>
+    According to Statistics Canada, the average annual salary for full-time employees in Canada is approximately
+    $64,850 as of 2025. However, the average can be misleading because high earners pull the figure up. The
+    median salary -- the point at which half of workers earn more and half earn less -- is approximately
+    $40,500 per year. This gap between the average and median highlights the income inequality in the Canadian
+    labour market.
+  </p>
+  <p>
+    Understanding where your salary falls relative to these benchmarks helps with career planning, salary
+    negotiations, and financial decisions. These figures are based on the Labour Force Survey and the Canadian
+    Income Survey published by Statistics Canada.
+  </p>
+
+  <h2>Average Salary by Province</h2>
+  <p>
+    Salaries vary significantly across provinces, driven by differences in industry composition, cost of living,
+    and labour demand. Resource-rich provinces and territories tend to have higher average earnings, while
+    Atlantic provinces generally have lower averages.
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Province / Territory</th>
+          <th>Average Salary</th>
+          <th>Median Salary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Alberta</td><td>$72,400</td><td>$45,200</td></tr>
+        <tr><td>British Columbia</td><td>$64,200</td><td>$40,800</td></tr>
+        <tr><td>Manitoba</td><td>$56,800</td><td>$38,400</td></tr>
+        <tr><td>New Brunswick</td><td>$53,600</td><td>$36,200</td></tr>
+        <tr><td>Newfoundland and Labrador</td><td>$58,900</td><td>$37,800</td></tr>
+        <tr><td>Northwest Territories</td><td>$82,500</td><td>$56,000</td></tr>
+        <tr><td>Nova Scotia</td><td>$54,200</td><td>$36,800</td></tr>
+        <tr><td>Nunavut</td><td>$78,300</td><td>$52,400</td></tr>
+        <tr><td>Ontario</td><td>$66,800</td><td>$41,600</td></tr>
+        <tr><td>Prince Edward Island</td><td>$50,400</td><td>$34,800</td></tr>
+        <tr><td>Quebec</td><td>$60,200</td><td>$39,200</td></tr>
+        <tr><td>Saskatchewan</td><td>$62,400</td><td>$41,000</td></tr>
+        <tr><td>Yukon</td><td>$70,800</td><td>$48,600</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <em>Source: Statistics Canada, Labour Force Survey and Canadian Income Survey. Figures are approximate
+    annual averages for full-time workers.</em>
+  </p>
+
+  <h2>Average Salary by Industry</h2>
+  <p>
+    Industry has a major impact on earnings. Mining, oil and gas, utilities, and professional services
+    consistently rank among the highest-paying sectors, while accommodation, food services, and retail
+    trade are among the lowest.
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Industry</th>
+          <th>Average Annual Salary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Mining, Oil and Gas Extraction</td><td>$120,000</td></tr>
+        <tr><td>Utilities</td><td>$98,500</td></tr>
+        <tr><td>Professional, Scientific and Technical Services</td><td>$90,200</td></tr>
+        <tr><td>Finance and Insurance</td><td>$85,600</td></tr>
+        <tr><td>Information and Cultural Industries</td><td>$82,400</td></tr>
+        <tr><td>Public Administration</td><td>$78,000</td></tr>
+        <tr><td>Construction</td><td>$72,800</td></tr>
+        <tr><td>Manufacturing</td><td>$64,500</td></tr>
+        <tr><td>Transportation and Warehousing</td><td>$62,200</td></tr>
+        <tr><td>Health Care and Social Assistance</td><td>$58,400</td></tr>
+        <tr><td>Education</td><td>$57,600</td></tr>
+        <tr><td>Wholesale Trade</td><td>$65,800</td></tr>
+        <tr><td>Retail Trade</td><td>$36,400</td></tr>
+        <tr><td>Accommodation and Food Services</td><td>$28,600</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <em>Source: Statistics Canada, Survey of Employment, Payrolls and Hours (SEPH). Figures are approximate
+    and include both full-time and part-time workers where indicated.</em>
+  </p>
+
+  <h2>Average Salary by Age Group</h2>
+  <p>
+    Earnings in Canada follow a typical age-earnings profile: they rise steeply from ages 25 to 44 as
+    workers gain experience and qualifications, plateau between ages 45 and 54, and then decline slightly
+    approaching retirement age. Workers aged 25 to 34 earn significantly more than those 15 to 24, reflecting
+    the transition from entry-level positions to established careers.
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Age Group</th>
+          <th>Average Annual Salary</th>
+          <th>Median Annual Salary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>15 to 24</td><td>$24,800</td><td>$18,600</td></tr>
+        <tr><td>25 to 34</td><td>$52,400</td><td>$42,000</td></tr>
+        <tr><td>35 to 44</td><td>$68,200</td><td>$52,800</td></tr>
+        <tr><td>45 to 54</td><td>$72,600</td><td>$54,400</td></tr>
+        <tr><td>55 to 64</td><td>$66,800</td><td>$48,200</td></tr>
+        <tr><td>65 and over</td><td>$48,400</td><td>$32,600</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <em>Source: Statistics Canada, Canadian Income Survey. Age groups represent all workers including part-time.</em>
+  </p>
+
+  <h2>Average Salary by Gender</h2>
+  <p>
+    The gender wage gap in Canada has narrowed over time but remains significant. As of 2025, women working
+    full-time earn approximately 87 cents for every dollar earned by men in comparable roles. The gap varies
+    by industry, occupation, and province. Factors contributing to the gap include occupational segregation,
+    differences in hours worked, career interruptions, and underrepresentation in higher-paying industries
+    such as mining, technology, and finance.
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Gender</th>
+          <th>Average Annual Salary (Full-Time)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Men</td><td>$70,200</td></tr>
+        <tr><td>Women</td><td>$58,800</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>How Average Salary Translates to Take-Home Pay</h2>
+  <p>
+    The national average salary of $64,850 does not represent what a typical worker actually takes home.
+    After federal and provincial income taxes, CPP contributions, and EI premiums, the take-home pay on
+    $64,850 varies by province. For example:
+  </p>
+  <ul>
+    <li><strong>Ontario:</strong> Approximately $51,200 net per year ($4,267 per month)</li>
+    <li><strong>Alberta:</strong> Approximately $52,800 net per year ($4,400 per month)</li>
+    <li><strong>Quebec:</strong> Approximately $48,400 net per year ($4,033 per month)</li>
+    <li><strong>British Columbia:</strong> Approximately $51,600 net per year ($4,300 per month)</li>
+  </ul>
+  <p>
+    Use our <a href="/">salary calculator</a> to calculate your exact take-home pay based on your province,
+    salary, and personal circumstances.
+  </p>
+
+  <h2>What Is Considered a Good Salary in Canada?</h2>
+  <p>
+    A good salary depends on where you live, your household size, and your financial goals. As a general
+    guide, earning above the median salary ($40,500) means you earn more than half of Canadian workers.
+    Earning above the average ($64,850) puts you in the upper portion of the income distribution. In
+    expensive cities like Toronto and Vancouver, a salary of $70,000 to $80,000 is often considered
+    necessary for a comfortable single-person lifestyle, while in smaller cities and rural areas, $50,000
+    can provide a similar standard of living.
+  </p>
+  <p>
+    Household income is often a more meaningful measure. The median household income in Canada is
+    approximately $72,000, meaning that combined earnings from all household members place half of Canadian
+    households above this threshold.
+  </p>
+
+  <h2>Salary Growth Trends</h2>
+  <p>
+    Average wages in Canada have grown by approximately 3 to 5 percent annually in recent years, driven by
+    tight labour markets, minimum wage increases, and inflation. However, after adjusting for inflation
+    (real wage growth), the gains have been more modest. The post-pandemic period (2022-2025) saw above-average
+    nominal wage growth as employers competed for talent, particularly in technology, healthcare, and skilled
+    trades. Looking ahead, wage growth is expected to moderate as inflation cools and the labour market
+    reaches a more balanced state.
+  </p>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410032001" target="_blank" rel="noopener">Statistics Canada: Average Weekly Earnings by Province</a></li>
+    <li><a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110023901" target="_blank" rel="noopener">Statistics Canada: Canadian Income Survey</a></li>
+    <li><a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410006401" target="_blank" rel="noopener">Statistics Canada: Labour Force Survey</a></li>
+    <li><a href="https://www.canada.ca/en/employment-social-development/programs/gender-wage-gap.html" target="_blank" rel="noopener">Government of Canada: Gender Wage Gap</a></li>
+  </ul>
+</GuideLayout>

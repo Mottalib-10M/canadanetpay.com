@@ -1,0 +1,191 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+---
+
+<GuideLayout
+  title="Minimum Wage in Canada by Province 2025"
+  description="Current minimum wage rates for every Canadian province and territory. Federal, Ontario, BC, Alberta, Quebec rates plus tipped, liquor server, and youth wages."
+  publishDate="2025-07-10"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Minimum Wage Canada' }]}
+>
+  <h2>Current Minimum Wage Rates Across Canada</h2>
+  <p>
+    Minimum wage in Canada is set independently by each province and territory, with a separate federal rate
+    that applies to federally regulated industries such as banking, telecommunications, interprovincial
+    transportation, and the postal service. As of 2025, provincial minimum wages range from $15.00 per hour
+    in Alberta to $19.00 per hour in Nunavut, reflecting significant regional differences in the cost of
+    living and labour market conditions.
+  </p>
+  <p>
+    Most provinces adjust their minimum wage annually on either January 1 or October 1, often tying increases
+    to the Consumer Price Index (CPI) to keep pace with inflation. Understanding these rates is essential for
+    both workers and employers to ensure compliance with employment standards legislation.
+  </p>
+
+  <h2>2025 Minimum Wage by Province and Territory</h2>
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Province / Territory</th>
+          <th>Hourly Rate</th>
+          <th>Effective Date</th>
+          <th>Annual (Full-Time)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Federal</td><td>$17.30</td><td>April 1, 2025</td><td>$35,984</td></tr>
+        <tr><td>Alberta</td><td>$15.00</td><td>October 1, 2018</td><td>$31,200</td></tr>
+        <tr><td>British Columbia</td><td>$17.40</td><td>June 1, 2024</td><td>$36,192</td></tr>
+        <tr><td>Manitoba</td><td>$15.80</td><td>October 1, 2024</td><td>$32,864</td></tr>
+        <tr><td>New Brunswick</td><td>$15.30</td><td>April 1, 2025</td><td>$31,824</td></tr>
+        <tr><td>Newfoundland and Labrador</td><td>$15.60</td><td>April 1, 2024</td><td>$32,448</td></tr>
+        <tr><td>Northwest Territories</td><td>$16.05</td><td>September 1, 2023</td><td>$33,384</td></tr>
+        <tr><td>Nova Scotia</td><td>$15.20</td><td>April 1, 2024</td><td>$31,616</td></tr>
+        <tr><td>Nunavut</td><td>$19.00</td><td>January 1, 2024</td><td>$39,520</td></tr>
+        <tr><td>Ontario</td><td>$17.20</td><td>October 1, 2024</td><td>$35,776</td></tr>
+        <tr><td>Prince Edward Island</td><td>$15.40</td><td>April 1, 2024</td><td>$32,032</td></tr>
+        <tr><td>Quebec</td><td>$15.75</td><td>May 1, 2024</td><td>$32,760</td></tr>
+        <tr><td>Saskatchewan</td><td>$15.00</td><td>October 1, 2024</td><td>$31,200</td></tr>
+        <tr><td>Yukon</td><td>$17.59</td><td>April 1, 2025</td><td>$36,587</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <em>Annual amounts assume 2,080 hours per year (40 hours per week, 52 weeks). Actual earnings depend on
+    hours worked, overtime, and statutory holidays.</em>
+  </p>
+
+  <h2>Federal Minimum Wage</h2>
+  <p>
+    The federal minimum wage is $17.30 per hour as of April 1, 2025. It applies to employees in federally
+    regulated sectors including banks, airlines, railways, telecommunications companies, Canada Post, and
+    First Nations band councils. The federal rate is adjusted annually on April 1 based on the Consumer
+    Price Index. If the provincial or territorial minimum wage is higher than the federal rate, the higher
+    rate applies to federally regulated workers in that jurisdiction.
+  </p>
+
+  <h2>Provincial Minimum Wage Details</h2>
+
+  <h3>Ontario Minimum Wage</h3>
+  <p>
+    Ontario's general minimum wage is $17.20 per hour, effective October 1, 2024. The province reviews its
+    minimum wage annually and adjusts it based on the Ontario CPI. Ontario eliminated the lower student
+    minimum wage in 2022, so all workers regardless of age earn the same general rate. Liquor servers in
+    Ontario now receive the full general minimum wage; the previous lower rate for liquor servers was
+    eliminated on January 1, 2022.
+  </p>
+
+  <h3>British Columbia Minimum Wage</h3>
+  <p>
+    BC's minimum wage is $17.40 per hour as of June 1, 2024. BC adjusts its rate annually on June 1 based
+    on the average percentage change in CPI. The province also eliminated the lower liquor server wage in
+    2021. BC has a separate rate for live-in camp leaders ($116.86 per day) and live-in home support workers
+    (half the minimum wage rate for each hour of work or available time).
+  </p>
+
+  <h3>Alberta Minimum Wage</h3>
+  <p>
+    Alberta's minimum wage has remained at $15.00 per hour since October 1, 2018, making it the lowest
+    general minimum wage in Canada alongside Saskatchewan. Alberta does not have a legislated schedule for
+    future increases. Students under 18 who work 28 hours per week or less earn a youth minimum wage of
+    $13.00 per hour. Alberta also eliminated the lower liquor server wage in 2016.
+  </p>
+
+  <h3>Quebec Minimum Wage</h3>
+  <p>
+    Quebec's general minimum wage is $15.75 per hour, effective May 1, 2024. The province adjusts its rate
+    annually on May 1. Quebec maintains a separate lower rate for employees who receive tips (tipped
+    workers), currently set at $12.60 per hour. This tipped wage is the lowest sub-minimum rate in Canada
+    and applies primarily to restaurant servers, bartenders, and delivery workers.
+  </p>
+
+  <h2>Tipped and Liquor Server Wages</h2>
+  <p>
+    Most provinces have eliminated separate lower minimum wage rates for liquor servers and tipped employees.
+    However, a few jurisdictions maintain distinct rates:
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Province</th>
+          <th>Tipped / Liquor Server Rate</th>
+          <th>General Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Quebec</td><td>$12.60/hr (tipped employees)</td><td>$15.75/hr</td></tr>
+        <tr><td>All other provinces</td><td>Same as general rate</td><td>Varies</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Ontario, BC, Alberta, Manitoba, and most other provinces have moved to a single minimum wage rate for all
+    workers regardless of whether they receive tips. Quebec remains the notable exception with its lower
+    tipped employee rate.
+  </p>
+
+  <h2>Youth and Student Minimum Wages</h2>
+  <p>
+    Only a few provinces have youth or student-specific minimum wage rates that differ from the general rate:
+  </p>
+  <ul>
+    <li><strong>Alberta:</strong> $13.00 per hour for students under 18 working 28 hours per week or less.</li>
+    <li><strong>Ontario:</strong> Students under 18 who work 28 hours per week or less during the school year
+      previously earned a lower rate, but Ontario harmonized student wages to the general minimum in 2022.</li>
+    <li><strong>Other provinces:</strong> Most provinces apply the general minimum wage to all workers
+      regardless of age.</li>
+  </ul>
+
+  <h2>History of Minimum Wage Increases</h2>
+  <p>
+    Minimum wages across Canada have increased significantly over the past decade. In 2015, most provinces
+    had minimum wages between $10.20 and $11.25 per hour. Alberta led one of the most dramatic increases,
+    going from $10.20 in 2015 to $15.00 by 2018 under the NDP government's plan. Ontario saw major increases
+    from $11.00 in 2015 to $14.00 in 2018, followed by a freeze, and then further increases to $17.20 by 2024.
+    BC increased its minimum wage from $10.25 in 2015 to $17.40 by 2024 through annual CPI-linked adjustments.
+  </p>
+  <p>
+    The federal minimum wage was reintroduced in 2021 at $15.00 per hour after being dormant since 1996 (when
+    it was set to match provincial rates). Since its reintroduction, the federal rate has been adjusted
+    annually based on CPI, reaching $17.30 in 2025.
+  </p>
+
+  <h2>When Do Minimum Wages Change?</h2>
+  <div class="overflow-x-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Adjustment Date</th>
+          <th>Provinces</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>January 1</td><td>Nunavut</td></tr>
+        <tr><td>April 1</td><td>Federal, New Brunswick, Newfoundland, Nova Scotia, PEI, Yukon</td></tr>
+        <tr><td>May 1</td><td>Quebec</td></tr>
+        <tr><td>June 1</td><td>British Columbia</td></tr>
+        <tr><td>October 1</td><td>Alberta (when adjusted), Manitoba, Ontario, Saskatchewan</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Minimum Wage and Take-Home Pay</h2>
+  <p>
+    Earning minimum wage does not mean you take home the full amount. Federal and provincial income taxes,
+    CPP contributions, and EI premiums are deducted from every paycheque. For example, a full-time minimum
+    wage worker in Ontario earning $17.20 per hour ($35,776 annually) would take home approximately $31,200
+    after deductions, depending on their personal tax credits and province of residence. Use our
+    <a href="/">salary calculator</a> to estimate your exact take-home pay at any wage rate.
+  </p>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://www.canada.ca/en/employment-social-development/services/minimum-wage.html" target="_blank" rel="noopener">Government of Canada: Minimum Wage by Province</a></li>
+    <li><a href="https://www.ontario.ca/document/your-guide-employment-standards-act-0/minimum-wage" target="_blank" rel="noopener">Ontario: Minimum Wage</a></li>
+    <li><a href="https://www2.gov.bc.ca/gov/content/employment-business/employment-standards-advice/employment-standards/wages/minimum-wage" target="_blank" rel="noopener">BC: Minimum Wage</a></li>
+    <li><a href="https://www.alberta.ca/minimum-wage" target="_blank" rel="noopener">Alberta: Minimum Wage</a></li>
+    <li><a href="https://www.quebec.ca/en/employment/minimum-wage" target="_blank" rel="noopener">Quebec: Minimum Wage</a></li>
+  </ul>
+</GuideLayout>
