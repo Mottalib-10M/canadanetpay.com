@@ -47,7 +47,7 @@ export const fr: Translations = {
     source: 'Source',
     sources: 'Sources',
     disclaimer: 'Avertissement : Ce calculateur fournit des estimations a titre informatif uniquement. Consultez un professionnel de la fiscalite pour des conseils personnalises.',
-    updatedFor: 'Mis a jour pour l\'annee fiscale 2025',
+    updatedFor: 'Mis a jour pour l\'annee fiscale 2026',
     faq: 'Questions frequemment posees',
   },
 };

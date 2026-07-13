@@ -45,7 +45,7 @@ export const headerNavEn: NavGroup[] = [
   {
     label: 'Guides',
     children: [
-      { label: 'Federal Tax Brackets 2025', href: '/guides/federal-tax-brackets-2025/' },
+      { label: 'Federal Tax Brackets 2026', href: '/guides/federal-tax-brackets-2025/' },
       { label: 'CPP Explained', href: '/guides/cpp-explained/' },
       { label: 'RRSP Tax Savings', href: '/guides/rrsp-tax-savings/' },
       { label: 'Provincial Tax Comparison', href: '/guides/provincial-tax-comparison/' },
@@ -84,7 +84,7 @@ export const headerNavFr: NavGroup[] = [
   {
     label: 'Guides',
     children: [
-      { label: "Tranches d'imposition federales 2025", href: '/fr/guides/tranches-imposition-federales-2025/' },
+      { label: "Tranches d'imposition federales 2026", href: '/fr/guides/tranches-imposition-federales-2025/' },
       { label: 'Le RPC explique', href: '/fr/guides/rpc-explique/' },
       { label: "Economies d'impot REER", href: '/fr/guides/economies-impot-reer/' },
       { label: 'Comparaison impots provinciaux', href: '/fr/guides/comparaison-impots-provinciaux/' },
@@ -126,7 +126,7 @@ export const footerProvinceLinksEn: NavLink[] = [
 ];
 
 export const footerGuideLinksEn: NavLink[] = [
-  { label: 'Federal Tax Brackets 2025', href: '/guides/federal-tax-brackets-2025/' },
+  { label: 'Federal Tax Brackets 2026', href: '/guides/federal-tax-brackets-2025/' },
   { label: 'CPP Explained', href: '/guides/cpp-explained/' },
   { label: 'RRSP Tax Savings', href: '/guides/rrsp-tax-savings/' },
   { label: 'Provincial Comparison', href: '/guides/provincial-tax-comparison/' },

@@ -48,7 +48,7 @@ export const en = {
     source: 'Source',
     sources: 'Sources',
     disclaimer: 'Disclaimer: This calculator provides estimates for informational purposes only. Consult a tax professional for personalized advice.',
-    updatedFor: 'Updated for tax year 2025',
+    updatedFor: 'Updated for tax year 2026',
     faq: 'Frequently Asked Questions',
   },
 } as const;
