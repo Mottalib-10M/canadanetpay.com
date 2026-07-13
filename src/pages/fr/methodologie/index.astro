@@ -3,115 +3,115 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
 ---
 
 <GuideLayout
-  title="Notre methodologie"
-  description="Comment Salaire Apres Impot Canada calcule votre salaire net, les sources de donnees officielles de l'ARC utilisees et notre engagement envers la precision."
+  title="Notre méthodologie"
+  description="Comment Salaire Après Impôt Canada calcule votre salaire net, les sources de données officielles de l'ARC utilisées et notre engagement envers la précision."
   publishDate="2026-01-15"
   lang="fr"
-  breadcrumbs={[{ label: 'Accueil', href: '/fr/' }, { label: 'Methodologie' }]}
+  breadcrumbs={[{ label: 'Accueil', href: '/fr/' }, { label: 'Méthodologie' }]}
 >
   <h2>Introduction</h2>
   <p>
-    Salaire Apres Impot Canada repond a une question fondamentale : combien de votre salaire brut arrive reellement dans votre compte bancaire? Le systeme fiscal canadien comporte plusieurs niveaux de retenues -- impot federal sur le revenu, impot provincial sur le revenu, cotisations au Regime de pensions du Canada (RPC) ou au Regime de rentes du Quebec (RRQ), cotisations a l'assurance-emploi (AE), et au Quebec, le Regime quebecois d'assurance parentale (RQAP). Comprendre le fonctionnement et l'interaction de chaque couche est essentiel pour la planification budgetaire, la negociation salariale et la planification financiere.
+    Salaire Après Impôt Canada répond à une question fondamentale : combien de votre salaire brut arrive réellement dans votre compte bancaire? Le système fiscal canadien comporte plusieurs niveaux de retenues : impôt fédéral sur le revenu, impôt provincial sur le revenu, cotisations au Régime de pensions du Canada (RPC) ou au Régime de rentes du Québec (RRQ), cotisations à l'assurance-emploi (AE), et au Québec, le Régime québécois d'assurance parentale (RQAP). Comprendre le fonctionnement et l'interaction de chaque couche est essentiel pour la planification budgétaire, la négociation salariale et la planification financière.
   </p>
   <p>
-    Cette page documente notre methodologie de calcul en detail. Nous expliquons chaque source de donnees, chaque etape de calcul et chaque hypothese integree a notre systeme. Notre objectif est la transparence totale : vous devriez pouvoir reproduire nos resultats en utilisant les memes publications officielles que nous referencons, et comprendre exactement ou nos estimations pourraient differer de votre paie reelle.
+    Cette page documente notre méthodologie de calcul en détail. Nous expliquons chaque source de données, chaque étape de calcul et chaque hypothèse intégrée à notre système. Notre objectif est la transparence totale : vous devriez pouvoir reproduire nos résultats en utilisant les mêmes publications officielles que nous référençons, et comprendre exactement où nos estimations pourraient différer de votre paie réelle.
   </p>
   <p>
-    Tous les calculs sont effectues entierement dans votre navigateur web. Aucune donnee salariale n'est transmise a nos serveurs ni partagee avec un tiers. Vos informations financieres restent sur votre appareil et sont supprimees lorsque vous fermez la page.
+    Tous les calculs sont effectués entièrement dans votre navigateur web. Aucune donnée salariale n'est transmise à nos serveurs ni partagée avec un tiers. Vos informations financières restent sur votre appareil et sont supprimées lorsque vous fermez la page.
   </p>
 
-  <h2>Sources de donnees</h2>
+  <h2>Sources de données</h2>
   <p>
-    Chaque taux, seuil et exemption dans notre calculateur provient d'une source gouvernementale canadienne officielle. Nous ne nous appuyons pas sur des articles de presse, des agregateurs tiers ou des bases de donnees secondaires. Voici les publications et organismes specifiques que nous referencons :
+    Chaque taux, seuil et exemption dans notre calculateur provient d'une source gouvernementale canadienne officielle. Nous ne nous appuyons pas sur des articles de presse, des agrégateurs tiers ou des bases de données secondaires. Voici les publications et organismes spécifiques que nous référençons :
   </p>
 
   <h3>Agence du revenu du Canada (ARC)</h3>
   <ul>
-    <li><strong>Tables de retenues sur la paie T4032 :</strong> Publiees annuellement par l'ARC, ces tables contiennent les seuils des paliers d'imposition federaux, les taux et les montants des codes de demande utilises pour calculer les retenues d'impot sur le revenu. Pour 2026, les cinq paliers federaux sont : 15 % sur les revenus jusqu'a 57 375 $; 20,5 % de 57 375 $ a 114 750 $; 26 % de 114 750 $ a 158 468 $; 29 % de 158 468 $ a 220 000 $; et 33 % au-dessus de 220 000 $.</li>
-    <li><strong>Montant personnel de base (MPB) :</strong> L'ARC publie le MPB annuel, soit le montant de revenu que vous pouvez gagner avant que l'impot federal ne s'applique. Pour 2026, le MPB bonifie est de 16 129 $ pour les contribuables dont le revenu net est de 177 882 $ ou moins, graduellement reduit pour les revenus superieurs. Nous l'appliquons comme credit d'impot non remboursable au taux marginal le plus bas (15 %).</li>
-    <li><strong>Taux et maximums de cotisation au RPC :</strong> L'ARC publie les parametres annuels du RPC, y compris le taux de cotisation de l'employe (5,95 % pour 2026), l'exemption de base (3 500 $), le premier plafond de gains (71 300 $) et la cotisation annuelle maximale de l'employe (4 034,10 $). Nous integrons egalement le RPC2, qui ajoute une cotisation de 4 % sur les gains entre le premier plafond (71 300 $) et le deuxieme plafond (79 400 $), avec une cotisation maximale au RPC2 de 324,00 $.</li>
-    <li><strong>Taux de cotisation a l'AE :</strong> L'ARC fixe le taux annuel de cotisation a l'AE pour les employes. Pour 2026, le taux est de 1,58 % sur les gains assurables jusqu'a 65 700 $, avec une cotisation annuelle maximale de 1 049,12 $. Les residents du Quebec paient un taux d'AE reduit de 1,248 % car ils cotisent egalement au RQAP.</li>
+    <li><strong>Tables de retenues sur la paie T4032 :</strong> Publiées annuellement par l'ARC, ces tables contiennent les seuils des paliers d'imposition fédéraux, les taux et les montants des codes de demande utilisés pour calculer les retenues d'impôt sur le revenu. Pour 2026, les cinq paliers fédéraux sont : 15 % sur les revenus jusqu'à 57 375 $; 20,5 % de 57 375 $ à 114 750 $; 26 % de 114 750 $ à 158 468 $; 29 % de 158 468 $ à 220 000 $; et 33 % au-dessus de 220 000 $.</li>
+    <li><strong>Montant personnel de base (MPB) :</strong> L'ARC publie le MPB annuel, soit le montant de revenu que vous pouvez gagner avant que l'impôt fédéral ne s'applique. Pour 2026, le MPB bonifié est de 16 129 $ pour les contribuables dont le revenu net est de 177 882 $ ou moins, graduellement réduit pour les revenus supérieurs. Nous l'appliquons comme crédit d'impôt non remboursable au taux marginal le plus bas (15 %).</li>
+    <li><strong>Taux et maximums de cotisation au RPC :</strong> L'ARC publie les paramètres annuels du RPC, y compris le taux de cotisation de l'employé (5,95 % pour 2026), l'exemption de base (3 500 $), le premier plafond de gains (71 300 $) et la cotisation annuelle maximale de l'employé (4 034,10 $). Nous intégrons également le RPC2, qui ajoute une cotisation de 4 % sur les gains entre le premier plafond (71 300 $) et le deuxième plafond (79 400 $), avec une cotisation maximale au RPC2 de 324,00 $.</li>
+    <li><strong>Taux de cotisation à l'AE :</strong> L'ARC fixe le taux annuel de cotisation à l'AE pour les employés. Pour 2026, le taux est de 1,58 % sur les gains assurables jusqu'à 65 700 $, avec une cotisation annuelle maximale de 1 049,12 $. Les résidents du Québec paient un taux d'AE réduit de 1,248 % car ils cotisent également au RQAP.</li>
   </ul>
 
-  <h3>Revenu Quebec</h3>
+  <h3>Revenu Québec</h3>
   <ul>
-    <li><strong>Taux de cotisation au RRQ :</strong> Le Quebec administre son propre regime de retraite (RRQ) en remplacement du RPC. Pour 2026, le taux de l'employe au RRQ est de 6,4 % sur les gains entre 3 500 $ et 71 300 $ (cotisation maximale : 4 339,20 $). Le RRQ2 s'applique a 4 % sur les gains entre 71 300 $ et 79 400 $.</li>
-    <li><strong>Cotisations au RQAP :</strong> La cotisation des employes au Regime quebecois d'assurance parentale est de 0,494 % sur les gains assurables jusqu'a 94 000 $, avec une cotisation annuelle maximale de 464,36 $.</li>
-    <li><strong>Paliers d'imposition provinciale du Quebec :</strong> Revenu Quebec publie sa propre structure de paliers progressifs. Pour 2026, quatre paliers s'appliquent : 14 % sur les revenus jusqu'a 51 780 $; 19 % de 51 780 $ a 103 545 $; 24 % de 103 545 $ a 126 000 $; et 25,75 % au-dessus de 126 000 $. Les residents du Quebec beneficient egalement d'un abattement fiscal federal de 16,5 % pour compenser partiellement les taux provinciaux plus eleves.</li>
+    <li><strong>Taux de cotisation au RRQ :</strong> Le Québec administre son propre régime de retraite (RRQ) en remplacement du RPC. Pour 2026, le taux de l'employé au RRQ est de 6,4 % sur les gains entre 3 500 $ et 71 300 $ (cotisation maximale : 4 339,20 $). Le RRQ2 s'applique à 4 % sur les gains entre 71 300 $ et 79 400 $.</li>
+    <li><strong>Cotisations au RQAP :</strong> La cotisation des employés au Régime québécois d'assurance parentale est de 0,494 % sur les gains assurables jusqu'à 94 000 $, avec une cotisation annuelle maximale de 464,36 $.</li>
+    <li><strong>Paliers d'imposition provinciale du Québec :</strong> Revenu Québec publie sa propre structure de paliers progressifs. Pour 2026, quatre paliers s'appliquent : 14 % sur les revenus jusqu'à 51 780 $; 19 % de 51 780 $ à 103 545 $; 24 % de 103 545 $ à 126 000 $; et 25,75 % au-dessus de 126 000 $. Les résidents du Québec bénéficient également d'un abattement fiscal fédéral de 16,5 % pour compenser partiellement les taux provinciaux plus élevés.</li>
   </ul>
 
-  <h3>Ministeres provinciaux des finances</h3>
+  <h3>Ministères provinciaux des finances</h3>
   <ul>
-    <li><strong>Paliers d'imposition et montants personnels provinciaux :</strong> Chaque province et territoire publie sa propre structure de paliers fiscaux et son montant personnel de base. Par exemple, l'Ontario a cinq paliers allant de 5,05 % a 13,16 %, tandis que l'Alberta a cinq paliers de 10 % a 15 %. Nous sourcons ces taux directement du ministere des finances de chaque province ou de sa gazette officielle.</li>
-    <li><strong>Surtaxes provinciales :</strong> Certaines provinces appliquent des surtaxes aux contribuables a revenu plus eleve. L'Ontario, par exemple, applique une surtaxe de 20 % sur l'impot provincial de base entre 5 315 $ et 6 802 $, et de 36 % sur les montants depassant 6 802 $. Nous incluons toutes les surtaxes provinciales applicables dans nos calculs.</li>
+    <li><strong>Paliers d'imposition et montants personnels provinciaux :</strong> Chaque province et territoire publie sa propre structure de paliers fiscaux et son montant personnel de base. Par exemple, l'Ontario a cinq paliers allant de 5,05 % à 13,16 %, tandis que l'Alberta a cinq paliers de 10 % à 15 %. Nous sourçons ces taux directement du ministère des finances de chaque province ou de sa gazette officielle.</li>
+    <li><strong>Surtaxes provinciales :</strong> Certaines provinces appliquent des surtaxes aux contribuables à revenu plus élevé. L'Ontario, par exemple, applique une surtaxe de 20 % sur l'impôt provincial de base entre 5 315 $ et 6 802 $, et de 36 % sur les montants dépassant 6 802 $. Nous incluons toutes les surtaxes provinciales applicables dans nos calculs.</li>
   </ul>
 
-  <h2>Etapes de calcul</h2>
+  <h2>Étapes de calcul</h2>
   <p>
-    Notre calculateur suit un processus systematique qui reproduit la facon dont les systemes de paie canadiens calculent les retenues. Voici la sequence etape par etape :
+    Notre calculateur suit un processus systématique qui reproduit la façon dont les systèmes de paie canadiens calculent les retenues. Voici la séquence étape par étape :
   </p>
 
-  <h3>Etape 1 : Determiner le revenu brut annuel</h3>
+  <h3>Étape 1 : Déterminer le revenu brut annuel</h3>
   <p>
-    Vous entrez votre salaire sous forme annuelle, mensuelle, bimensuelle, hebdomadaire ou horaire. Nous convertissons toutes les entrees en un montant brut annuel, qui sert de base a chaque calcul subsequent. Pour les taux horaires, nous multiplions par la semaine de travail standard (generalement 37,5 ou 40 heures) et 52 semaines par annee.
+    Vous entrez votre salaire sous forme annuelle, mensuelle, bimensuelle, hebdomadaire ou horaire. Nous convertissons toutes les entrées en un montant brut annuel, qui sert de base à chaque calcul subséquent. Pour les taux horaires, nous multiplions par la semaine de travail standard (généralement 37,5 ou 40 heures) et 52 semaines par année.
   </p>
 
-  <h3>Etape 2 : Calculer les cotisations au RPC/RRQ</h3>
+  <h3>Étape 2 : Calculer les cotisations au RPC/RRQ</h3>
   <p>
-    Nous soustrayons l'exemption de base (3 500 $) de vos gains annuels ouvrant droit a pension. Les cotisations au RPC sont de 5,95 % sur le reste jusqu'au premier plafond de gains (71 300 $). Pour les gains entre le premier plafond et le deuxieme plafond (79 400 $), les cotisations au RPC2 de 4 % s'appliquent. Les residents du Quebec paient le RRQ a 6,4 % au lieu du RPC a 5,95 %, avec la meme structure de plafonds. Ces cotisations sont plafonnees aux maximums annuels publies.
+    Nous soustrayons l'exemption de base (3 500 $) de vos gains annuels ouvrant droit à pension. Les cotisations au RPC sont de 5,95 % sur le reste jusqu'au premier plafond de gains (71 300 $). Pour les gains entre le premier plafond et le deuxième plafond (79 400 $), les cotisations au RPC2 de 4 % s'appliquent. Les résidents du Québec paient le RRQ à 6,4 % au lieu du RPC à 5,95 %, avec la même structure de plafonds. Ces cotisations sont plafonnées aux maximums annuels publiés.
   </p>
 
-  <h3>Etape 3 : Calculer les cotisations a l'AE</h3>
+  <h3>Étape 3 : Calculer les cotisations à l'AE</h3>
   <p>
-    Les cotisations a l'AE sont calculees a 1,58 % des gains assurables jusqu'au montant maximum assurable annuel (65 700 $ pour 2026). Les residents du Quebec paient un taux reduit de 1,248 % car ils cotisent egalement au RQAP (0,494 % sur les gains jusqu'a 94 000 $). Les deux cotisations sont plafonnees a leurs maximums annuels respectifs.
+    Les cotisations à l'AE sont calculées à 1,58 % des gains assurables jusqu'au montant maximum assurable annuel (65 700 $ pour 2026). Les résidents du Québec paient un taux réduit de 1,248 % car ils cotisent également au RQAP (0,494 % sur les gains jusqu'à 94 000 $). Les deux cotisations sont plafonnées à leurs maximums annuels respectifs.
   </p>
 
-  <h3>Etape 4 : Calculer l'impot federal sur le revenu</h3>
+  <h3>Étape 4 : Calculer l'impôt fédéral sur le revenu</h3>
   <p>
-    Nous calculons l'impot federal sur le revenu en utilisant le systeme de paliers progressifs. Le revenu imposable est le revenu brut moins les deductions applicables (comme les cotisations REER, si saisies). L'impot est calcule en appliquant le taux de chaque palier au revenu tombant dans ce palier. Nous soustrayons ensuite le credit du montant personnel de base (15 % du MPB). Pour les residents du Quebec, nous appliquons l'abattement fiscal federal de 16,5 %, reduisant l'impot federal net en consequence.
+    Nous calculons l'impôt fédéral sur le revenu en utilisant le système de paliers progressifs. Le revenu imposable est le revenu brut moins les déductions applicables (comme les cotisations REER, si saisies). L'impôt est calculé en appliquant le taux de chaque palier au revenu tombant dans ce palier. Nous soustrayons ensuite le crédit du montant personnel de base (15 % du MPB). Pour les résidents du Québec, nous appliquons l'abattement fiscal fédéral de 16,5 %, réduisant l'impôt fédéral net en conséquence.
   </p>
 
-  <h3>Etape 5 : Calculer l'impot provincial sur le revenu</h3>
+  <h3>Étape 5 : Calculer l'impôt provincial sur le revenu</h3>
   <p>
-    L'impot provincial est calcule en utilisant la structure de paliers specifique a votre province selectionnee. Chaque province a ses propres taux, seuils, montant personnel de base et, dans certains cas, des surtaxes. Nous appliquons les paliers de la province a votre revenu imposable, soustrayons le credit du montant personnel provincial au taux le plus bas de la province et ajoutons toutes les surtaxes applicables.
+    L'impôt provincial est calculé en utilisant la structure de paliers spécifique à votre province sélectionnée. Chaque province a ses propres taux, seuils, montant personnel de base et, dans certains cas, des surtaxes. Nous appliquons les paliers de la province à votre revenu imposable, soustrayons le crédit du montant personnel provincial au taux le plus bas de la province et ajoutons toutes les surtaxes applicables.
   </p>
 
-  <h3>Etape 6 : Calculer le salaire net</h3>
+  <h3>Étape 6 : Calculer le salaire net</h3>
   <p>
-    Le salaire net est egal au revenu brut moins toutes les retenues : cotisations au RPC/RRQ, cotisations a l'AE, cotisations au RQAP (Quebec seulement), impot federal sur le revenu et impot provincial sur le revenu. Nous affichons ce montant sous forme annuelle, mensuelle, bimensuelle, hebdomadaire, quotidienne et horaire pour faciliter la comparaison.
+    Le salaire net est égal au revenu brut moins toutes les retenues : cotisations au RPC/RRQ, cotisations à l'AE, cotisations au RQAP (Québec seulement), impôt fédéral sur le revenu et impôt provincial sur le revenu. Nous affichons ce montant sous forme annuelle, mensuelle, bimensuelle, hebdomadaire, quotidienne et horaire pour faciliter la comparaison.
   </p>
 
-  <h2>Precision et limites</h2>
+  <h2>Précision et limites</h2>
   <p>
-    Notre calculateur fournit des estimations fiables, mais plusieurs facteurs peuvent faire en sorte que votre paie reelle differe :
+    Notre calculateur fournit des estimations fiables, mais plusieurs facteurs peuvent faire en sorte que votre paie réelle diffère :
   </p>
   <ul>
-    <li><strong>Retenues specifiques a l'employeur :</strong> Les avantages sociaux collectifs, les cotisations a un regime de retraite, les cotisations syndicales et les autres retenues administrees par l'employeur ne sont pas incluses a moins que vous ne les saisissiez manuellement. Ces elements peuvent affecter significativement votre salaire net.</li>
-    <li><strong>Cotisations au REER :</strong> Si vous faites des cotisations au REER par retenues salariales, votre employeur peut reduire les retenues d'impot pour tenir compte de la deduction. Notre calculateur inclut un champ de saisie pour les REER, mais la reduction reelle des retenues depend de l'approche de votre employeur.</li>
-    <li><strong>Credits d'impot au-dela du MPB :</strong> Nous appliquons le credit du montant personnel de base. Cependant, d'autres credits (comme le credit canadien pour emploi, le credit d'impot pour personnes handicapees, les montants pour frais de scolarite, les frais medicaux ou les dons de bienfaisance) ne sont pas inclus dans le calcul par defaut.</li>
-    <li><strong>Sources de revenus multiples :</strong> Le calculateur suppose que le salaire saisi est votre seule source de revenu d'emploi. Si vous avez plusieurs emplois, un revenu de travail autonome, un revenu locatif ou un revenu de placement, votre situation fiscale reelle peut differer considerablement.</li>
-    <li><strong>Pas un conseil fiscal professionnel :</strong> Cet outil fournit des estimations a des fins de planification et d'education. Il ne remplace pas les conseils d'un comptable professionnel agree (CPA) ou d'un autre conseiller fiscal qualifie.</li>
+    <li><strong>Retenues spécifiques à l'employeur :</strong> Les avantages sociaux collectifs, les cotisations à un régime de retraite, les cotisations syndicales et les autres retenues administrées par l'employeur ne sont pas incluses à moins que vous ne les saisissiez manuellement. Ces éléments peuvent affecter significativement votre salaire net.</li>
+    <li><strong>Cotisations au REER :</strong> Si vous faites des cotisations au REER par retenues salariales, votre employeur peut réduire les retenues d'impôt pour tenir compte de la déduction. Notre calculateur inclut un champ de saisie pour les REER, mais la réduction réelle des retenues dépend de l'approche de votre employeur.</li>
+    <li><strong>Crédits d'impôt au-delà du MPB :</strong> Nous appliquons le crédit du montant personnel de base. Cependant, d'autres crédits (comme le crédit canadien pour emploi, le crédit d'impôt pour personnes handicapées, les montants pour frais de scolarité, les frais médicaux ou les dons de bienfaisance) ne sont pas inclus dans le calcul par défaut.</li>
+    <li><strong>Sources de revenus multiples :</strong> Le calculateur suppose que le salaire saisi est votre seule source de revenu d'emploi. Si vous avez plusieurs emplois, un revenu de travail autonome, un revenu locatif ou un revenu de placement, votre situation fiscale réelle peut différer considérablement.</li>
+    <li><strong>Pas un conseil fiscal professionnel :</strong> Cet outil fournit des estimations à des fins de planification et d'éducation. Il ne remplace pas les conseils d'un comptable professionnel agréé (CPA) ou d'un autre conseiller fiscal qualifié.</li>
   </ul>
 
-  <h2>Calendrier de mise a jour</h2>
+  <h2>Calendrier de mise à jour</h2>
   <p>
-    Nous suivons un processus de mise a jour structure lie au calendrier fiscal canadien :
+    Nous suivons un processus de mise à jour structuré lié au calendrier fiscal canadien :
   </p>
   <ul>
-    <li><strong>Novembre - Decembre :</strong> L'ARC annonce les taux et maximums du RPC/RRQ, les taux de cotisation a l'AE et les paliers federaux ajustes a l'inflation pour l'annee a venir. Nous mettons a jour nos parametres federaux des que ces chiffres sont confirmes.</li>
-    <li><strong>Decembre - Janvier :</strong> Les budgets provinciaux et les changements de taux sont generalement finalises avant la fin de l'annee. Nous mettons a jour les paliers provinciaux, les montants personnels et les surtaxes pour les 13 provinces et territoires.</li>
-    <li><strong>1er janvier :</strong> Les nouveaux taux sont mis en ligne sur le site. L'annee precedente reste disponible pour reference.</li>
-    <li><strong>Tout au long de l'annee :</strong> Si une province annonce un changement de taux en cours d'annee ou si le gouvernement federal adopte une legislation d'urgence affectant les retenues sur la paie, nous mettons a jour les parametres concernes dans les deux semaines suivant la publication officielle.</li>
+    <li><strong>Novembre - Décembre :</strong> L'ARC annonce les taux et maximums du RPC/RRQ, les taux de cotisation à l'AE et les paliers fédéraux ajustés à l'inflation pour l'année à venir. Nous mettons à jour nos paramètres fédéraux dès que ces chiffres sont confirmés.</li>
+    <li><strong>Décembre - Janvier :</strong> Les budgets provinciaux et les changements de taux sont généralement finalisés avant la fin de l'année. Nous mettons à jour les paliers provinciaux, les montants personnels et les surtaxes pour les 13 provinces et territoires.</li>
+    <li><strong>1er janvier :</strong> Les nouveaux taux sont mis en ligne sur le site. L'année précédente reste disponible pour référence.</li>
+    <li><strong>Tout au long de l'année :</strong> Si une province annonce un changement de taux en cours d'année ou si le gouvernement fédéral adopte une législation d'urgence affectant les retenues sur la paie, nous mettons à jour les paramètres concernés dans les deux semaines suivant la publication officielle.</li>
   </ul>
 
-  <h2>Assurance qualite</h2>
+  <h2>Assurance qualité</h2>
   <p>
-    Nous verifions nos calculs par plusieurs methodes :
+    Nous vérifions nos calculs par plusieurs méthodes :
   </p>
   <ul>
-    <li><strong>Calculateur en direct de retenues sur la paie (CDRP) de l'ARC :</strong> Nous comparons nos resultats avec le propre calculateur en ligne de paie de l'ARC pour une gamme de niveaux de salaire, de provinces et de frequences de paie.</li>
-    <li><strong>Calcul manuel :</strong> Pour chaque province, nous calculons manuellement les impots pour au moins trois niveaux de revenu (faible, median et eleve) en utilisant les tables publiees et comparons les resultats avec notre systeme automatise.</li>
-    <li><strong>Validation inter-annees :</strong> Lors de la mise a jour pour une nouvelle annee fiscale, nous verifions d'abord que nos calculs de l'annee precedente correspondent toujours aux attentes de l'ARC pour cette annee, confirmant qu'aucune regression n'a ete introduite.</li>
+    <li><strong>Calculateur en direct de retenues sur la paie (CDRP) de l'ARC :</strong> Nous comparons nos résultats avec le propre calculateur en ligne de paie de l'ARC pour une gamme de niveaux de salaire, de provinces et de fréquences de paie.</li>
+    <li><strong>Calcul manuel :</strong> Pour chaque province, nous calculons manuellement les impôts pour au moins trois niveaux de revenu (faible, médian et élevé) en utilisant les tables publiées et comparons les résultats avec notre système automatisé.</li>
+    <li><strong>Validation inter-années :</strong> Lors de la mise à jour pour une nouvelle année fiscale, nous vérifions d'abord que nos calculs de l'année précédente correspondent toujours aux attentes de l'ARC pour cette année, confirmant qu'aucune régression n'a été introduite.</li>
   </ul>
 
   <h2>Sources</h2>
@@ -119,8 +119,8 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
     <li><a href="https://www.canada.ca/fr/agence-revenu/services/formulaires-publications/retenues-paie/t4032-tables-retenues-paie.html" target="_blank" rel="noopener">ARC : Tables de retenues sur la paie T4032</a></li>
     <li><a href="https://www.canada.ca/fr/agence-revenu/services/impot/particuliers/sujets/tout-votre-declaration-revenus/declaration-revenus/remplir-declaration-revenus/deductions-credits-depenses/ligne-30000-montant-personnel-base.html" target="_blank" rel="noopener">ARC : Montant personnel de base</a></li>
     <li><a href="https://www.canada.ca/fr/agence-revenu/services/impot/entreprises/sujets/retenues-paie/retenues-paie-cotisations/regime-pensions-canada-rpc.html" target="_blank" rel="noopener">ARC : Taux de cotisation au RPC</a></li>
-    <li><a href="https://www.canada.ca/fr/agence-revenu/services/impot/entreprises/sujets/retenues-paie/retenues-paie-cotisations/assurance-emploi-ae.html" target="_blank" rel="noopener">ARC : Taux de cotisation a l'AE</a></li>
-    <li><a href="https://www.revenuquebec.ca/fr/services-en-ligne/formulaires-et-publications/details-courant/tp-1015.tl-v/" target="_blank" rel="noopener">Revenu Quebec : Tables de retenues a la source</a></li>
+    <li><a href="https://www.canada.ca/fr/agence-revenu/services/impot/entreprises/sujets/retenues-paie/retenues-paie-cotisations/assurance-emploi-ae.html" target="_blank" rel="noopener">ARC : Taux de cotisation à l'AE</a></li>
+    <li><a href="https://www.revenuquebec.ca/fr/services-en-ligne/formulaires-et-publications/details-courant/tp-1015.tl-v/" target="_blank" rel="noopener">Revenu Québec : Tables de retenues à la source</a></li>
     <li><a href="https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-numeriques-entreprises/retenues-paie-calculateur-en-direct.html" target="_blank" rel="noopener">ARC : Calculateur en direct de retenues sur la paie (CDRP)</a></li>
   </ul>
 </GuideLayout>
