@@ -61,36 +61,20 @@ export const headerNavFr: NavGroup[] = [
     label: 'Calculatrices',
     children: [
       { label: 'Calculateur de salaire', href: '/fr/' },
-      { label: 'Net vers brut', href: '/fr/net-vers-brut/' },
-      { label: "Calculateur d'impôt sur le revenu", href: '/fr/calculateur-impot-sur-le-revenu/' },
-      { label: 'Calculateur RPC / RRQ', href: '/fr/calculateur-rpc/' },
-      { label: 'Calculateur de prime', href: '/fr/calculateur-impot-prime/' },
-      { label: 'Horaire en salaire', href: '/fr/horaire-en-salaire/' },
-      { label: 'Coût employeur', href: '/fr/calculateur-cout-employeur/' },
-      { label: 'Toutes les calculatrices', href: '/fr/calculatrices/' },
-    ],
-  },
-  {
-    label: 'Provinces',
-    children: [
-      { label: 'Ontario', href: '/fr/province/ontario/' },
-      { label: 'Québec', href: '/fr/province/quebec/' },
-      { label: 'Colombie-Britannique', href: '/fr/province/colombie-britannique/' },
-      { label: 'Alberta', href: '/fr/province/alberta/' },
-      { label: 'Manitoba', href: '/fr/province/manitoba/' },
-      { label: 'Saskatchewan', href: '/fr/province/saskatchewan/' },
     ],
   },
   {
     label: 'Guides',
     children: [
-      { label: "Tranches d'imposition fédérales 2026", href: '/fr/guides/tranches-imposition-federales-2025/' },
-      { label: 'Le RPC expliqué', href: '/fr/guides/rpc-explique/' },
-      { label: "Économies d'impôt REER", href: '/fr/guides/economies-impot-reer/' },
-      { label: 'Comparaison impôts provinciaux', href: '/fr/guides/comparaison-impots-provinciaux/' },
       { label: 'Salaire minimum Canada', href: '/fr/guides/salaire-minimum-canada/' },
       { label: 'Salaire moyen Canada', href: '/fr/guides/salaire-moyen-canada/' },
-      { label: 'Tous les guides', href: '/fr/guides/' },
+    ],
+  },
+  {
+    label: 'À propos',
+    children: [
+      { label: 'Glossaire', href: '/fr/glossaire/' },
+      { label: 'Méthodologie', href: '/fr/methodologie/' },
     ],
   },
 ];
