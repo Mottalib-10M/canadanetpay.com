@@ -97,7 +97,7 @@ function calcBrackets(taxableIncome: number, brackets: TaxBracket[]): { total: n
     const tax = taxableInBracket * bracket.rate;
     if (taxableInBracket > 0) {
       bands.push({
-        name: `${(bracket.rate * 100).toFixed(1)}% bracket`,
+        name: '',
         rate: bracket.rate,
         taxableAmount: round2(taxableInBracket),
         tax: round2(tax),

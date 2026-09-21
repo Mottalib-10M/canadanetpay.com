@@ -6,7 +6,11 @@ import { formatCurrency } from '../../lib/format';
 import InputField from '../ui/InputField';
 import ResultPanel from '../ui/ResultPanel';
 
-export default function NetToGrossCalculator() {
+interface Props {
+  lang?: 'en' | 'fr';
+}
+
+export default function NetToGrossCalculator({ lang = 'en' }: Props) {
   const [targetNet, setTargetNet] = useState(50000);
   const [provinceCode, setProvinceCode] = useState('ON');
 
@@ -50,7 +54,7 @@ export default function NetToGrossCalculator() {
         </div>
       </div>
       <div className="lg:col-span-3">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} lang={lang} />
       </div>
     </div>
   );

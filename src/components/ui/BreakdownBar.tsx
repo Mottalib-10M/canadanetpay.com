@@ -1,3 +1,4 @@
+import { formatPercentLang } from '../../lib/format';
 import { formatPercent } from '../../lib/format';
 
 interface Segment {
@@ -7,11 +8,12 @@ interface Segment {
 }
 
 interface Props {
+  lang?: 'en' | 'fr';
   segments: Segment[];
   total: number;
 }
 
-export default function BreakdownBar({ segments, total }: Props) {
+export default function BreakdownBar({ segments, total, lang = 'en'}: Props) {
   if (total <= 0) return null;
 
   return (
@@ -30,7 +32,7 @@ export default function BreakdownBar({ segments, total }: Props) {
               aria-label={`${seg.label}: ${formatPercent(pct)}`}
             >
               <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                {pct > 8 ? `${pct.toFixed(1)}%` : ''}
+                {pct > 8 ? formatPercentLang(pct, lang) : ''}
               </div>
             </div>
           );

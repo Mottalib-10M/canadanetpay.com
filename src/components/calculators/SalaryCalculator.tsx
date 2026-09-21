@@ -4,7 +4,7 @@ import type { PayFrequency } from '../../data/federal-tax-2025';
 import { PROVINCES, ALL_PROVINCES } from '../../data/provinces';
 import { PAY_PERIODS } from '../../data/federal-tax-2025';
 import { readUrlParams, writeUrlParams } from '../../lib/url-state';
-import { formatCurrency, formatPercent } from '../../lib/format';
+import { formatCurrency, formatPercent, formatPercentLang } from '../../lib/format';
 import InputField from '../ui/InputField';
 import ResultPanel from '../ui/ResultPanel';
 import BreakdownBar from '../ui/BreakdownBar';
@@ -17,10 +17,11 @@ const URL_CONFIG = {
 };
 
 interface Props {
+  lang?: 'en' | 'fr';
   defaultProvince?: string;
 }
 
-export default function SalaryCalculator({ defaultProvince = 'ON' }: Props) {
+export default function SalaryCalculator({ defaultProvince = 'ON', lang = 'en'}: Props) {
   const [gross, setGross] = useState(75000);
   const [provinceCode, setProvinceCode] = useState(defaultProvince);
   const [payFrequency, setPayFrequency] = useState<PayFrequency>('bi_weekly');
@@ -123,14 +124,14 @@ export default function SalaryCalculator({ defaultProvince = 'ON' }: Props) {
 
       {/* Results Panel */}
       <div className="lg:col-span-3 space-y-6">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} lang={lang} />
 
         {/* Breakdown Bar */}
         <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface p-6">
           <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4 uppercase tracking-wider">
-            Salary Breakdown
+            {lang === 'fr' ? 'Répartition du salaire' : 'Salary Breakdown'}
           </h3>
-          <BreakdownBar segments={barSegments} total={gross} />
+          <BreakdownBar segments={barSegments} total={gross} lang={lang} />
         </div>
 
         {/* Federal bracket breakdown */}
@@ -150,7 +151,7 @@ export default function SalaryCalculator({ defaultProvince = 'ON' }: Props) {
               <tbody>
                 {result.federalBands.map((band, i) => (
                   <tr key={i} className={`border-b border-gray-50 dark:border-gray-800 ${i % 2 === 0 ? '' : 'bg-gray-50 dark:bg-gray-800/30'}`}>
-                    <td className="px-5 py-2 text-gray-700 dark:text-gray-300">{band.name}</td>
+                    <td className="px-5 py-2 text-gray-700 dark:text-gray-300">{`${formatPercentLang(band.rate * 100, lang)}${lang === 'fr' ? ' — tranche' : ' bracket'}`}</td>
                     <td className="px-5 py-2 text-right tabular-nums text-gray-600 dark:text-gray-400">{formatCurrency(band.taxableAmount)}</td>
                     <td className="px-5 py-2 text-right tabular-nums font-medium text-gray-900 dark:text-white">{formatCurrency(band.tax)}</td>
                   </tr>

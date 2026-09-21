@@ -6,7 +6,11 @@ import { formatCurrency } from '../../lib/format';
 import InputField from '../ui/InputField';
 import ResultPanel from '../ui/ResultPanel';
 
-export default function HourlyRateCalculator() {
+interface Props {
+  lang?: 'en' | 'fr';
+}
+
+export default function HourlyRateCalculator({ lang = 'en' }: Props) {
   const [hourly, setHourly] = useState(25);
   const [hoursPerWeek, setHoursPerWeek] = useState(40);
   const [provinceCode, setProvinceCode] = useState('ON');
@@ -46,7 +50,7 @@ export default function HourlyRateCalculator() {
         </div>
       </div>
       <div className="lg:col-span-3">
-        <ResultPanel result={result} />
+        <ResultPanel result={result} lang={lang} />
       </div>
     </div>
   );
