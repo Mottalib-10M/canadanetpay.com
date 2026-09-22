@@ -1,14 +1,23 @@
 ---
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { LEGAL, CONTACT_EMAIL } from '../../data/site-config';
 import GuideLayout from '../../layouts/GuideLayout.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Terms of Use & Disclaimer"
+  title="Terms of use for this Canadian salary calculator 2026"
   description="Terms and conditions for using Salary After Tax Canada calculators. Estimates are for informational purposes only and do not constitute personal tax advice."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Terms of Use' }]}
 >
   <p><em>Last updated: January 15, 2025</em></p>
+
+  <h2>Publisher</h2>
+  <LegalIdentity mode="publisher" lang="en" />
+
+  <h2>Hosting</h2>
+  <LegalIdentity mode="hosting" lang="en" />
 
   <h2>Acceptance of Terms</h2>
   <p>
@@ -64,6 +73,10 @@ import GuideLayout from '../../layouts/GuideLayout.astro';
 
   <h2>Contact</h2>
   <p>
-    Questions about these terms? <a href="/contact/">Contact us</a>.
+    Questions about these terms go to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, or use our
+    <a href="/contact/">contact page</a>. If you believe your personal data has been mishandled, you may
+    complain to {LEGAL.supervisoryAuthority}, at
+    <a href={LEGAL.supervisoryAuthorityUrl} rel="nofollow noopener" target="_blank">{LEGAL.supervisoryAuthorityUrl}</a>.
   </p>
+  <OfficialSources />
 </GuideLayout>

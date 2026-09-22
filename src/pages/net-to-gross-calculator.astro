@@ -3,12 +3,30 @@ import CalculatorLayout from '../layouts/CalculatorLayout.astro';
 import NetToGrossCalculator from '../components/calculators/NetToGrossCalculator';
 
 const faqs = [
-  { question: 'What does net to gross mean?', answer: 'Net to gross (also called reverse tax calculation) determines the gross salary you need to earn in order to take home a specific amount after all taxes and deductions (federal tax, CPP, EI, provincial tax).' },
-  { question: 'How is the gross salary calculated from net?', answer: 'The calculator uses a binary search algorithm to find the gross salary that produces your target net pay after subtracting federal tax, CPP/QPP, EI/QPIP, and provincial tax. It iteratively narrows down the exact gross amount needed.' },
+  {
+    question: "Why is the gross so much higher than the net I asked for?",
+    answer:
+      "Because the gap is not a fixed percentage. Each additional dollar of gross is taxed at the marginal rate, which rises through the brackets, so reaching a higher take-home target requires progressively more gross. At upper incomes a thousand dollars of extra net can need close to two thousand of gross.",
+  },
+  {
+    question: "Does the answer change if I contribute to an RRSP?",
+    answer:
+      "Yes, and substantially. A registered contribution reduces taxable income, so the gross needed to reach a given take-home figure falls. The effect is proportional to the marginal rate, which means it is worth most exactly where the gross-to-net gap is widest.",
+  },
+  {
+    question: "Can I use this to set a freelance day rate?",
+    answer:
+      "Partly. It gives the employment-equivalent gross, but a self-employed person pays both halves of CPP, receives no employer contribution, no paid leave and no benefits. Adding twenty to thirty percent to the figure this calculator returns is the usual starting point for a contract rate.",
+  },
+
+  { question: 'What does net to gross mean?', answer: 'Net to gross (also called reverse tax calculation) determines the gross salary you need to earn in order to take home a specific amount after all taxes and deductions (federal tax, CPP, EI, provincial tax). It is the calculation to run before a negotiation, because a target expressed in take-home pay translates into a very different gross depending on the province and on any registered contributions.' },
+  { question: 'How is the gross salary calculated from net?', answer: 'The calculator uses a binary search algorithm to find the gross salary that produces your target net pay after subtracting federal tax, CPP/QPP, EI/QPIP, and provincial tax. It iteratively narrows down the exact gross amount needed. The approach is necessary because the relationship between gross and net is not linear: bracket thresholds and contribution ceilings both create steps that no single formula can invert directly.' },
   { question: 'Why do I need more than double my net to get my desired take-home?', answer: 'At higher income levels, the marginal tax rates in Canada can exceed 50% (combined federal and provincial). This means each additional dollar earned yields less than 50 cents of take-home pay, so the gross salary grows faster than the net.' },
-  { question: 'Does the province affect the required gross salary?', answer: 'Yes, significantly. Provinces with higher tax rates (like Quebec and Nova Scotia) require a higher gross salary to achieve the same take-home pay compared to lower-tax provinces like Alberta or Nunavut.' },
-  { question: 'Can I factor in RRSP contributions?', answer: 'This calculator shows the base gross-to-net relationship. RRSP contributions reduce your taxable income, so the required gross salary would be lower if you are making RRSP deductions. Use the main salary calculator to model RRSP impacts.' },
+  { question: 'Does the province affect the required gross salary?', answer: 'Yes, significantly. Provinces with higher tax rates (like Quebec and Nova Scotia) require a higher gross salary to achieve the same take-home pay compared to lower-tax provinces like Alberta or Nunavut. On a middle income the spread between the lightest and heaviest province can exceed several thousand dollars of gross salary for the same take-home pay, which is worth checking before accepting a relocation.' },
+  { question: 'Can I factor in RRSP contributions?', answer: 'This calculator shows the base gross-to-net relationship. RRSP contributions reduce your taxable income, so the required gross salary would be lower if you are making RRSP deductions. Use the main salary calculator to model RRSP impacts. The effect is proportional to your marginal rate, so the higher the salary, the more a contribution lowers the gross needed to reach a given take-home figure.' },
 ];
+import PayrollContext from '../components/PayrollContext.astro';
+import OfficialSources from '../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -46,4 +64,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

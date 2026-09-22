@@ -43,13 +43,15 @@ const faqs = [
     answer: 'This calculator uses the official 2026 CRA federal tax brackets, CPP/EI rates, and provincial tax data from each province\'s revenue department. It provides a close estimate of your take-home pay. However, individual circumstances (RRSP contributions, tax credits, deductions, union dues) may cause your actual paycheque to differ slightly. Quebec calculations include QPP, QPIP, and the federal abatement.'
   },
 ];
+import PayrollContext from '../components/PayrollContext.astro';
+import OfficialSources from '../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
   slug="/"
-  title="Salary Calculator"
-  metaTitle="Canada Salary After Tax Calculator 2026 | Take-Home Pay"
-  metaDescription="Calculate your 2026 take-home pay in Canada after federal tax, CPP, EI, and provincial tax. Free salary calculator for all 13 provinces and territories."
+  title="Salary After Tax Calculator Canada 2026: Take-Home"
+  metaTitle="Salary After Tax in Canada 2026: Take-Home Pay Calculator"
+  metaDescription="Take-home pay in Canada for 2026: federal tax, provincial tax, CPP and EI, computed with the current brackets for all thirteen provinces and territories."
   h1="Canada Salary After Tax Calculator 2026"
   intro="Calculate your take-home pay after federal income tax, CPP, EI, and provincial taxes. Updated with the latest 2026 CRA tax brackets for all 13 provinces and territories."
   faqs={faqs}
@@ -157,4 +159,6 @@ const faqs = [
     </section>
   </Fragment>
   <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

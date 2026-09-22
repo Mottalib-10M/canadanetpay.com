@@ -13,14 +13,37 @@ const calculators = [
 
 const faqs = [
   {
+    question: "Do these calculators share the same tax engine?",
+    answer:
+      "Yes. Every page draws on one implementation of the federal and provincial brackets, the CPP and CPP2 ceilings and the EI premium, so two calculators can never disagree about the same salary. Updating a rate changes every page at once, which is the reason for building it that way.",
+  },
+  {
+    question: "Do the calculators handle Quebec correctly?",
+    answer:
+      "Yes, and the differences are large enough that a generic calculator gets Quebec wrong. The province collects its own income tax, runs the Quebec Pension Plan rather than CPP, adds the parental insurance plan alongside a reduced EI premium, and applies a federal abatement. All four are modelled separately.",
+  },
+  {
+    question: "Is any of the data I enter sent anywhere?",
+    answer:
+      "No. Every calculation runs in your browser, and no salary figure is transmitted to a server or stored anywhere. The only measurement is an anonymous page count, which records that a visit happened and nothing at all about its content or the numbers you typed.",
+  },
+  {
+    question: "How often are the rates behind them updated?",
+    answer:
+      "Federal and provincial brackets, the basic personal amounts and the contribution ceilings are indexed each January, and the site is updated once the Canada Revenue Agency publishes them, usually in November for the following year. Mid-year budget measures are applied from the date the legislation specifies.",
+  },
+
+  {
     question: 'Which calculator should I use?',
     answer: 'Start with the main Salary Calculator if you know your annual or monthly gross salary. Use Net to Gross if you want to know what salary to negotiate. The CPP Calculator and Income Tax Calculator break down individual components in detail.',
   },
   {
     question: 'Are these calculators accurate for 2026?',
-    answer: 'Yes. All calculators use the official 2026 CRA tax brackets, CPP/QPP rates, EI rates, and provincial tax data. They are updated each January when new rates are published.',
+    answer: 'Yes. All calculators use the official 2026 CRA tax brackets, CPP/QPP rates, EI rates, and provincial tax data. They are updated each January when new rates are published. What they cannot know is your own credits beyond the basic amount, any registered contribution, or a benefit in kind, each of which shifts the result. Treat the figure as a reliable baseline rather than a payslip.',
   },
 ];
+import PayrollContext from '../../components/PayrollContext.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -45,4 +68,33 @@ const faqs = [
       </a>
     ))}
   </div>
+  <PayrollContext />
+
+  <section class="mx-auto max-w-3xl px-4 mt-12">
+    <h2 class="text-2xl font-bold">Choosing between the tools</h2>
+    <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+      The calculators overlap deliberately, because the same question arrives in different forms.
+      Someone reading an offer letter starts from gross and wants the net. Someone budgeting for
+      rent starts from the net they need and wants to know what gross delivers it. Someone hiring
+      starts from neither and wants the full cost of the role. Each of those is the same
+      arithmetic run in a different direction, and forcing all three through one interface makes
+      every one of them harder to use.
+    </p>
+    <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+      The specialised tools exist for the cases where the general calculator answers imprecisely.
+      A bonus is taxed as ordinary income but withheld differently, so a dedicated page avoids the
+      confusion that produces. Hourly work needs an assumption about hours and weeks before any
+      tax calculation can begin. Employer cost depends on a workers' compensation rate that varies
+      by industry rather than by income. None of these fit cleanly into a salary field.
+    </p>
+    <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+      What they share is the engine. Every page calls one implementation of the federal brackets,
+      the provincial schedules, the pension plan ceilings and the employment insurance premium, so
+      two tools cannot disagree about the same salary in the same province. When the Canada
+      Revenue Agency publishes new figures in November, one change updates every page at once,
+      which is the reason the site is built this way rather than as a set of independent
+      calculators.
+    </p>
+  </section>
+  <OfficialSources />
 </CalculatorLayout>

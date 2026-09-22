@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
@@ -13,9 +14,27 @@ interface Props {
   modifiedDate?: string;
   breadcrumbs: { label: string; href?: string }[];
   lang?: string;
+  /**
+   * Questions de la page. Elles sont affichees ET declarees en `FAQPage` a
+   * partir de cette seule source, de sorte que le balisage ne puisse jamais
+   * promettre a Google un texte absent de la page (RECETTE §7).
+   */
+  faqs?: { question: string; answer: string }[];
 }
 
-const { title, description, publishDate, modifiedDate, breadcrumbs, lang = 'en' } = Astro.props;
+const { title, description, publishDate, modifiedDate, breadcrumbs, lang = 'en', faqs = [] } = Astro.props;
+
+const faqPageSchema = faqs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: { '@type': 'Answer', text: f.answer },
+      })),
+    }
+  : null;
 const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).href;
 const articleSchema = buildArticleSchema(
   title,
@@ -31,7 +50,7 @@ const articleSchema = buildArticleSchema(
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{title} | Salary After Tax Canada</title>
+  <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalUrl} />
 
@@ -74,6 +93,23 @@ const articleSchema = buildArticleSchema(
       </header>
 
       <slot />
+
+      {faqs.length > 0 && (
+        <section class="mt-12 border-t border-border pt-8">
+          <h2 id="faq">{lang === 'fr' ? 'Questions fréquentes' : 'Frequently asked questions'}</h2>
+          <div class="mt-6 space-y-4 not-prose">
+            {faqs.map((f) => (
+              <details class="rounded-xl border border-border bg-white dark:bg-gray-900">
+                <summary class="cursor-pointer px-6 py-4 font-semibold hover:text-primary">
+                  {f.question}
+                </summary>
+                <div class="px-6 pb-4 text-sm leading-relaxed text-text-muted">{f.answer}</div>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+      {faqPageSchema && <script type="application/ld+json" set:html={JSON.stringify(faqPageSchema)} />}
     </article>
   </main>
 

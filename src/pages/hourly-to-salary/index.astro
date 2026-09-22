@@ -4,22 +4,40 @@ import HourlyToSalaryCalculator from '../../components/calculators/HourlyToSalar
 
 const faqs = [
   {
+    question: "Does the conversion assume paid vacation?",
+    answer:
+      "It assumes fifty-two paid weeks, which matches a salaried contract. An hourly worker who takes unpaid time off earns proportionally less, so the annualised figure overstates the real total. Vacation pay, usually four percent on top for hourly workers in most provinces, is not included either.",
+  },
+  {
+    question: "Is an hourly job worth less than the same salary?",
+    answer:
+      "Not necessarily, but the comparison needs care. Hourly work often pays overtime that a salary does not, and vacation pay is added on top rather than built in. Against that, salaried roles more often carry benefits, pension matching and paid sick leave, none of which appear in an hourly rate.",
+  },
+  {
+    question: "How do I compare a contract rate to a salary?",
+    answer:
+      "Deduct what the contract does not provide. A contractor pays both halves of CPP, receives no employer pension contribution, no paid leave and usually no health coverage. A common rule of thumb is that a contract rate needs to exceed the equivalent salary by twenty to thirty percent to break even.",
+  },
+
+  {
     question: 'How do I convert my hourly wage to annual salary?',
     answer: 'Multiply your hourly rate by the number of hours you work per week, then multiply by 52 weeks. For example, $25/hour at 40 hours/week = $25 × 40 × 52 = $52,000 per year. This calculator also shows what you take home after taxes.',
   },
   {
     question: 'What is a good hourly wage in Canada in 2026?',
-    answer: 'The median hourly wage in Canada is approximately $28–$30/hour. Minimum wages range from $15.00 to $19.00 depending on province. An hourly wage of $35+/hour puts you above the median in most provinces.',
+    answer: 'The median hourly wage in Canada is approximately $28–$30/hour. Minimum wages range from $15.00 to $19.00 depending on province. An hourly wage of $35+/hour puts you above the median in most provinces. The median is a better benchmark than the average for judging an offer, because the average is pulled upward by very high earners and sits several dollars above what a typical worker makes.',
   },
   {
     question: 'Does this calculation include overtime?',
-    answer: 'This calculator assumes regular hours only with no overtime premium. In most provinces, overtime (typically above 44 hours/week) is paid at 1.5x your regular rate. If you regularly work overtime, your actual annual income will be higher.',
+    answer: 'This calculator assumes regular hours only with no overtime premium. In most provinces, overtime (typically above 44 hours/week) is paid at 1.5x your regular rate. If you regularly work overtime, your actual annual income will be higher. Note that the overtime threshold is set provincially and differs: some provinces count daily hours, others weekly, and a few use both, whichever is reached first.',
   },
   {
     question: 'How does part-time vs full-time affect my taxes?',
     answer: 'Your tax rate depends on total annual income, not hours worked. A part-time worker earning $30,000/year pays the same tax rates as a full-time worker at $30,000/year. However, part-time workers typically have lower annual incomes and therefore lower effective tax rates.',
   },
 ];
+import PayrollContext from '../../components/PayrollContext.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -67,4 +85,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

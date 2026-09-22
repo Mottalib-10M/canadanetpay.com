@@ -1,12 +1,31 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="RRSP Tax Savings Guide 2026"
+  title="RRSP tax savings 2026: limits, timing and real value"
   description="Learn how RRSP contributions reduce your Canadian income tax, calculate your tax savings at different income levels, and understand when to choose RRSP vs TFSA."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'RRSP Tax Savings' }]}
+  faqs={[
+      {
+          "question": "What is the contribution limit?",
+          "answer": "Eighteen percent of the previous year's earned income, up to an annual dollar maximum set by the Canada Revenue Agency, less any pension adjustment from a workplace plan. Unused room carries forward indefinitely, so someone who has never contributed may have decades of accumulated space. The exact figure appears on your most recent notice of assessment and in your CRA account."
+      },
+      {
+          "question": "Is an RRSP better than a TFSA?",
+          "answer": "They differ on when tax applies. An RRSP gives relief now and taxes withdrawals later; a TFSA gives no relief but withdrawals are tax-free. The RRSP wins when your marginal rate today is higher than it will be in retirement, which is usually the case for higher earners. At lower incomes, where the rate may be similar or higher later, the TFSA often wins."
+      },
+      {
+          "question": "What happens if I over-contribute?",
+          "answer": "A lifetime buffer of two thousand dollars is tolerated without penalty. Beyond that, a tax of one percent per month applies to the excess for as long as it remains, which accumulates quickly. Over-contributions usually happen when a pension adjustment is overlooked, so checking the notice of assessment before contributing is worth the two minutes it takes."
+      },
+      {
+          "question": "Can I withdraw before retirement?",
+          "answer": "Yes, but the withdrawal is added to that year's income and taxed at your marginal rate, and the contribution room is lost permanently. Two exceptions allow tax-free withdrawal with an obligation to repay: the Home Buyers' Plan and the Lifelong Learning Plan. Outside those, an early withdrawal is usually the most expensive way to raise cash."
+      }
+  ]}
 >
   <h2>How RRSPs Reduce Your Taxes</h2>
   <p>
@@ -202,4 +221,5 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
   <ul>
     <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/rrsps-related-plans/registered-retirement-savings-plan-rrsp.html" target="_blank" rel="noopener">CRA: RRSP Information</a></li>
   </ul>
+  <OfficialSources />
 </GuideLayout>

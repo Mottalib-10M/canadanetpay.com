@@ -1,13 +1,13 @@
 ---
 import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
 import SalaryCalculator from '../../components/calculators/SalaryCalculator';
-import { SALARY_PAGES } from '../../data/salary-pages';
+import { SALARY_PAGES, MONTANTS_AVEC_PAGE } from '../../data/salary-pages';
 import { calculateTakeHome } from '../../lib/tax-engine-ca';
 import { formatCurrency } from '../../lib/format';
 import { getBandContext, getCareers, buildFaqs, getBudgetBreakdown, getProgressionContext, getEducationalContent, getTaxOverview, getSavingsStrategy, getMaximiseTips, getProvincialIntro } from '../../lib/salary-content';
 
 export function getStaticPaths() {
-  return SALARY_PAGES.map((page) => ({
+  return SALARY_PAGES.filter((p) => MONTANTS_AVEC_PAGE.includes(p.grossAnnual)).map((page) => ({
     params: { slug: page.slug },
     props: { page },
   }));
@@ -57,6 +57,7 @@ const idx = allPages.findIndex((p) => p.grossAnnual === gross);
 const prevPage = idx > 0 ? allPages[idx - 1] : null;
 const nextPage = idx < allPages.length - 1 ? allPages[idx + 1] : null;
 const otherPages = allPages.filter((p) => p.grossAnnual !== gross);
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -75,22 +76,22 @@ const otherPages = allPages.filter((p) => p.grossAnnual !== gross);
     <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-center">
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Net Annual (ON)</p>
       <p class="text-2xl font-bold text-green-600 dark:text-green-400">{fmt(onResult.netAnnual)}</p>
-      <p class="text-xs text-gray-400">{fmt(onResult.netMonthly)}/month</p>
+      <p class="text-xs text-gray-500">{fmt(onResult.netMonthly)}/month</p>
     </div>
     <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-center">
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Federal Tax</p>
       <p class="text-2xl font-bold text-red-600 dark:text-red-400">{fmt(onResult.federalIncomeTax)}</p>
-      <p class="text-xs text-gray-400">{(onResult.federalIncomeTax / gross * 100).toFixed(1)}% of gross</p>
+      <p class="text-xs text-gray-500">{(onResult.federalIncomeTax / gross * 100).toFixed(1)}% of gross</p>
     </div>
     <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-center">
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Provincial Tax (ON)</p>
       <p class="text-2xl font-bold text-red-600 dark:text-red-400">{fmt(onResult.provincialTax)}</p>
-      <p class="text-xs text-gray-400">{(onResult.provincialTax / gross * 100).toFixed(1)}% of gross</p>
+      <p class="text-xs text-gray-500">{(onResult.provincialTax / gross * 100).toFixed(1)}% of gross</p>
     </div>
     <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-center">
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">CPP + EI</p>
       <p class="text-2xl font-bold text-orange-600 dark:text-orange-400">{fmt(onResult.cpp + onResult.cpp2 + onResult.ei)}</p>
-      <p class="text-xs text-gray-400">Payroll deductions</p>
+      <p class="text-xs text-gray-500">Payroll deductions</p>
     </div>
   </div>
 
@@ -305,4 +306,5 @@ const otherPages = allPages.filter((p) => p.grossAnnual !== gross);
       </div>
     </section>
   </Fragment>
+  <OfficialSources />
 </CalculatorLayout>

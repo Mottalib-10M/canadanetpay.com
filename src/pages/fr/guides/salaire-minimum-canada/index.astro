@@ -1,13 +1,32 @@
 ---
 import GuideLayout from '../../../../layouts/GuideLayout.astro';
+import OfficialSources from '../../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Salaire minimum au Canada par province 2026"
-  description="Taux de salaire minimum actuels pour chaque province et territoire canadien. Taux fédéral, Ontario, C.-B., Alberta, Québec, plus serveurs et jeunes travailleurs."
+  title="Salaire minimum au Canada en 2026, province par province"
+  description="Le salaire minimum en vigueur dans chaque province et territoire, le taux fédéral et qui il vise, les dates de révision, et ce que cela donne sur une année."
   publishDate="2025-07-10"
   breadcrumbs={[{ label: 'Accueil', href: '/fr/' }, { label: 'Guides', href: '/fr/guides/' }, { label: 'Salaire minimum Canada' }]}
   lang="fr"
+  faqs={[
+      {
+          "question": "Quel salaire minimum s'applique à moi ?",
+          "answer": "Celui de la province ou du territoire où le travail est effectué, dans la quasi-totalité des cas. Quelques secteurs de compétence fédérale, dont les banques, le transport interprovincial et les télécommunications, relèvent du taux fédéral ; lorsque le taux provincial est plus élevé, c'est lui qui prime. Certaines provinces prévoient des taux distincts pour les étudiants et le personnel servant de l'alcool."
+      },
+      {
+          "question": "À quelle date les taux changent-ils ?",
+          "answer": "La plupart des provinces révisent leur taux une fois l'an, souvent au premier avril ou au premier octobre, et plusieurs l'indexent désormais sur l'indice des prix à la consommation plutôt que de légiférer chaque fois. Quelques-unes le fixent encore par décret, ce qui rend la date moins prévisible. Un taux cité sans sa date d'entrée en vigueur est à vérifier."
+      },
+      {
+          "question": "Cela représente combien par année ?",
+          "answer": "À trente-sept heures et demie par semaine, le salaire minimum donne entre trente et trente-cinq mille dollars par an avant retenues, selon la province. Ce montant se situe sous le seuil de la première tranche fédérale : rien n'y est imposé au-delà du taux le plus bas, et le montant personnel de base en exonère une partie appréciable."
+      },
+      {
+          "question": "Le salaire minimum équivaut-il au salaire viable ?",
+          "answer": "Non. Le salaire viable est un calcul de ce qu'il faut pour couvrir les dépenses réelles dans une localité donnée, produit par des groupes de recherche et non par les gouvernements, et il dépasse généralement le minimum légal de plusieurs dollars l'heure. Il n'a aucune valeur contraignante. L'écart est le plus marqué dans les villes où le logement coûte cher."
+      }
+  ]}
 >
   <h2>Taux de salaire minimum actuels au Canada</h2>
   <p>
@@ -137,6 +156,37 @@ import GuideLayout from '../../../../layouts/GuideLayout.astro';
   <ul>
     <li><a href="https://www.canada.ca/fr/emploi-developpement-social/services/salaire-minimum.html" target="_blank" rel="noopener">Gouvernement du Canada : Salaire minimum par province</a></li>
     <li><a href="https://www.ontario.ca/fr/document/votre-guide-de-la-loi-sur-les-normes-demploi-0/salaire-minimum" target="_blank" rel="noopener">Ontario : Salaire minimum</a></li>
-    <li><a href="https://www.quebec.ca/emploi/salaire-minimum" target="_blank" rel="noopener">Québec : Salaire minimum</a></li>
+    <li><a href="https://www.cnesst.gouv.qc.ca/fr/conditions-travail/salaire-paie/salaire-minimum" target="_blank" rel="noopener">Québec : Salaire minimum</a></li>
   </ul>
+
+  <h2>Ce que le salaire minimum ne dit pas</h2>
+  <p>
+    Un taux horaire ne renseigne que sur une partie de la rémunération. Dans la plupart des
+    provinces, le personnel payé à l'heure reçoit en plus une indemnité de vacances, souvent
+    quatre pour cent, versée soit à chaque paie soit au moment du congé. Un salarié annuel a ces
+    congés intégrés à son salaire. Comparer un taux horaire à un salaire annuel sans tenir compte
+    de cet écart fausse systématiquement la comparaison, en général de plusieurs centaines de
+    dollars par année.
+  </p>
+  <p>
+    Les heures supplémentaires jouent dans l'autre sens. La plupart des provinces les rémunèrent à
+    une fois et demie le taux normal au-delà d'un seuil hebdomadaire, parfois quotidien, ce qui
+    peut porter le revenu réel d'un poste horaire nettement au-dessus de l'équivalent annuel
+    affiché. Le seuil varie : certaines provinces comptent en heures par jour, d'autres par
+    semaine, quelques-unes retiennent le premier des deux atteint.
+  </p>
+  <h2>Retenues et seuils d'imposition</h2>
+  <p>
+    Au salaire minimum, à temps plein, le revenu annuel se situe sous le seuil de la première
+    tranche fédérale : rien n'est imposé au-delà du taux le plus bas. Le montant personnel de base
+    en exonère par ailleurs une part appréciable, si bien que l'impôt sur le revenu représente une
+    fraction modeste des retenues.
+  </p>
+  <p>
+    Les cotisations au Régime de pensions du Canada et à l'assurance-emploi, elles, s'appliquent
+    dès les premiers dollars au-delà de l'exemption de base, sans égard au niveau de revenu. À ce
+    niveau de rémunération, elles pèsent donc proportionnellement plus lourd que l'impôt, ce qui
+    surprend souvent à la lecture d'un premier bulletin de paie.
+  </p>
+  <OfficialSources lang="fr" />
 </GuideLayout>

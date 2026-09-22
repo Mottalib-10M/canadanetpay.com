@@ -4,6 +4,27 @@ import BonusCalculator from '../../components/calculators/BonusCalculator';
 
 const faqs = [
   {
+    question: "Is a bonus taxed at a higher rate than salary?",
+    answer:
+      "No, though it often looks that way on the payslip. Payroll withholds on a bonus using a method that assumes the payment repeats, which frequently over-withholds. The excess comes back at filing. The bonus itself is ordinary employment income taxed at your marginal rate, exactly like the salary it accompanies.",
+  },
+  {
+    question: "Can I put a bonus straight into an RRSP?",
+    answer:
+      "Yes, and it is one of the cleaner uses for one. If you direct the bonus to an RRSP before it is paid, and your employer agrees, no tax is withheld on the amount contributed, so the full sum is invested rather than the after-tax remainder. Contribution room still applies.",
+  },
+  {
+    question: "Does a bonus affect my benefits or credits?",
+    answer:
+      "It can. Income-tested benefits, including the Canada Child Benefit and the GST credit, are calculated on total annual income, so a large bonus in one year reduces entitlements in the following benefit year. The effect is a form of marginal rate that never appears on a tax table.",
+  },
+  {
+    question: "When is the best time in the year to receive a bonus?",
+    answer:
+      "Late in the year, if CPP and EI ceilings have already been reached, since neither contribution applies beyond the annual maximum. The income tax is unaffected by timing within the same year, but shifting a bonus into January moves it into the following tax year entirely, which helps only if that year's income will be lower.",
+  },
+
+  {
     question: 'How are bonuses taxed in Canada?',
     answer: 'Bonuses in Canada are taxed at your marginal tax , meaning the combined federal and provincial rate for your top bracket. Unlike regular pay, your entire bonus typically falls within one bracket (your highest), so the effective tax rate on a bonus is usually higher than on your regular paycheque. CPP and EI also apply if you haven\'t reached the annual maximums.',
   },
@@ -20,6 +41,8 @@ const faqs = [
     answer: 'You can redirect part of your bonus to your RRSP before year-end to reduce your taxable income. Other strategies include contributing to a spousal RRSP, making charitable donations for tax credits, or timing the bonus to a lower-income year if possible.',
   },
 ];
+import PayrollContext from '../../components/PayrollContext.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -54,4 +77,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

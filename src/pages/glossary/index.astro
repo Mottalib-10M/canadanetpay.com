@@ -3,7 +3,7 @@ import GuideLayout from '../../layouts/GuideLayout.astro';
 import { SITE_URL } from '../../data/site-config';
 import { breadcrumbSchema } from '../../lib/seo';
 
-const title = 'Canadian Tax and Payroll Glossary';
+const title = 'Canadian payroll and tax terms explained plainly 2026';
 const description = 'Definitions of key Canadian payroll and tax terms including CPP, EI, RRSP, TFSA, and provincial tax brackets. Understand your paycheque deductions clearly.';
 const canonicalUrl = `${SITE_URL}/glossary/`;
 
@@ -71,6 +71,7 @@ const definedTermSetSchema = {
     description: t.definition.replace(/<[^>]*>/g, ''),
   })),
 };
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
@@ -78,6 +79,32 @@ const definedTermSetSchema = {
   description={description}
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Glossary' }]}
+  faqs={[
+      {
+          "question": "What is the difference between gross and net pay?",
+          "answer": "Gross pay is the figure in the employment contract, before anything is taken off. Net pay is what reaches the bank account after federal tax, provincial tax, Canada Pension Plan contributions and Employment Insurance premiums. The gap is typically twenty to thirty-five percent depending on income and province, and it widens as salary rises because the tax brackets are progressive while the contributions are not."
+      },
+      {
+          "question": "What does a pension adjustment mean on my tax slip?",
+          "answer": "It is the value the Canada Revenue Agency assigns to the pension benefit you earned that year through a workplace plan, and it reduces the RRSP room you accrue for the following year. The logic is to keep total tax-assisted retirement saving comparable between someone in a pension plan and someone contributing to an RRSP alone. It appears in box 52 of the T4."
+      },
+      {
+          "question": "What is a non-refundable tax credit?",
+          "answer": "A credit that can reduce tax owing to zero but not below it: any unused portion is lost rather than paid out. The basic personal amount, the CPP and EI credits and the tuition credit all work this way. Refundable credits, such as the GST credit, are paid even when no tax is owed, which is why the distinction matters at low incomes."
+      },
+      {
+          "question": "What are insurable and pensionable earnings?",
+          "answer": "Insurable earnings are the portion of pay on which Employment Insurance premiums are charged, capped at an annual maximum. Pensionable earnings are the portion subject to Canada Pension Plan contributions, between a basic exemption and the ceilings. Both appear in their own boxes on the T4, and both stop accruing once the annual maximum is reached, which is why deductions fall later in the year."
+      },
+      {
+          "question": "What is the difference between a T4 and a T4A?",
+          "answer": "A T4 reports employment income and the deductions taken from it by an employer. A T4A reports other kinds of income, including self-employment fees, pension payments, scholarships and certain benefits, usually with no tax withheld. Receiving a T4A generally means tax is owed at filing rather than having been paid through payroll across the year."
+      },
+      {
+          "question": "What does indexation mean for tax thresholds?",
+          "answer": "Each January the federal bracket thresholds, the basic personal amount and several credits are increased in line with the Consumer Price Index, so that inflation alone does not push people into higher brackets. Most provinces index too, though a few have frozen their thresholds in some years, which quietly raises the effective tax rate without any announced increase."
+      }
+  ]}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema(breadcrumbItems))} />
   <script type="application/ld+json" set:html={JSON.stringify(definedTermSetSchema)} />
@@ -130,4 +157,5 @@ const definedTermSetSchema = {
       <li><a href="/hourly-to-salary/" class="text-brand-600 hover:underline dark:text-brand-400">Hourly to Salary Calculator</a></li>
     </ul>
   </div>
+  <OfficialSources />
 </GuideLayout>

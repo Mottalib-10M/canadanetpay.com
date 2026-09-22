@@ -3,13 +3,15 @@ import CalculatorLayout from '../layouts/CalculatorLayout.astro';
 import EICalculator from '../components/calculators/EICalculator';
 
 const faqs = [
-  { question: 'What is the EI premium rate for 2026?', answer: 'The employee EI premium rate for 2026 is 1.58% on insurable earnings up to $65,700, resulting in a maximum annual premium of $1,049.12. Employers pay 1.4 times the employee rate (2.212%).' },
-  { question: 'Why is the EI rate lower for Quebec?', answer: 'Quebec residents pay a reduced EI rate of 1.248% (max $834.24) because they also contribute to QPIP (Quebec Parental Insurance Plan) at 0.494% (max $484.12). QPIP covers maternity and parental benefits, which are handled by EI in other provinces.' },
+  { question: 'What is the EI premium rate for 2026?', answer: 'The employee EI premium rate for 2026 is 1.58% on insurable earnings up to $65,700, resulting in a maximum annual premium of $1,049.12. Employers pay 1.4 times the employee rate (2.212%). Both the rate and the ceiling are set annually by the Canada Employment Insurance Commission, usually in September for the following year, so a figure quoted without its year is unreliable.' },
+  { question: 'Why is the EI rate lower for Quebec?', answer: 'Quebec residents pay a reduced EI rate of 1.248% (max $834.24) because they also contribute to QPIP (Quebec Parental Insurance Plan) at 0.494% (max $484.12). QPIP covers maternity and parental benefits, which are handled by EI in other provinces. The combined cost of the two Quebec charges is close to the single federal premium elsewhere, so the apparent saving on the EI line is largely offset on the QPIP line.' },
   { question: 'What does EI cover?', answer: 'Employment Insurance provides temporary income support for: regular benefits (job loss), maternity and parental benefits, sickness benefits (up to 26 weeks), compassionate care benefits, and family caregiver benefits. The benefit rate is 55% of your average insurable earnings, up to a maximum of $695/week in 2026.' },
   { question: 'Do I pay EI on all my income?', answer: 'No. EI premiums are only charged on insurable earnings up to $65,700. Once your year-to-date earnings reach this maximum, no further EI premiums are deducted for the rest of the year. This is why you may notice slightly higher paycheques toward the end of the year.' },
-  { question: 'Is EI mandatory for self-employed individuals?', answer: 'EI is not mandatory for self-employed workers, but you can opt in for special benefits (maternity, parental, sickness, compassionate care). If you opt in, you pay the employee portion only. You cannot access regular (unemployment) benefits as self-employed.' },
+  { question: 'Is EI mandatory for self-employed individuals?', answer: 'EI is not mandatory for self-employed workers, but you can opt in for special benefits (maternity, parental, sickness, compassionate care). If you opt in, you pay the employee portion only. You cannot access regular (unemployment) benefits as self-employed. The commitment is long term: once you claim a special benefit you must keep contributing for as long as you are self-employed, which makes opting in a decision worth modelling rather than trying.' },
   { question: 'What is QPIP and who pays it?', answer: 'The Quebec Parental Insurance Plan (QPIP) provides maternity, paternity, parental, and adoption benefits to Quebec workers. Employees contribute 0.494% on insurable earnings up to $98,000 (max $484.12). Employers pay a separate rate. QPIP replaced the maternity/parental portion of EI for Quebec residents.' },
 ];
+import PayrollContext from '../components/PayrollContext.astro';
+import OfficialSources from '../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -48,4 +50,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

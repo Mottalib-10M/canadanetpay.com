@@ -25,16 +25,17 @@ const faqs = [
   },
   {
     question: 'Ce calculateur est-il précis?',
-    answer: 'Ce calculateur utilise les données officielles de l\'ARC pour 2026. Il fournit une estimation précise de votre salaire net. Cependant, des facteurs individuels (REER, crédits d\'impôt, déductions) peuvent faire varier votre résultat réel.',
+    answer: 'Ce calculateur utilise les données officielles de l\'ARC pour 2026. Il fournit une estimation précise de votre salaire net. Cependant, des facteurs individuels (REER, crédits d\'impôt, déductions) peuvent faire varier votre résultat réel. Il ne connaît pas non plus vos crédits personnels au-delà du montant de base ni un avantage imposable : traitez le résultat comme une référence fiable plutôt que comme un bulletin de paie.',
   },
 ];
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
   slug="/fr/"
-  title="Calculateur de salaire"
-  metaTitle="Calculateur de Salaire Net Canada 2026 | Après Impôts"
-  metaDescription="Calculez votre salaire net au Canada après impôts fédéraux, RPC, AE et impôts provinciaux. Mis à jour avec les taux officiels 2026 pour les 13 provinces."
+  title="Salaire net au Canada 2026 : calcul et retenues"
+  metaTitle="Salaire net au Canada 2026 : calculateur après impôt"
+  metaDescription="Salaire net au Canada pour 2026 : impôt fédéral, impôt provincial, RPC et assurance-emploi, calculés avec les barèmes en vigueur dans les treize provinces."
   h1="Calculateur de Salaire Net Canada 2026"
   intro="Calculez votre salaire net après impôts fédéraux, RPC/RRQ, assurance-emploi et impôts provinciaux. Mis à jour avec les taux officiels de l'ARC 2026."
   lang="fr"
@@ -65,4 +66,5 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <OfficialSources lang="fr" />
 </CalculatorLayout>

@@ -4,6 +4,22 @@ import NetToGrossCalculator from '../../components/calculators/NetToGrossCalcula
 
 const faqs = [
   {
+    question: "When is a net-to-gross calculation useful?",
+    answer:
+      "Whenever the constraint is expressed in take-home terms: a rent to cover, a mortgage affordability test, or a salary negotiation where you know what you need in the account each month. Working forward from gross answers a different question, and converting mentally between the two is unreliable.",
+  },
+  {
+    question: "Does the province change the required gross?",
+    answer:
+      "Considerably. Federal tax, CPP and EI are the same everywhere, so the entire difference comes from provincial tax, and on a middle income the spread between the lightest and heaviest province can exceed several thousand dollars of gross for the same take-home pay.",
+  },
+  {
+    question: "Is the result exact?",
+    answer:
+      "It is accurate to a few dollars for a standard salaried position. Because the relationship between gross and net is not linear, the calculation works by narrowing in rather than applying a formula. Personal credits beyond the basic amount, a benefit in kind, or a mid-year province change all shift it.",
+  },
+
+  {
     question: 'How does the net-to-gross calculator work?',
     answer: 'The calculator uses binary search to find the gross salary that results in your desired net (take-home) pay. It factors in federal tax, provincial tax, CPP/QPP, EI, and any additional premiums like the Ontario Health Premium, then iterates until the resulting net pay matches your target within $1.',
   },
@@ -13,13 +29,15 @@ const faqs = [
   },
   {
     question: 'Can I use this to negotiate my salary?',
-    answer: 'Yes. If you know the take-home pay you need each month, this calculator helps you determine the minimum gross salary to ask for. Remember that employer benefits (RRSP matching, health insurance, etc.) also have value beyond your cash salary.',
+    answer: 'Yes. If you know the take-home pay you need each month, this calculator helps you determine the minimum gross salary to ask for. Remember that employer benefits (RRSP matching, health insurance, etc.) also have value beyond your cash salary. It is also worth calculating what the role costs the employer, since that figure, rather than your gross, is the budget the offer is drawn from.',
   },
   {
     question: 'Does the calculator account for RRSP contributions?',
-    answer: 'The basic net-to-gross calculation does not include RRSP contributions. If you make RRSP contributions, your required gross may be lower because RRSPs reduce your taxable income. Use the main salary calculator with the RRSP field for that scenario.',
+    answer: 'The basic net-to-gross calculation does not include RRSP contributions. If you make RRSP contributions, your required gross may be lower because RRSPs reduce your taxable income. Use the main salary calculator with the RRSP field for that scenario. Employer matching, where it exists, changes the arithmetic further: a matched contribution is compensation you receive without paying tax on it in the year it is earned.',
   },
 ];
+import PayrollContext from '../../components/PayrollContext.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -54,4 +72,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

@@ -9,13 +9,41 @@ const articles = [
     date: '2025-01-15',
   },
 ];
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Canadian Tax Updates"
-  description="Stay current with CRA tax changes, new federal and provincial rates, CPP and EI updates that affect your take-home pay. Updated regularly for Canadian workers."
+  title="Canadian tax rate changes 2026: what changed and when"
+  description="Every change to the figures behind these calculators, with the CRA or Service Canada publication that prompted it and the date it took effect in payroll."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Updates' }]}
+  faqs={[
+      {
+          "question": "What counts as an update worth listing here?",
+          "answer": "Any change to a figure the calculators use: bracket thresholds, the basic personal amount, the CPP and CPP2 ceilings, the EI premium rate and maximum insurable earnings, provincial rates, and the minimum wage in each jurisdiction. Editorial changes to guides are not listed, since they do not alter a calculation."
+      },
+      {
+          "question": "Are past figures kept anywhere?",
+          "answer": "The calculators use the current year only. Entries on this page record what changed and when, which is enough to reconstruct an earlier position from the Canada Revenue Agency's own archive. Historical payroll tables are published there and remain available indefinitely, year by year."
+      },
+
+      {
+          "question": "How often is this page updated?",
+          "answer": "Whenever the Canada Revenue Agency, Service Canada or a provincial government changes a figure the calculator uses. In practice that means a substantial update each November and January, when the indexed thresholds and contribution ceilings for the coming year are published, and occasional entries through the year when a budget measure takes effect."
+      },
+      {
+          "question": "Do rate changes apply retroactively?",
+          "answer": "Indexation never does: the new thresholds apply from the first of January and payroll picks them up in the first pay period. A measure announced in a budget partway through the year can apply retroactively to the start of it, in which case payroll adjusts in a later period and the correction appears as an unusually large or small deduction."
+      },
+      {
+          "question": "Where do these figures come from?",
+          "answer": "Federal brackets, the basic personal amount and payroll deduction tables come from the Canada Revenue Agency. The Employment Insurance premium rate and maximum insurable earnings come from the Canada Employment Insurance Commission. Provincial rates come from each province's own budget documents. Every entry links to the source it draws on, which supersedes the summary here."
+      },
+      {
+          "question": "Why does my January pay differ from December?",
+          "answer": "Because CPP and EI contributions restart each January and run until the annual maximum is reached. Anyone who hit that maximum during the previous autumn had no contributions deducted for the last months of the year, so the return to full deductions in January looks like a pay cut. Gross pay has not changed; the ceiling has simply reset."
+      }
+  ]}
 >
   <div class="not-prose space-y-4 mt-8">
     {articles.map((article) => (
@@ -24,10 +52,58 @@ const articles = [
           {article.title}
         </h2>
         <p class="mt-2 text-gray-600 dark:text-gray-400">{article.description}</p>
-        <p class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+        <p class="mt-2 text-xs text-gray-500 dark:text-gray-500">
           Published {new Date(article.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </a>
     ))}
   </div>
+
+  <section class="mx-auto max-w-3xl px-4 mt-12">
+    <h2 class="text-2xl font-bold">Why this page exists</h2>
+    <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+      A tax calculator is only as trustworthy as the date on its figures, and most sites never
+      say when theirs last changed. This page records every alteration to the numbers behind the
+      calculators, with the source that prompted it, so that a result can be checked against the
+      year it belongs to rather than taken on trust.
+    </p>
+    <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+      Most changes arrive on a predictable schedule. The Canada Revenue Agency publishes indexed
+      bracket thresholds and the basic personal amount in November for the following January. The
+      pension plan ceilings appear around the same time, and the employment insurance premium rate
+      is set separately by the Canada Employment Insurance Commission, usually in September.
+      Provincial rates arrive with each province's budget, on thirteen different timetables.
+    </p>
+    <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+      The unpredictable changes are the ones worth watching. A federal or provincial budget can
+      alter a rate partway through a year, with effect from a date the legislation specifies
+      rather than from the following January. Payroll then applies the change from that date and
+      the annual return settles the difference, which is why a mid-year measure often shows up as
+      an unexpectedly large or small deduction in a single pay period.
+    </p>
+    <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+      Where an entry below affects a figure the calculators use, the change was applied at the
+      same time the entry was written. Where it affects something the calculators deliberately
+      exclude, such as a credit that must be claimed on the annual return, the entry says so.
+      Every entry links to the government publication it reports, which supersedes this summary in
+      any case of doubt.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 mt-8">
+    <p class="leading-relaxed text-gray-700 dark:text-gray-300">
+      Two kinds of change are deliberately absent from the list. Corrections to wording, links or
+      examples in the guides do not appear, because they alter nothing a calculator computes.
+      Neither do changes to credits claimed on the annual return rather than applied through
+      payroll, such as medical expenses or tuition, since no payslip reflects them and no
+      calculator on this site models them.
+    </p>
+    <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+      If a figure you rely on is not listed here and looks out of date, the government publication
+      is the authority rather than this page. Each entry names the source it reports so the
+      original can be checked directly, and the Canada Revenue Agency keeps prior years available
+      indefinitely for anyone reconstructing an earlier position.
+    </p>
+  </section>
+  <OfficialSources />
 </GuideLayout>

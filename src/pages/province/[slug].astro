@@ -22,29 +22,30 @@ const examples = [50000, 75000, 100000, 150000].map((gross) => {
 const faqs = [
   {
     question: `What are the ${province.name} provincial tax brackets for 2026?`,
-    answer: `${province.name} has ${province.brackets.length} tax brackets in 2026, ranging from ${(province.brackets[0].rate * 100).toFixed(2)}% to ${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%. The provincial basic personal amount is $${province.basicPersonalAmount.toLocaleString()}.${province.notes ? ' ' + province.notes : ''}`,
+    answer: `${province.name} has ${province.brackets.length} tax brackets in 2026, ranging from ${(province.brackets[0].rate * 100).toFixed(2)}% to ${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%. The provincial basic personal amount is $${province.basicPersonalAmount.toLocaleString()}.${province.notes ? ' ' + province.notes : ''} ${province.name === 'Quebec' ? 'Quebec sets and collects these rates itself, and residents receive a federal abatement of 16.5% in exchange, which a raw comparison of provincial rates misses entirely.' : 'These sit on top of the federal schedule, which is identical across the country, so the combined marginal rate is the sum of the two at each threshold.'} Each bracket applies only to the portion of income above its threshold, never to the whole salary.`,
   },
   {
     question: `What is the total tax rate in ${province.name}?`,
-    answer: `Your total tax rate in ${province.name} includes federal income tax (15%–33%), ${province.isQuebec ? 'QPP (6.4%)' : 'CPP (5.95%)'}, EI (${province.isQuebec ? '1.248% + QPIP 0.494%' : '1.58%'}), and ${province.name} provincial tax (${(province.brackets[0].rate * 100).toFixed(2)}%–${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%). Use the calculator above for your exact rate.`,
+    answer: `Your total tax rate in ${province.name} includes federal income tax (15%–33%), ${province.isQuebec ? 'QPP (6.4%)' : 'CPP (5.95%)'}, EI (${province.isQuebec ? '1.248% + QPIP 0.494%' : '1.58%'}), and ${province.name} provincial tax (${(province.brackets[0].rate * 100).toFixed(2)}%–${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%). Use the calculator above for your exact rate. None of these are a single flat percentage. Federal and provincial income tax rise in steps, while the contributions are proportional up to a ceiling and then stop entirely. The result is an effective rate well below the marginal one at every income level, and the gap between the two widens as salary rises.`,
   },
   {
     question: `How much tax do I pay on $75,000 in ${province.name}?`,
-    answer: `On a $75,000 salary in ${province.name}, your approximate take-home pay is ${formatCurrency(examples[1].net)}/year (${formatCurrency(examples[1].monthly)}/month), with an effective tax rate of about ${examples[1].rate.toFixed(1)}%.`,
+    answer: `On a $75,000 salary in ${province.name}, your approximate take-home pay is ${formatCurrency(examples[1].net)}/year (${formatCurrency(examples[1].monthly)}/month), with an effective tax rate of about ${examples[1].rate.toFixed(1)}%. That figure assumes no registered contribution and only the basic credits. An RRSP contribution reduces taxable income dollar for dollar, so its value equals the marginal rate at that point on the scale, which is the single largest lever available to a salaried employee here.`,
   },
   {
     question: `What is the ${province.name} basic personal amount?`,
-    answer: `The ${province.name} basic personal amount for 2026 is $${province.basicPersonalAmount.toLocaleString()}. This provides a non-refundable tax credit at the lowest provincial rate, effectively making this amount of income exempt from provincial tax.`,
+    answer: `The ${province.name} basic personal amount for 2026 is $${province.basicPersonalAmount.toLocaleString()}. This provides a non-refundable tax credit at the lowest provincial rate, effectively making this amount of income exempt from provincial tax. It works as a credit rather than a deduction, meaning it reduces tax already calculated rather than the income it is calculated on. The federal basic personal amount applies separately and at a different level, so the point at which any tax becomes payable depends on both figures together.`,
   },
-  {
-    question: `How does ${province.name} compare to other provinces for taxes?`,
-    answer: `${province.name}'s top marginal provincial rate is ${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%. ${province.brackets[province.brackets.length - 1].rate > 0.15 ? 'This is among the higher provincial rates in Canada.' : province.brackets[province.brackets.length - 1].rate > 0.12 ? 'This is a moderate rate compared to other provinces.' : 'This is among the lower provincial rates in Canada.'} The lowest-tax provinces are generally Nunavut, Alberta, and Northwest Territories.`,
-  },
+
   {
     question: `Does ${province.name} have any additional taxes or premiums?`,
-    answer: province.healthPremium ? `Yes. ${province.name} levies an Ontario Health Premium on taxable incomes above $20,000, ranging from $0 to $900 per year. The province also has a surtax on higher provincial tax amounts.` : province.isQuebec ? `Yes. Quebec residents pay QPP instead of CPP (at a higher rate), QPIP for parental insurance, and receive a 16.5% federal tax abatement. Quebec also has its own separate tax return.` : `${province.name} does not have major additional payroll taxes beyond the standard federal and provincial income tax, CPP, and EI.`,
+    answer: province.healthPremium
+      ? `Yes. ${province.name} levies a health premium on taxable income above $20,000, charged in steps from $0 to $900 a year rather than as a percentage. It appears on the payslip as income tax, which makes it easy to miss when comparing an offer against another province. A surtax also applies to the provincial tax itself above two thresholds, raising the real marginal rate well above the published bracket rate for higher earners.`
+      : `No. ${province.name} charges provincial income tax and nothing else on employment income: no health premium, no surtax on the tax itself. The whole difference with other provinces therefore comes from where the bracket thresholds sit and how steep the rates are, which makes a comparison on published rates more reliable here than in provinces that layer extra charges on top.`
   },
 ];
+import ProfilProvince from '../../components/ProfilProvince.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -108,4 +109,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <ProfilProvince province={province} />
+  <OfficialSources />
 </CalculatorLayout>

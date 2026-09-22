@@ -1,12 +1,31 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Average Salary in Canada 2026"
+  title="Average salary in Canada 2026: the median and the spread"
   description="Average and median salaries in Canada based on Statistics Canada data. Earnings by province, industry, age group, and gender with take-home pay breakdowns."
   publishDate="2025-07-10"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Average Salary Canada' }]}
+  faqs={[
+      {
+          "question": "Is the average salary the same as the median?",
+          "answer": "No, and the difference matters. The average is pulled upward by very high earners, so it sits well above what a typical worker makes. The median, the point where half earn more and half less, is the better guide to whether a given offer is competitive. Most published comparisons quote the average because it is easier to obtain, which is why salaries so often look disappointing against it."
+      },
+      {
+          "question": "Why do salaries differ so much between provinces?",
+          "answer": "Industry mix explains most of it. Provinces with resource extraction or concentrated financial services carry higher averages, while those with more public sector and service employment sit lower. Cost of living follows only loosely: the province with the highest average wage is rarely the one where that wage goes furthest once housing is accounted for."
+      },
+      {
+          "question": "Does the average include part-time work?",
+          "answer": "It depends on the series. Figures for average weekly earnings from Statistics Canada cover all employees, including part-time, which drags the number down relative to full-time-only measures. Comparing an annual full-time salary against a series that includes part-time work is one of the most common errors in salary research, and it can distort the gap by several thousand dollars."
+      },
+      {
+          "question": "How current are these figures?",
+          "answer": "Statistics Canada publishes earnings data monthly with a lag of about two months, and annual income data from tax records with a lag closer to eighteen months. The figures on this page state their source and reference period. In periods of rapid wage growth a series eighteen months old understates current pay noticeably."
+      }
+  ]}
 >
   <h2>Average and Median Salary in Canada</h2>
   <p>
@@ -198,4 +217,34 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
     <li><a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410006401" target="_blank" rel="noopener">Statistics Canada: Labour Force Survey</a></li>
     <li><a href="https://www.canada.ca/en/employment-social-development/programs/gender-wage-gap.html" target="_blank" rel="noopener">Government of Canada: Gender Wage Gap</a></li>
   </ul>
+
+  <h2>How to use an average salary figure</h2>
+  <p>
+    An average is a weak benchmark for a single negotiation and a strong one for a trend. Used to
+    judge whether a specific offer is fair, it misleads in both directions: it is pulled upward by
+    a small number of very high earners, and it flattens the differences between industries that
+    matter far more than the national figure. Used to see whether wages in a sector are moving,
+    over several years and from a consistent source, it is reliable.
+  </p>
+  <p>
+    The better comparison for an individual offer is the median for the same occupation in the
+    same province, which Statistics Canada publishes for major occupational groups. It answers the
+    question actually being asked, which is whether the employer is offering what the role
+    typically pays, rather than how the role compares with every other job in the country.
+  </p>
+  <h2>Why province and industry outweigh the national figure</h2>
+  <p>
+    The provinces with the highest average wages are generally those with concentrated resource
+    extraction or financial services, not those with the highest cost of living, and the two do
+    not track each other. A salary that looks strong against the national average can be modest
+    against local housing costs, and a salary that looks weak can go considerably further. Any
+    comparison that ignores the cost side answers only half the question.
+  </p>
+  <p>
+    Industry effects are larger still. The gap between median pay in the highest-paying and
+    lowest-paying sectors exceeds the gap between the highest and lowest provinces by a wide
+    margin. For anyone weighing a career move, the sector matters more than the address, which the
+    national average obscures entirely by collapsing both into one number.
+  </p>
+  <OfficialSources />
 </GuideLayout>

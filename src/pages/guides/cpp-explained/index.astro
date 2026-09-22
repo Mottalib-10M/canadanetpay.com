@@ -1,13 +1,36 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
 import { formatCurrency } from '../../../lib/format';
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="CPP and QPP Explained 2026"
+  title="CPP and QPP explained 2026: rates, ceilings and CPP2"
   description="Complete guide to Canada Pension Plan contributions in 2026, including CPP2 rates, QPP differences, employer matching, and how it affects your paycheque."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'CPP Explained' }]}
+  faqs={[
+      {
+          "question": "Do I get my CPP contributions back?",
+          "answer": "Not as a lump sum. Contributions buy an entitlement to a monthly pension from age sixty, or sixty-five for the full amount, payable for life and indexed to inflation. Someone who dies before claiming leaves a modest death benefit and possibly a survivor's pension, but nothing resembling a refund of what was paid in. CPP is insurance against living a long time, not a savings account."
+      },
+      {
+          "question": "What is CPP2 and who pays it?",
+          "answer": "CPP2 is a second tier of contributions introduced in 2024, charged on earnings between the first and second ceilings. Anyone earning above the first ceiling pays it, at a lower rate than the main contribution, and the employer matches it. It buys a proportionally larger pension later. On a payslip it usually appears as a separate line, which is why deductions can seem to rise mid-career without any change in salary."
+      },
+      {
+          "question": "Can I opt out of CPP?",
+          "answer": "Employees cannot. Contributions are mandatory from age eighteen to sixty-five, and from sixty-five to seventy only if you have not started receiving the pension. Someone already drawing CPP and still working can file form CPT30 to stop contributing, which ends both their own and their employer's payments. Self-employed people pay both halves and cannot opt out either."
+      },
+      {
+          "question": "How does QPP differ from CPP?",
+          "answer": "Quebec runs its own plan with slightly higher contribution rates and its own administration, though the benefits are broadly comparable and the two plans coordinate for anyone who has worked in both. A Quebec resident also pays into the Quebec Parental Insurance Plan rather than the federal parental benefits under EI, which is why the deduction lines on a Quebec payslip differ from those elsewhere."
+      },
+      {
+          "question": "Does an employer contribution count as part of my salary?",
+          "answer": "Economically yes, though it never appears in gross pay. The employer matches your contribution dollar for dollar, so the real cost of employing you exceeds your salary by that amount plus EI. It is worth knowing in a negotiation, and it is one reason employers sometimes prefer to increase a pension contribution rather than salary, since the arithmetic differs for each."
+      }
+  ]}
 >
   <h2>What is CPP?</h2>
   <p>
@@ -234,4 +257,5 @@ import { formatCurrency } from '../../../lib/format';
     <li><a href="https://www.canada.ca/en/services/benefits/publicpensions/cpp.html" target="_blank" rel="noopener">Service Canada: CPP Benefits</a></li>
     <li><a href="https://www.revenuquebec.ca/en/" target="_blank" rel="noopener">Revenu Qu&eacute;bec: QPP</a></li>
   </ul>
+  <OfficialSources />
 </GuideLayout>

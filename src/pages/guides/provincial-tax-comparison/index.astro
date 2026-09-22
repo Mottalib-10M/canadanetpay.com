@@ -17,13 +17,32 @@ const provinceData = ALL_PROVINCES.map((code) => ({
     return { salary, net: r.netAnnual, rate: r.effectiveTaxRate };
   }),
 }));
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Provincial Tax Comparison 2026"
+  title="Provincial tax compared: where you keep the most in 2026"
   description="Compare income tax rates and take-home pay across all 13 Canadian provinces and territories for 2026. Side-by-side comparison at multiple salary levels."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Provincial Tax Comparison' }]}
+  faqs={[
+      {
+          "question": "Which province leaves the most take-home pay?",
+          "answer": "It depends on the salary, because the provinces differ in both rates and thresholds rather than in a single number. At middle incomes the lightest-taxing provinces are generally in the west and the Atlantic provinces the heaviest, but the ranking shifts as income rises. The comparison table on this page recalculates the order for a reference salary rather than asserting a fixed ranking."
+      },
+      {
+          "question": "Does Quebec really pay more tax?",
+          "answer": "Quebec has the highest provincial rates, but a straight comparison overstates the gap. Residents receive a federal abatement of sixteen and a half percent on basic federal tax, and the province funds services, notably childcare and parental leave, that households pay for privately elsewhere. The take-home figure is lower; the cost of living position is a separate question."
+      },
+      {
+          "question": "If I move province, when does the change apply?",
+          "answer": "Provincial tax is based on where you are resident on the thirty-first of December of the tax year. A move in June therefore means the whole year is taxed by the destination province, not apportioned between the two. Payroll withholding follows your address as reported to the employer, so any difference is settled in the annual return."
+      },
+      {
+          "question": "What about territorial tax rates?",
+          "answer": "The three territories set their own rates, generally lower than most provinces, and residents may also claim the northern residents deduction, which can be substantial. Higher costs for housing, food and travel usually outweigh the tax advantage, which is why the deduction exists in the first place."
+      }
+  ]}
 >
   <h2>Provincial Tax Rates at a Glance</h2>
   <p>
@@ -231,4 +250,5 @@ const provinceData = ALL_PROVINCES.map((code) => ({
   <ul>
     <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Provincial Tax Rates</a></li>
   </ul>
+  <OfficialSources />
 </GuideLayout>

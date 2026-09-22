@@ -1,12 +1,31 @@
 ---
 import GuideLayout from '../../layouts/GuideLayout.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="CRA 2025 Tax Rate Updates: What Changed"
-  description="Complete breakdown of every CRA tax change for 2025: updated federal brackets, CPP and CPP2 rates, EI premiums, and provincial adjustments for Canadian workers."
+  title="CRA rate changes for 2026: every figure that moved"
+  description="Every federal figure that changed for 2026: bracket thresholds, the basic personal amount, CPP and CPP2 ceilings, and the employment insurance premium rate."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Updates', href: '/updates/' }, { label: 'CRA 2025 Rates Update' }]}
+  faqs={[
+      {
+          "question": "Which of these changes affects my paycheque first?",
+          "answer": "The CPP and EI ceilings, because payroll applies them from the first pay period of January without waiting for anything else. Bracket indexation follows automatically in the same cycle. Changes announced in a budget partway through the year are applied from the date stated in the legislation, which can mean a retroactive adjustment appearing in a later pay period."
+      },
+      {
+          "question": "Do I need to do anything when rates change?",
+          "answer": "Usually not. Payroll systems update automatically and the Canada Revenue Agency publishes the tables employers must use. The exception is anyone with a form TD1 on file claiming credits beyond the basic amount: those figures are indexed too, and an outdated form means the wrong amount is withheld all year, recovered only through the annual return."
+      },
+      {
+          "question": "Why did my deductions rise even though my salary did not?",
+          "answer": "Almost always the CPP and EI ceilings. Contributions restart each January and continue until the annual maximum is reached, so deductions are heaviest early in the year and stop entirely once the ceiling is hit. Someone who reached the maximum in October will see a noticeably smaller net pay in January, with no change to gross."
+      },
+      {
+          "question": "Where can I verify these figures myself?",
+          "answer": "The Canada Revenue Agency publishes the payroll deduction tables and the indexed bracket thresholds on its own site each November for the following year, and Service Canada publishes the EI premium rate and maximum insurable earnings separately. Both are linked at the foot of this page, and either supersedes any summary, including this one."
+      }
+  ]}
 >
   <h2>Overview of 2025 Changes</h2>
   <p>
@@ -110,10 +129,5 @@ import GuideLayout from '../../layouts/GuideLayout.astro';
     rates and plan your budget accordingly.
   </p>
 
-  <h2>Sources</h2>
-  <ul>
-    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Federal Tax Rates</a></li>
-    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp.html" target="_blank" rel="noopener">CRA: CPP Contribution Rates</a></li>
-    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei.html" target="_blank" rel="noopener">CRA: EI Premium Rates</a></li>
-  </ul>
+  <OfficialSources />
 </GuideLayout>

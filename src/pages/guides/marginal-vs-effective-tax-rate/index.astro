@@ -1,12 +1,31 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Marginal vs Effective Tax Rate"
+  title="Marginal vs effective tax rate: which one applies here"
   description="Understand the difference between marginal and effective tax rates in Canada and why your real tax burden is always lower than your top bracket suggests."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Marginal vs Effective Rate' }]}
+  faqs={[
+      {
+          "question": "Which rate should I use to plan a purchase?",
+          "answer": "The effective rate, because it describes the share of the whole salary that never arrives. The marginal rate answers a different question: what the next dollar is worth, which matters for a raise, a bonus, or an RRSP contribution. Using the marginal rate to budget consistently overstates the tax burden, sometimes by ten points or more at middle incomes."
+      },
+      {
+          "question": "Why is my marginal rate higher than the top bracket I am in?",
+          "answer": "Because the brackets are only part of it. Provincial tax, surtaxes where they exist, and the phase-out of income-tested benefits all add to the rate on the next dollar. Someone losing a benefit as income rises can face a marginal rate well above the published bracket, which is why the true figure has to be calculated rather than read off a table."
+      },
+      {
+          "question": "Does an RRSP contribution save at my marginal rate?",
+          "answer": "Yes, that is precisely its value. A contribution reduces taxable income dollar for dollar, so the refund equals the contribution times your marginal rate. At a forty-three percent marginal rate a five thousand dollar contribution returns roughly two thousand, one hundred and fifty. This is also why contributing in a high-income year and withdrawing in a low-income year is the core of the strategy."
+      },
+      {
+          "question": "How do I work out my own effective rate?",
+          "answer": "Divide total tax paid, from line 43500 of your return, by total income, from line 15000. The result is usually well below what people expect. Doing the same calculation with CPP and EI included gives the figure that actually explains the gap between an offer letter and a bank deposit."
+      }
+  ]}
 >
   <h2>The Two Tax Rates You Need to Know</h2>
   <p>
@@ -234,4 +253,5 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
   <ul>
     <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Tax Rates</a></li>
   </ul>
+  <OfficialSources />
 </GuideLayout>

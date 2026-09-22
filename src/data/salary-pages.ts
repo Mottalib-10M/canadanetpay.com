@@ -18,6 +18,20 @@ const amounts = [
   150000, 175000, 200000, 250000, 300000,
 ];
 
+/**
+ * Montants conservant une page dediee.
+ *
+ * Les vingt-cinq pages engendrees ici etaient identiques a 98 % : le controle
+ * d'unicite relevait 378 paires trop proches. On garde cinq montants places aux
+ * endroits ou la situation fiscale change vraiment, c'est-a-dire de part et
+ * d'autre des seuils de cotisation et des tranches hautes ; les autres sont
+ * rassembles dans le tableau de /salary/, qui les compare.
+ *
+ * Retirer un montant d'ici demande une redirection dans `astro.config.mjs`,
+ * faute de quoi son URL retournerait une 404.
+ */
+export const MONTANTS_AVEC_PAGE: number[] = [50000, 75000, 100000, 150000, 250000];
+
 export const SALARY_PAGES: SalaryPageConfig[] = amounts.map((amount) => {
   const formatted = amount.toLocaleString('en-CA');
   return {

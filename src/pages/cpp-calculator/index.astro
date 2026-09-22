@@ -4,6 +4,22 @@ import CPPCalculator from '../../components/calculators/CPPCalculator';
 
 const faqs = [
   {
+    question: "At what age do CPP contributions stop?",
+    answer:
+      "Contributions are mandatory from eighteen to sixty-five. Between sixty-five and seventy they continue only if you have not started drawing the pension; once you have, you can file form CPT30 to stop, which ends both your own and your employer's payments. After seventy no contributions are due in any circumstances, whether or not you are still working.",
+  },
+  {
+    question: "Does working longer increase my CPP pension?",
+    answer:
+      "Yes, in two ways. Additional contribution years can replace low-earning years in the calculation, since the formula drops a proportion of the weakest ones. And deferring the start of the pension past sixty-five raises it by a fixed percentage for each month of delay, up to age seventy, a increase that is permanent and indexed thereafter.",
+  },
+  {
+    question: "What happens to CPP if I work in two provinces?",
+    answer:
+      "Contributions follow you: the plan is national, and periods in different provinces accumulate into a single record. The exception is Quebec, which runs its own plan, but the two coordinate so that a career split between Quebec and elsewhere produces one combined pension rather than two partial ones calculated in isolation.",
+  },
+
+  {
     question: 'What is CPP and how much do I pay in 2026?',
     answer: 'The Canada Pension Plan (CPP) is a mandatory retirement pension. In 2026, employees pay 5.95% on earnings between $3,500 and $71,300, for a maximum of $4,034.10. CPP2 adds 4% on earnings between $71,300 and $79,400 (max $324). Your employer matches both contributions.',
   },
@@ -17,13 +33,15 @@ const faqs = [
   },
   {
     question: 'Does my employer match my CPP contributions?',
-    answer: 'Yes. Your employer pays the same CPP/CPP2 amount that is deducted from your paycheque. If you pay $4,034.10 in CPP, your employer also pays $4,034.10. Self-employed individuals must pay both the employee and employer portions.',
+    answer: 'Yes. Your employer pays the same CPP/CPP2 amount that is deducted from your paycheque. If you pay $4,034.10 in CPP, your employer also pays $4,034.10. Self-employed individuals must pay both the employee and employer portions. That matching contribution never appears in gross pay but is a real cost of employing you, which is worth knowing in a negotiation because it is the number the employer has in mind.',
   },
   {
     question: 'When do I stop paying CPP?',
     answer: 'CPP contributions are mandatory from age 18 to 65 (or 70 if you choose to defer). After 65, you can elect to stop contributing. You also stop contributing once your earnings reach the maximum pensionable earnings ($71,300 for CPP, $79,400 for CPP2 in 2026).',
   },
 ];
+import PayrollContext from '../../components/PayrollContext.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -70,4 +88,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

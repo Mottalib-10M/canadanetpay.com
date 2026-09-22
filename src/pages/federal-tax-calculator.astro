@@ -5,13 +5,15 @@ import { FEDERAL_BRACKETS, BASIC_PERSONAL_AMOUNT } from '../data/federal-tax-202
 import { formatCurrency } from '../lib/format';
 
 const faqs = [
-  { question: 'What are the 2026 Canadian federal tax brackets?', answer: 'For 2026, Canada has five federal tax brackets: 15% on the first $57,375, 20.5% on $57,375–$114,750, 26% on $114,750–$158,468, 29% on $158,468–$220,000, and 33% on income over $220,000.' },
-  { question: 'What is the Basic Personal Amount for 2026?', answer: 'The Basic Personal Amount (BPA) for 2026 is $16,129. This is a non-refundable tax credit at the 15% rate, meaning you get a credit of $2,419 against your federal tax. High-income earners (above $177,882) receive a reduced BPA.' },
-  { question: 'How does the RRSP deduction affect federal tax?', answer: 'RRSP contributions directly reduce your taxable income, lowering your federal (and provincial) tax. For example, contributing $10,000 to an RRSP at a 26% marginal rate saves $2,600 in federal tax alone.' },
-  { question: 'Does federal tax differ by province?', answer: 'Federal tax brackets and rates are the same across all provinces. However, Quebec residents receive a 16.5% abatement (reduction) on federal tax because Quebec administers its own income tax system.' },
-  { question: 'What is the federal tax on a $100,000 salary?', answer: 'On $100,000, the federal income tax before credits is approximately $15,931. After the Basic Personal Amount credit ($2,419), CPP credit, and EI credit, the net federal tax is approximately $12,800–$13,200 depending on province.' },
-  { question: 'How do non-refundable credits work?', answer: 'Non-refundable credits (like the BPA, CPP, and EI credits) reduce your federal tax payable, but cannot create a refund on their own. They are calculated at the lowest tax rate (15%) multiplied by the credit amount.' },
+  { question: 'What are the 2026 Canadian federal tax brackets?', answer: 'For 2026, Canada has five federal tax brackets: 15% on the first $57,375, 20.5% on $57,375–$114,750, 26% on $114,750–$158,468, 29% on $158,468–$220,000, and 33% on income over $220,000. Each rate applies only to the portion of income within its band, so crossing a threshold never reduces take-home pay. The thresholds are indexed to inflation each January.' },
+  { question: 'What is the Basic Personal Amount for 2026?', answer: 'The Basic Personal Amount (BPA) for 2026 is $16,129. This is a non-refundable tax credit at the 15% rate, meaning you get a credit of $2,419 against your federal tax. High-income earners (above $177,882) receive a reduced BPA. Because it is a credit calculated at the lowest rate rather than a deduction, it is worth the same in absolute terms to every taxpayer who can use it in full.' },
+  { question: 'How does the RRSP deduction affect federal tax?', answer: 'RRSP contributions directly reduce your taxable income, lowering your federal (and provincial) tax. For example, contributing $10,000 to an RRSP at a 26% marginal rate saves $2,600 in federal tax alone. The saving is therefore proportional to your marginal rate, which makes a contribution worth substantially more in a high-income year than in a low one, and is the basis of the whole strategy.' },
+  { question: 'Does federal tax differ by province?', answer: 'Federal tax brackets and rates are the same across all provinces. However, Quebec residents receive a 16.5% abatement (reduction) on federal tax because Quebec administers its own income tax system. That abatement is why a straight comparison of Quebec\'s provincial rates against other provinces overstates the difference, sometimes by several percentage points on a middle income.' },
+  { question: 'What is the federal tax on a $100,000 salary?', answer: 'On $100,000, the federal income tax before credits is approximately $15,931. After the Basic Personal Amount credit ($2,419), CPP credit, and EI credit, the net federal tax is approximately $12,800–$13,200 depending on province. Provincial tax, CPP and EI come on top of that figure, which is why the federal number alone understates total deductions by a wide margin on any salary.' },
+  { question: 'How do non-refundable credits work?', answer: 'Non-refundable credits (like the BPA, CPP, and EI credits) reduce your federal tax payable, but cannot create a refund on their own. They are calculated at the lowest tax rate (15%) multiplied by the credit amount. Unused amounts are lost rather than carried forward, with a few exceptions such as tuition, which can be carried forward indefinitely or transferred to a parent or spouse.' },
 ];
+import PayrollContext from '../components/PayrollContext.astro';
+import OfficialSources from '../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -63,4 +65,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

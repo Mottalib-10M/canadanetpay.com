@@ -3,7 +3,7 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
 import { SITE_URL } from '../../../data/site-config';
 import { breadcrumbSchema } from '../../../lib/seo';
 
-const title = 'Glossaire fiscal et paie au Canada';
+const title = "Glossaire de la paie et de l'impôt au Canada en 2026";
 const description = 'Définitions des termes fiscaux et de paie canadiens incluant RPC, AE, REER, CELI et impôts provinciaux. Comprenez clairement toutes vos retenues salariales.';
 const canonicalUrl = `${SITE_URL}/fr/glossaire/`;
 
@@ -69,6 +69,7 @@ const definedTermSetSchema = {
     description: t.definition.replace(/<[^>]*>/g, ''),
   })),
 };
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
@@ -77,6 +78,32 @@ const definedTermSetSchema = {
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Accueil', href: '/fr/' }, { label: 'Glossaire' }]}
   lang="fr"
+  faqs={[
+      {
+          "question": "Quelle est la différence entre salaire brut et salaire net ?",
+          "answer": "Le brut est le montant inscrit au contrat, avant toute retenue. Le net est ce qui arrive au compte après impôt fédéral, impôt provincial, cotisations au Régime de pensions du Canada et cotisations d'assurance-emploi. L'écart se situe généralement entre vingt et trente-cinq pour cent selon le revenu et la province, et il se creuse à mesure que le salaire monte."
+      },
+      {
+          "question": "Que signifie le facteur d'équivalence sur mon relevé ?",
+          "answer": "C'est la valeur que l'Agence du revenu du Canada attribue au droit à pension acquis dans l'année au sein d'un régime d'employeur, et il réduit d'autant les droits de cotisation REER de l'année suivante. L'objectif est de maintenir une épargne-retraite fiscalement assistée comparable entre un salarié couvert par un régime et un autre qui cotise seul. Il figure à la case 52 du T4."
+      },
+      {
+          "question": "Qu'est-ce qu'un crédit d'impôt non remboursable ?",
+          "answer": "Un crédit qui peut ramener l'impôt à payer à zéro, mais pas en dessous : la portion inutilisée est perdue plutôt que versée. Le montant personnel de base et les crédits pour cotisations au RPC et à l'assurance-emploi fonctionnent ainsi. Les crédits remboursables, comme celui pour la TPS, sont versés même en l'absence d'impôt, ce qui compte beaucoup à faible revenu."
+      },
+      {
+          "question": "Qu'appelle-t-on gains assurables et gains ouvrant droit à pension ?",
+          "answer": "Les gains assurables sont la part de la rémunération soumise aux cotisations d'assurance-emploi, plafonnée annuellement. Les gains ouvrant droit à pension sont la part soumise au Régime de pensions du Canada, entre une exemption de base et les plafonds. Les deux figurent dans leurs propres cases du T4 et cessent une fois le maximum annuel atteint."
+      },
+      {
+          "question": "Quelle différence entre un T4 et un T4A ?",
+          "answer": "Le T4 déclare un revenu d'emploi et les retenues effectuées par l'employeur. Le T4A déclare d'autres revenus : honoraires de travail indépendant, prestations de retraite, bourses, certaines prestations, en général sans impôt retenu à la source. Recevoir un T4A signifie le plus souvent qu'il restera de l'impôt à payer au moment de produire la déclaration."
+      },
+      {
+          "question": "Que signifie l'indexation des seuils d'imposition ?",
+          "answer": "Chaque janvier, les seuils des tranches fédérales, le montant personnel de base et plusieurs crédits sont relevés selon l'indice des prix à la consommation, afin que l'inflation seule ne fasse pas basculer les contribuables dans une tranche supérieure. La plupart des provinces indexent aussi, mais certaines ont gelé leurs seuils certaines années, ce qui relève discrètement le taux effectif."
+      }
+  ]}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema(breadcrumbItems))} />
   <script type="application/ld+json" set:html={JSON.stringify(definedTermSetSchema)} />
@@ -129,4 +156,5 @@ const definedTermSetSchema = {
       <li><a href="/hourly-to-salary/" class="text-brand-600 hover:underline dark:text-brand-400">Calculateur horaire vers salaire</a></li>
     </ul>
   </div>
+  <OfficialSources lang="fr" />
 </GuideLayout>

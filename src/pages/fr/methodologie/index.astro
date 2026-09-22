@@ -1,10 +1,11 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Notre méthodologie"
-  description="Comment Salaire Après Impôt Canada calcule votre salaire net, les sources de données officielles de l'ARC utilisées et notre engagement envers la précision."
+  title="Salaire net au Canada : la méthode de calcul complète"
+  description="L'ordre exact des opérations : plafonds du RPC et de l'assurance-emploi, tranches fédérales, barèmes provinciaux et abattement québécois, avec les sources."
   publishDate="2026-01-15"
   lang="fr"
   breadcrumbs={[{ label: 'Accueil', href: '/fr/' }, { label: 'Méthodologie' }]}
@@ -123,4 +124,5 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
     <li><a href="https://www.revenuquebec.ca/fr/services-en-ligne/formulaires-et-publications/details-courant/tp-1015.tl-v/" target="_blank" rel="noopener">Revenu Québec : Tables de retenues à la source</a></li>
     <li><a href="https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-numeriques-entreprises/retenues-paie-calculateur-en-direct.html" target="_blank" rel="noopener">ARC : Calculateur en direct de retenues sur la paie (CDRP)</a></li>
   </ul>
+  <OfficialSources lang="fr" />
 </GuideLayout>

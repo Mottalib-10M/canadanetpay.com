@@ -1,0 +1,63 @@
+---
+/**
+ * Bloc « official sources », commun aux pages pilier.
+ *
+ * RECETTE §7 : une page pilier cite au moins trois textes officiels. Sur un
+ * sujet de paie et d'impot c'est le signal E-E-A-T le plus direct, et le plus
+ * verifiable : chaque taux du site doit pouvoir etre remonte jusqu'a
+ * l'organisme qui le fixe.
+ *
+ * Les quatre references ci-dessous sont celles dont depend reellement le
+ * calcul : l'agence du revenu pour les baremes et les tables de retenue, le
+ * regime de pensions pour les plafonds de cotisation, l'assurance-emploi pour
+ * le taux de prime, et Revenu Quebec pour la province qui administre son
+ * propre impot.
+ */
+interface Props {
+  intro?: string;
+  lang?: 'en' | 'fr';
+}
+const { intro, lang = 'en' } = Astro.props;
+
+const sources = [
+  {
+    url: 'https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html',
+    nom: 'Canada Revenue Agency, income tax rates',
+    note: 'Federal and provincial brackets, indexed each January, for the current and previous years.',
+  },
+  {
+    url: 'https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp.html',
+    nom: 'Canada Revenue Agency, CPP contributions',
+    note: 'Contribution rates, the basic exemption and both earnings ceilings, including CPP2.',
+  },
+  {
+    url: 'https://www.canada.ca/en/employment-social-development/programs/ei/ei-list/reports/premium-rates.html',
+    nom: 'Employment Insurance premium rates',
+    note: 'Employee and employer premium rates and maximum insurable earnings, set annually.',
+  },
+  {
+    url: 'https://www.revenuquebec.ca/en/citizens/income-tax-return/completing-your-income-tax-return/income-tax-rates/',
+    nom: 'Revenu Québec, income tax rates',
+    note: 'Quebec administers its own income tax, its pension plan and its parental insurance plan.',
+  },
+];
+---
+
+<section class="mx-auto max-w-3xl px-4 mt-12 border-t border-border pt-8">
+  <h2 class="text-2xl font-bold">{lang === 'fr' ? 'Sources officielles' : 'Official sources'}</h2>
+  <p class="mt-3 text-sm text-text-muted">
+    {intro ?? (lang === 'fr'
+      ? "Tous les taux de cette page proviennent des publications ci-dessous. Aucun chiffre n'est repris d'une synthèse de tiers."
+      : 'Every rate on this page comes from the publications below. No figure is taken from a third-party summary.')}
+  </p>
+  <ul class="mt-4 space-y-3">
+    {sources.map((s) => (
+      <li>
+        <a href={s.url} target="_blank" rel="noopener noreferrer" class="font-semibold text-primary no-underline hover:underline">
+          {s.nom}
+        </a>
+        <p class="mt-0.5 text-sm text-text-muted">{s.note}</p>
+      </li>
+    ))}
+  </ul>
+</section>

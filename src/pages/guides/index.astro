@@ -45,13 +45,41 @@ const guides = [
     date: '2025-07-10',
   },
 ];
+import PayrollContext from '../../components/PayrollContext.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Canadian Tax Guides 2026"
+  title="Canadian tax and payroll guides for employees 2026"
   description="In-depth guides to help you understand your Canadian taxes, CPP, EI, RRSP savings, paycheque deductions, and provincial tax rates. Updated for 2026 tax year."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides' }]}
+  faqs={[
+      {
+          "question": "Which guide should I read first?",
+          "answer": "Start with the difference between marginal and effective rates, because almost every other question depends on it. Then read the federal bracket guide, which explains where the thresholds sit, and the provincial comparison if you are weighing a move. The CPP and RRSP guides are worth reading once a salary is settled, since both are about what to do with it rather than how it is taxed."
+      },
+      {
+          "question": "Do these guides cover Quebec?",
+          "answer": "Yes, but with a caveat that runs through all of them. Quebec collects its own income tax, operates the Quebec Pension Plan in place of CPP and the Quebec Parental Insurance Plan alongside a reduced EI premium, and applies a federal abatement. Where a guide gives a single national figure, the Quebec equivalent is stated separately rather than folded into an average."
+      },
+      {
+          "question": "How current are the figures?",
+          "answer": "Each guide carries its review date at the top and in the footer, and lists the Canada Revenue Agency or Statistics Canada publication it draws on. Bracket thresholds and contribution ceilings are indexed every January, so a guide reviewed after that date reflects the current year. Anything older should be checked against the source before being relied on."
+      },
+      {
+          "question": "Do these guides replace an accountant?",
+          "answer": "For a straightforward salaried position they cover what is needed. Once self-employment income, rental property, stock options or a move between provinces mid-year are involved, the interaction between federal and provincial rules becomes specific enough that professional advice pays for itself. The Canada Revenue Agency's own guidance is free and authoritative, and worth reading first."
+      },
+      {
+          "question": "Why do the guides quote Ontario so often?",
+          "answer": "Because it is the most populous province and therefore the most useful single reference point when one is needed. Every calculation on the site can be switched to any of the thirteen jurisdictions, and the provincial comparison guide ranks them all on the same salary rather than treating Ontario as representative."
+      },
+      {
+          "question": "Can I use these calculations for a job offer in another province?",
+          "answer": "Yes, and it is one of the better uses for them. Federal tax, CPP and EI are identical everywhere, so the entire difference between two offers in different provinces comes from provincial tax, which the calculator handles. What it cannot weigh is the cost of living at each end, and that difference frequently exceeds the tax one."
+      }
+  ]}
 >
   <div class="not-prose space-y-4 mt-8">
     {guides.map((guide) => (
@@ -60,10 +88,12 @@ const guides = [
           {guide.title}
         </h2>
         <p class="mt-2 text-gray-600 dark:text-gray-400">{guide.description}</p>
-        <p class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+        <p class="mt-2 text-xs text-gray-500 dark:text-gray-500">
           Published {new Date(guide.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </a>
     ))}
   </div>
+  <PayrollContext />
+  <OfficialSources />
 </GuideLayout>

@@ -1,9 +1,10 @@
 ---
 import GuideLayout from '../../layouts/GuideLayout.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 <GuideLayout
-  title="Methodology - Federal and provincial tax, CPP and EI | SalaryAfterTax.ca"
-  description="The order of operations behind our Canadian salary calculator: federal and provincial brackets, basic personal amounts, CPP and CPP2 contributions, EI premiums and the Quebec exception."
+  title="Canadian salary calculator: the method behind every figure"
+  description="The exact order of operations: CPP and EI ceilings, federal brackets, provincial schedules and the Quebec abatement, with the source behind each figure."
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Methodology' }]}
 >
   <div class="max-w-3xl mx-auto">
@@ -47,4 +48,5 @@ import GuideLayout from '../../layouts/GuideLayout.astro';
       </ul>
     </section>
   </div>
+  <OfficialSources />
 </GuideLayout>

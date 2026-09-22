@@ -402,13 +402,10 @@ export function buildFaqs(
     {
       question: 'How can I reduce my taxes on a ' + fmtAmount + ' salary in Canada?',
       answer:
-        'On ' + fmtAmount + ', your top tax-reduction strategy is RRSP contributions: ' + fmtC(rrspRoom) + ' of room saves ' + fmtC(rrspSaving) + ' at your ' + fmtP(onResult.marginalTaxRate) + ' marginal rate, reducing taxable income to ' + fmtC(amount - rrspRoom) + '. ' +
-        'TFSA contributions ($7,000/year) shelter investment gains from your ' + fmtP(onResult.marginalTaxRate) + ' rate\u2014on ' + fmtAmount + ', this means ' + fmtC(Math.round(7000 * 0.07 * onResult.marginalTaxRate / 100)) + '/year in avoided tax on a 7% return. ' +
-        'The FHSA deduction of $8,000 saves ' + fmtC(fhsaSaving) + ' per year on a ' + fmtAmount + ' salary if you are a first-time buyer. ' +
-        'Combined RRSP + FHSA deductions on ' + fmtAmount + ': ' + fmtC(rrspSaving + fhsaSaving) + ' annual tax reduction (' + fmtC(Math.round((rrspSaving + fhsaSaving) / 12)) + '/month). ' +
-        'Other deductions at ' + fmtAmount + ': child care ($8,000/child saves ' + fmtC(Math.round(8000 * onResult.marginalTaxRate / 100)) + '), union dues, professional fees, and work-related moving expenses. ' +
-        'Spousal RRSP: if your partner earns under ' + fmtC(Math.round(amount * 0.4)) + ', contributing at your ' + fmtP(onResult.marginalTaxRate) + ' rate for their future withdrawal at a lower rate saves 10%+ per dollar. ' +
-        provArbitrage,
+        'On ' + fmtAmount + ', the RRSP is the largest single lever: ' + fmtC(rrspRoom) + ' of room saves ' +
+        fmtC(rrspSaving) + ' at your ' + fmtP(onResult.marginalTaxRate) + ' marginal rate, because a contribution reduces taxable income dollar for dollar. ' +
+        'A first-time buyer can add the FHSA deduction of $8,000, worth a further ' + fmtC(fhsaSaving) + '. ' +
+        'Child care costs, union dues and professional fees are deductible too, and a spousal RRSP shifts income to a lower-rate partner for later withdrawal.',
     },
   ];
 }

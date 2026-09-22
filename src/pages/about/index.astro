@@ -1,10 +1,11 @@
 ---
 import GuideLayout from '../../layouts/GuideLayout.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="About Salary After Tax Canada"
-  description="Learn about the team behind Canada's most accurate salary after tax calculator and our mission to make tax transparency accessible to every Canadian worker."
+  title="Who publishes this Canadian salary calculator, and why"
+  description="Who runs this calculator, which CRA publications it relies on, how the 2026 brackets are kept current, and the limits worth knowing before relying on it."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
 >
@@ -55,4 +56,5 @@ import GuideLayout from '../../layouts/GuideLayout.astro';
     Have questions, feedback, or found an error? Reach out at
     <a href="/contact/">our contact page</a>.
   </p>
+  <OfficialSources />
 </GuideLayout>

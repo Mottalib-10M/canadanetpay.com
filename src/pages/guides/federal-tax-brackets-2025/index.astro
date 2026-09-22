@@ -2,13 +2,32 @@
 import GuideLayout from '../../../layouts/GuideLayout.astro';
 import { FEDERAL_BRACKETS, BASIC_PERSONAL_AMOUNT } from '../../../data/federal-tax-2025';
 import { formatCurrency } from '../../../lib/format';
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Canadian Federal Tax Brackets 2026"
+  title="Federal tax brackets 2026: rates, thresholds, credits"
   description="Complete guide to the 2026 CRA federal income tax brackets with examples showing how progressive taxation works in Canada. Includes BPA and tax credits."
   publishDate="2025-01-15"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Federal Tax Brackets 2025' }]}
+  faqs={[
+      {
+          "question": "Does moving into a higher bracket reduce my take-home pay?",
+          "answer": "No. Each rate applies only to the portion of income within its bracket, so a raise never leaves you worse off. The confusion arises because the marginal rate, which applies to the next dollar, is always higher than the average rate paid across the whole salary. Benefits that phase out with income can create genuine cliffs, but the tax brackets themselves never do."
+      },
+      {
+          "question": "Are federal brackets the same in every province?",
+          "answer": "The federal brackets are identical across the country, but each province sets its own on top, with different rates and thresholds. Quebec is a special case: it collects its own income tax and residents receive a federal abatement in exchange. The combined rate therefore varies by several points depending on where you live, on exactly the same salary."
+      },
+      {
+          "question": "What is the basic personal amount?",
+          "answer": "It is the slice of income on which no federal tax is payable, delivered as a non-refundable credit rather than a deduction. It is reduced gradually for high earners and is indexed each January. Each province has its own equivalent at a different level, which is why two people with the same gross income in different provinces start paying tax at different points."
+      },
+      {
+          "question": "When are the brackets updated?",
+          "answer": "Thresholds are indexed to inflation and take effect on the first of January each year, based on the change in the Consumer Price Index over the twelve months to September. Rates themselves change only through a budget measure, which is far less frequent. A page quoting a threshold from an earlier year will be wrong by a few hundred dollars rather than by a whole bracket."
+      }
+  ]}
 >
   <h2>2025 Federal Income Tax Brackets</h2>
   <p>
@@ -223,4 +242,5 @@ import { formatCurrency } from '../../../lib/format';
   <ul>
     <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Federal Tax Rates for 2025</a></li>
   </ul>
+  <OfficialSources />
 </GuideLayout>

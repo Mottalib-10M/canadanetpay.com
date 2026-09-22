@@ -4,22 +4,40 @@ import EmployerCostCalculator from '../../components/calculators/EmployerCostCal
 
 const faqs = [
   {
+    question: "Is the employer cost the same in every province?",
+    answer:
+      "No. CPP and EI are federal and identical everywhere, but workers' compensation premiums are set provincially and by industry, and Quebec employers pay into the Quebec Pension Plan and the parental insurance plan at their own rates. The spread between a light and a heavy jurisdiction can reach several percentage points of payroll.",
+  },
+  {
+    question: "Does employer cost fall as salary rises?",
+    answer:
+      "As a percentage, yes. CPP and EI both stop at annual ceilings, so beyond those thresholds an extra dollar of salary carries no further contribution. A senior salary therefore costs proportionally less in payroll charges than two junior ones adding to the same total.",
+  },
+  {
+    question: "Are pension contributions and benefits included?",
+    answer:
+      "No. The calculator covers the statutory charges only: CPP or QPP, EI or QPIP, and an estimated workers' compensation premium. Employer pension matching, health insurance, parking, equipment and training are real costs but vary so widely between employers that any default figure would mislead.",
+  },
+
+  {
     question: 'What does it cost to employ someone in Canada?',
-    answer: 'Beyond the salary, employers must pay matching CPP/QPP contributions, 1.4x the employee\'s EI premium, and workers\' compensation (WCB) premiums. The total employer cost is typically 10–15% above the employee\'s gross salary, depending on income level and province.',
+    answer: 'Beyond the salary, employers must pay matching CPP/QPP contributions, 1.4x the employee\'s EI premium, and workers\' compensation (WCB) premiums. The total employer cost is typically 10–15% above the employee\'s gross salary, depending on income level and province. The figure rises with salary until the contribution ceilings are reached, then flattens, so the percentage overhead on a high salary is smaller than on a modest one.',
   },
   {
     question: 'Do employers match CPP contributions?',
-    answer: 'Yes. Employers pay the exact same CPP (or QPP) amount as the employee. In 2026, the maximum employer CPP contribution is $4,034.10 plus $324 for CPP2. For QPP, it\'s $4,341.80 plus $324 for QPP2.',
+    answer: 'Yes. Employers pay the exact same CPP (or QPP) amount as the employee. In 2026, the maximum employer CPP contribution is $4,034.10 plus $324 for CPP2. For QPP, it\'s $4,341.80 plus $324 for QPP2. Self-employed people pay both halves themselves, which is why the contribution looks so much heavier on a self-employment return than on a payslip for the same income.',
   },
   {
     question: 'How much EI does the employer pay?',
-    answer: 'Employers pay 1.4 times the employee\'s EI premium. If the employee pays $1,049.12 (the 2026 max), the employer pays $1,468.77. Quebec employers also pay QPIP at a slightly higher rate than employees (0.692% vs 0.494%).',
+    answer: 'Employers pay 1.4 times the employee\'s EI premium. If the employee pays $1,049.12 (the 2026 max), the employer pays $1,468.77. Quebec employers also pay QPIP at a slightly higher rate than employees (0.692% vs 0.494%). The multiplier funds the administration of the scheme as well as the benefits, and the employer contribution stops at the same annual ceiling as the employee one.',
   },
   {
     question: 'What is WCB / workers\' compensation?',
-    answer: 'Workers\' Compensation Board (WCB) insurance is a mandatory employer-paid premium covering workplace injuries. Rates vary widely by industry (from 0.1% to over 10%) and province. This calculator uses an estimated average rate of 1.5%.',
+    answer: 'Workers\' Compensation Board (WCB) insurance is a mandatory employer-paid premium covering workplace injuries. Rates vary widely by industry (from 0.1% to over 10%) and province. This calculator uses an estimated average rate of 1.5%. Because the real rate follows the industry classification rather than the individual, two employees on identical salaries can carry very different costs, so treat the figure as an order of magnitude rather than a quote.',
   },
 ];
+import PayrollContext from '../../components/PayrollContext.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
 ---
 
 <CalculatorLayout
@@ -60,4 +78,6 @@ const faqs = [
       </ul>
     </section>
   </Fragment>
+  <PayrollContext />
+  <OfficialSources />
 </CalculatorLayout>

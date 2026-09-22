@@ -1,0 +1,152 @@
+---
+/**
+ * Page-mere des salaires : un tableau, tous les montants.
+ *
+ * Le site portait vingt-cinq pages « $X salary after tax », engendrees par le
+ * meme gabarit et identiques a 98 % les unes aux autres. Google traite ce genre
+ * de famille comme un seul contenu duplique, et n'en retient au mieux qu'une
+ * page ; les vingt-quatre autres diluent le site sans rien lui rapporter.
+ *
+ * Cinq montants conservent une page a eux, choisis pour couvrir les tranches
+ * d'imposition. Tous les autres sont ici, avec leur net calcule : l'information
+ * n'est pas perdue, elle est rassemblee la ou on peut la comparer, ce qu'aucune
+ * page isolee ne permettait.
+ *
+ * Les montants sont calcules par le moteur du site, jamais saisis : un tableau
+ * fige finirait par contredire le calculateur au premier changement de bareme.
+ */
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import { SALARY_PAGES, MONTANTS_AVEC_PAGE } from '../../data/salary-pages';
+import { calculateTakeHome } from '../../lib/tax-engine-ca';
+import { formatCurrency } from '../../lib/format';
+
+/** Ontario sert de reference : c'est la province la plus peuplee du pays. */
+const lignes = SALARY_PAGES.map((p) => {
+  const r = calculateTakeHome({
+    grossAnnual: p.grossAnnual,
+    provinceCode: 'ON',
+    payFrequency: 'annual',
+  });
+  return {
+    brut: p.grossAnnual,
+    slug: p.slug,
+    net: r.netAnnual,
+    mensuel: r.netMonthly,
+    taux: p.grossAnnual > 0 ? (p.grossAnnual - r.netAnnual) / p.grossAnnual : 0,
+    aUnePage: MONTANTS_AVEC_PAGE.includes(p.grossAnnual),
+  };
+});
+
+const pct = (v: number) =>
+  (v * 100).toLocaleString('en-CA', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+
+const faqs = [
+  {
+    question: 'Why does the table use Ontario rates?',
+    answer:
+      'Ontario is the most populous province, so it makes the most useful single reference point. Provincial tax differs substantially: on the same gross salary, the gap between the lightest and heaviest province reaches several thousand dollars a year. Use the calculator on any detail page to switch province, or the province pages for a side-by-side comparison of all thirteen.',
+  },
+  {
+    question: 'Does the table account for CPP and EI?',
+    answer:
+      'Yes. Each figure is the full take-home amount after federal tax, provincial tax, Canada Pension Plan contributions including CPP2 on earnings above the first ceiling, and Employment Insurance premiums. It does not include the Ontario Health Premium below the threshold where it applies, nor any RRSP contribution, which lowers taxable income.',
+  },
+  {
+    question: 'Why do only some amounts have their own page?',
+    answer:
+      'Because a page that differs from twenty-four others only by a number answers no question that this table does not answer better. The amounts kept are those that sit at meaningful points of the tax schedule, where the marginal rate or a contribution ceiling changes. The rest redirect here, where they can be compared at a glance.',
+  },
+  {
+    question: 'How often are these figures updated?',
+    answer:
+      'The table is computed at build time from the same brackets the calculator uses, so it can never drift from them. Federal and provincial brackets are indexed each January, and CPP and EI ceilings are set annually by the Canada Revenue Agency and the Canada Employment Insurance Commission. A change to the rates updates every figure on this page at once.',
+  },
+  {
+    question: 'What is the difference between marginal and average rate?',
+    answer:
+      'The marginal rate applies only to the next dollar earned; the average rate, shown in the last column, is the total tax divided by the whole salary. The average is always the lower of the two, which is why a raise never reduces take-home pay. The gap between them widens as income rises through successive brackets.',
+  },
+  {
+    question: 'Can I see the effect of an RRSP contribution?',
+    answer:
+      'The table shows the position without any registered contribution. An RRSP contribution reduces taxable income dollar for dollar, so its value equals your marginal rate: at a 43.4% marginal rate, a $5,000 contribution returns roughly $2,170 at tax time. The calculator on each detail page accepts a contribution amount and recomputes everything.',
+  },
+];
+import PayrollContext from '../../components/PayrollContext.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
+---
+
+<CalculatorLayout
+  slug="salary"
+  title="Salary After Tax in Canada"
+  metaTitle="Salary After Tax in Canada 2026: Take-Home Pay Table"
+  metaDescription="Take-home pay on every salary from $25,000 to $300,000 in Canada for 2026, after federal tax, provincial tax, CPP and EI, computed with current brackets."
+  h1="Salary After Tax in Canada (2026)"
+  intro="What every salary is actually worth once federal tax, provincial tax, CPP and EI have been taken out."
+  faqs={faqs}
+>
+  <section class="mx-auto max-w-4xl px-4 py-8">
+    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+      The figures below are computed with the 2026 federal and Ontario brackets, including CPP,
+      CPP2 and EI contributions. They show what reaches your account, not what appears on the
+      offer letter. Switch province on any detail page, or use the province comparison to see how
+      much the same salary is worth from one end of the country to the other.
+    </p>
+
+    <div class="mt-8 overflow-x-auto rounded-xl border border-border">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-surface">
+            <th class="px-4 py-3 text-left font-semibold">Gross salary</th>
+            <th class="px-4 py-3 text-right font-semibold">Take-home (year)</th>
+            <th class="px-4 py-3 text-right font-semibold">Take-home (month)</th>
+            <th class="px-4 py-3 text-right font-semibold">Average tax rate</th>
+            <th class="px-4 py-3 text-left font-semibold"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {lignes.map((l) => (
+            <tr class="border-t border-border">
+              <td class="px-4 py-2.5 font-medium tabular-nums">{formatCurrency(l.brut)}</td>
+              <td class="px-4 py-2.5 text-right tabular-nums font-semibold">{formatCurrency(l.net)}</td>
+              <td class="px-4 py-2.5 text-right tabular-nums">{formatCurrency(l.mensuel)}</td>
+              <td class="px-4 py-2.5 text-right tabular-nums text-text-muted">{pct(l.taux)}</td>
+              <td class="px-4 py-2.5">
+                {l.aUnePage ? (
+                  <a href={`/salary/${l.slug}/`} class="text-primary hover:underline">Full breakdown</a>
+                ) : null}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="mt-12 text-2xl font-bold">Reading the table</h2>
+    <p class="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+      The average tax rate in the last column is the one that matters for budgeting: it is the
+      share of the whole salary that never arrives. It rises steadily rather than in steps,
+      because each bracket applies only to the portion of income above its threshold. This is why
+      moving into a higher bracket never reduces take-home pay, a fear that surfaces in almost
+      every salary negotiation.
+    </p>
+    <p class="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+      Two ceilings interrupt the progression. Canada Pension Plan contributions stop at the
+      second earnings ceiling, and Employment Insurance premiums stop at the maximum insurable
+      earnings. Above those points, an extra dollar of salary carries income tax but no further
+      contributions, so the average rate climbs more slowly than the brackets alone would
+      suggest.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-bold">Province changes the answer</h2>
+    <p class="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+      Federal tax, CPP and EI are the same everywhere, but provincial tax is not, and the spread
+      is wide enough to matter in a relocation decision. Quebec operates its own pension plan and
+      parental insurance plan, with different rates again, and it applies a federal abatement
+      that a raw comparison of provincial rates misses entirely. Each detail page recalculates
+      the whole breakdown for the province you pick.
+    </p>
+  </section>
+  <PayrollContext />
+  <OfficialSources />
+</CalculatorLayout>

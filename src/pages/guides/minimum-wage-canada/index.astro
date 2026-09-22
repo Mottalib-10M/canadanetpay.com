@@ -1,12 +1,31 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
+import OfficialSources from '../../../components/OfficialSources.astro';
 ---
 
 <GuideLayout
-  title="Minimum Wage in Canada by Province 2026"
-  description="Current minimum wage rates for every Canadian province and territory. Federal, Ontario, BC, Alberta, Quebec rates plus tipped, liquor server, and youth wages."
+  title="Minimum wage in Canada 2026: every province listed"
+  description="Current minimum wage in every province and territory, the federal rate and who it covers, when each is reviewed, and what it works out to over a full year."
   publishDate="2025-07-10"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Minimum Wage Canada' }]}
+  faqs={[
+      {
+          "question": "Which minimum wage applies to me?",
+          "answer": "The provincial or territorial one where the work is performed, in almost all cases. A small number of federally regulated sectors, including banking, interprovincial transport and telecommunications, follow the federal minimum instead, and where the provincial rate is higher the higher one applies. Students, liquor servers and home workers have separate rates in some provinces."
+      },
+      {
+          "question": "When do the rates change?",
+          "answer": "Most provinces adjust annually, commonly on the first of April or the first of October, and several index the change to the Consumer Price Index rather than legislating each rise. A few still set the rate by cabinet decision, which makes the timing less predictable. Any rate quoted without its effective date should be treated with caution."
+      },
+      {
+          "question": "What does the minimum wage work out to annually?",
+          "answer": "At a typical thirty-seven and a half hours a week it comes to somewhere between thirty and thirty-five thousand dollars a year before deductions, depending on the province. That sits below the first federal bracket threshold, so none of it is taxed at more than the lowest rate, and the basic personal amount shelters a meaningful share of it entirely."
+      },
+      {
+          "question": "Is the minimum wage the same as a living wage?",
+          "answer": "No. A living wage is a calculation of what covers actual costs in a specific community, produced by research groups rather than governments, and it typically exceeds the legal minimum by several dollars an hour. It carries no legal force. The gap between the two is largest in cities with high housing costs, which is where the calculation is most often published."
+      }
+  ]}
 >
   <h2>Current Minimum Wage Rates Across Canada</h2>
   <p>
@@ -186,6 +205,7 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
     <li><a href="https://www.ontario.ca/document/your-guide-employment-standards-act-0/minimum-wage" target="_blank" rel="noopener">Ontario: Minimum Wage</a></li>
     <li><a href="https://www2.gov.bc.ca/gov/content/employment-business/employment-standards-advice/employment-standards/wages/minimum-wage" target="_blank" rel="noopener">BC: Minimum Wage</a></li>
     <li><a href="https://www.alberta.ca/minimum-wage" target="_blank" rel="noopener">Alberta: Minimum Wage</a></li>
-    <li><a href="https://www.quebec.ca/en/employment/minimum-wage" target="_blank" rel="noopener">Quebec: Minimum Wage</a></li>
+    <li><a href="https://www.cnesst.gouv.qc.ca/en/working-conditions/wage-and-pay/wages/minimum-wage" target="_blank" rel="noopener">Quebec: Minimum Wage</a></li>
   </ul>
+  <OfficialSources />
 </GuideLayout>

@@ -1,0 +1,202 @@
+---
+/**
+ * Ce qui distingue vraiment une province des douze autres.
+ *
+ * Les treize pages de province se ressemblaient a plus de 90 % : meme texte,
+ * seul le nom changeait. Les supprimer aurait ete une erreur, car elles
+ * repondent chacune a une recherche differente, « salary after tax British
+ * Columbia » n'etant pas « salary after tax Manitoba ». Ce qui manquait n'etait
+ * pas de la longueur, c'etait ce qui fait la difference entre elles.
+ *
+ * Ce bloc la calcule : le bareme propre a la province, son rang sur treize a
+ * salaire egal, l'ecart en dollars avec la mediane du pays, et les regles qui
+ * n'existent que chez elle. Rien n'est saisi a la main : tout sort du moteur,
+ * donc tout change si un bareme change, et deux provinces ne peuvent pas
+ * produire le meme texte.
+ */
+import { PROVINCES, type ProvinceConfig } from '../data/provinces';
+import { calculateTakeHome } from '../lib/tax-engine-ca';
+import { formatCurrency } from '../lib/format';
+
+interface Props {
+  province: ProvinceConfig;
+}
+const { province } = Astro.props;
+
+/** Salaire de reference : proche du revenu median canadien a temps plein. */
+const REFERENCE = 75000;
+
+const net = (code: string) =>
+  calculateTakeHome({ grossAnnual: REFERENCE, provinceCode: code, payFrequency: 'annual' }).netAnnual;
+
+const classement = Object.values(PROVINCES)
+  .map((p) => ({ nom: p.name, code: p.abbreviation, net: net(p.abbreviation) }))
+  .sort((a, b) => b.net - a.net);
+
+const rang = classement.findIndex((p) => p.code === province.abbreviation) + 1;
+const moi = classement[rang - 1];
+const meilleure = classement[0];
+const pire = classement[classement.length - 1];
+const mediane = classement[Math.floor(classement.length / 2)];
+
+/*
+ * Voisinage de classement, et non le tableau complet : une liste des treize
+ * provinces serait identique sur les treize pages, ce qui aggraverait le
+ * probleme qu'on cherche a resoudre. Ces cinq lignes-la changent d'une page a
+ * l'autre.
+ */
+const voisinage = [...new Set([
+  classement[0],
+  classement[rang - 2],
+  classement[rang - 1],
+  classement[rang],
+  classement[classement.length - 1],
+].filter(Boolean))];
+const ecartMediane = moi.net - mediane.net;
+const ecartMeilleure = meilleure.net - moi.net;
+
+const pc = (v: number) =>
+  (v * 100).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+
+const tauxHaut = province.brackets[province.brackets.length - 1]?.rate ?? 0;
+const tauxBas = province.brackets[0]?.rate ?? 0;
+const nbTranches = province.brackets.length;
+
+/** Les regles qui n'existent que dans certaines provinces. */
+const particularites: string[] = [];
+if (province.isQuebec) {
+  particularites.push(
+    'Quebec collects its own income tax and runs the Quebec Pension Plan and the Quebec Parental Insurance Plan in place of the federal CPP and part of EI. In exchange, residents receive a federal abatement of 16.5% on their basic federal tax, which a straight comparison of provincial rates hides entirely.',
+  );
+}
+if (province.healthPremium) {
+  particularites.push(
+    'A health premium applies on top of provincial tax, charged in steps rather than as a percentage. It appears on the payslip as income tax and is easy to miss when comparing an offer with another province.',
+  );
+}
+if (province.surtax) {
+  particularites.push(
+    'A surtax applies to the provincial tax itself, not to income, above two thresholds. Its effect is to raise the real marginal rate well above the published bracket rate for higher earners.',
+  );
+}
+if (!particularites.length) {
+  particularites.push(
+    `Tax here follows the standard structure: ${nbTranches} provincial brackets applied on top of federal tax, with no surtax and no health premium. The whole difference with other provinces comes from where the thresholds sit and how steep the rates are.`,
+  );
+}
+
+/* Quelques niveaux de salaire, pour montrer comment l'ecart evolue. */
+const paliers = [40000, 60000, 80000, 120000].map((brut) => {
+  const ici = calculateTakeHome({ grossAnnual: brut, provinceCode: province.abbreviation, payFrequency: 'annual' });
+  const ailleurs = Object.values(PROVINCES).map((p) =>
+    calculateTakeHome({ grossAnnual: brut, provinceCode: p.abbreviation, payFrequency: 'annual' }).netAnnual);
+  const moyenne = ailleurs.reduce((a, b) => a + b, 0) / ailleurs.length;
+  return { brut, net: ici.netAnnual, ecart: ici.netAnnual - moyenne,
+           taux: (1 - ici.netAnnual / brut) * 100 };
+});
+const progression = paliers[paliers.length - 1].taux - paliers[0].taux;
+---
+
+<section class="mx-auto max-w-4xl px-4 mt-12">
+  <h2 class="text-2xl font-bold">How {province.name} compares</h2>
+  <p class="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+    On a {formatCurrency(REFERENCE)} salary, {province.name} ranks
+    <strong>{rang} of {classement.length}</strong> for take-home pay, leaving
+    <strong>{formatCurrency(moi.net)}</strong> a year.
+    {ecartMediane >= 0
+      ? `That is ${formatCurrency(Math.abs(ecartMediane))} more than the median province.`
+      : `That is ${formatCurrency(Math.abs(ecartMediane))} less than the median province.`}
+    {rang === 1
+      ? ' No province leaves more on the same salary.'
+      : ` ${meilleure.nom}, the lightest-taxing province, leaves ${formatCurrency(ecartMeilleure)} more.`}
+  </p>
+
+  <div class="mt-6 overflow-x-auto rounded-xl border border-border">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="bg-surface">
+          <th class="px-4 py-3 text-left font-semibold">Rank and province</th>
+          <th class="px-4 py-3 text-right font-semibold">Take-home on {formatCurrency(REFERENCE)}</th>
+          <th class="px-4 py-3 text-right font-semibold">Difference</th>
+        </tr>
+      </thead>
+      <tbody>
+        {voisinage.map((p) => (
+          <tr class={`border-t border-border ${p.code === province.abbreviation ? 'bg-surface font-semibold' : ''}`}>
+            <td class="px-4 py-2">{classement.indexOf(p) + 1}. {p.nom}{p.code === province.abbreviation ? ' (this page)' : ''}</td>
+            <td class="px-4 py-2 text-right tabular-nums">{formatCurrency(p.net)}</td>
+            <td class="px-4 py-2 text-right tabular-nums text-text-muted">
+              {p.net === moi.net ? '—' : (p.net > moi.net ? '+' : '−') + formatCurrency(Math.abs(p.net - moi.net))}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="mt-10 text-2xl font-bold">What is specific to {province.name}</h2>
+  {particularites.map((p) => (
+    <p class="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">{p}</p>
+  ))}
+  <p class="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+    Bear in mind that a difference in take-home pay is only one side of a relocation decision. The
+    provinces that leave the most on a payslip are not always the cheapest to live in, and housing
+    costs routinely swallow a gap of a few thousand dollars a year. The figures above answer the
+    tax question precisely, and that question alone.
+  </p>
+
+  <h2 class="mt-10 text-2xl font-bold">How the gap moves with salary</h2>
+  <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+    A province's ranking is not fixed across the income scale. Rates and thresholds interact, so a
+    province that looks generous on a modest salary can look ordinary on a high one, and the
+    reverse happens too. The table below shows {province.name} at four salary levels, with the
+    difference against the average of all thirteen jurisdictions at each level.
+  </p>
+
+  <div class="mt-5 overflow-x-auto rounded-xl border border-border">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="bg-surface">
+          <th class="px-4 py-3 text-left font-semibold">Gross salary</th>
+          <th class="px-4 py-3 text-right font-semibold">Take-home in {province.name}</th>
+          <th class="px-4 py-3 text-right font-semibold">Average tax rate</th>
+          <th class="px-4 py-3 text-right font-semibold">Against the national average</th>
+        </tr>
+      </thead>
+      <tbody>
+        {paliers.map((p) => (
+          <tr class="border-t border-border">
+            <td class="px-4 py-2 tabular-nums">{formatCurrency(p.brut)}</td>
+            <td class="px-4 py-2 text-right tabular-nums font-semibold">{formatCurrency(p.net)}</td>
+            <td class="px-4 py-2 text-right tabular-nums text-text-muted">{p.taux.toFixed(1)}%</td>
+            <td class="px-4 py-2 text-right tabular-nums">
+              {(p.ecart >= 0 ? '+' : '−') + formatCurrency(Math.abs(p.ecart))}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4 leading-relaxed text-gray-700 dark:text-gray-300">
+    Between the lowest and highest of those salaries, the average tax rate in {province.name} rises
+    by {progression.toFixed(1)} percentage points. That climb is the combined effect of the federal
+    and provincial brackets, softened at the top by the pension plan and employment insurance
+    ceilings, beyond which no further contribution is due. It is why the effective rate rises more
+    slowly than the marginal rate at higher incomes.
+  </p>
+
+  <h2 class="mt-10 text-2xl font-bold">Filing and residency in {province.name}</h2>
+  <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+    Provincial tax is determined by where you are resident on the thirty-first of December, not by
+    where the income was earned or how the year was split. Someone moving to {province.name} in
+    June is taxed by {province.name} on the whole year, with no apportionment. Payroll withholding
+    follows the address your employer holds, so any difference between what was withheld and what
+    is owed is settled in the annual return rather than at the moment of the move.
+  </p>
+  <p class="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+    {province.isQuebec
+      ? 'Quebec residents file two returns, one federal and one provincial, because the province administers its own income tax. That is also why the federal abatement exists, and why comparing Quebec provincial rates directly against another province misstates the position by a wide margin.'
+      : `Residents of ${province.name} file a single return covering both levels of tax, since the Canada Revenue Agency collects the provincial portion on the province's behalf. Only the schedule of rates and credits differs from one province to another; the filing process itself is identical.`}
+  </p>
+</section>
