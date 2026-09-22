@@ -1,5 +1,5 @@
-export const SITE_NAME = 'Salary After Tax Canada';
-export const SITE_URL = 'https://salaryaftertax.ca';
+export const SITE_NAME = 'Canada Net Pay';
+export const SITE_URL = 'https://canadanetpay.com';
 export const SITE_LOCALE = 'en-CA';
 export const SITE_LANGUAGE = 'en';
 export const TAX_YEAR = 2026;
@@ -9,7 +9,7 @@ export const CURRENCY_SYMBOL = '$';
 export const BING_VERIFY_CODE = '';
 export const CLARITY_PROJECT_ID = '';
 
-export const CONTACT_EMAIL = 'contact@salaryaftertax.ca';
+export const CONTACT_EMAIL = 'contact@canadanetpay.com';
 
 /*
  * Identite legale de l'editeur (RECETTE-SITE.md, controle check-legal).

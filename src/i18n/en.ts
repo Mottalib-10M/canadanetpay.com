@@ -1,7 +1,7 @@
 export const en = {
   lang: 'en',
   locale: 'en-CA',
-  siteName: 'Salary After Tax Canada',
+  siteName: 'Canada Net Pay',
   siteDescription: 'Calculate your take-home pay after tax in Canada',
 
   // Navigation

@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://salaryaftertax.ca',
+  site: 'https://canadanetpay.com',
   /*
    * Pages consolidees le 2026-09-22 : vingt montants dont le texte ne
    * differait que par un chiffre, 378 paires relevees trop proches. Leur
@@ -46,7 +46,7 @@ export default defineConfig({
     },
   },
   integrations: [
-    trustKit({ lang: 'en', siteUrl: 'https://salaryaftertax.ca', siteName: 'SalaryAfterTax.ca', founded: '2026-06-27', about: '/about/', method: '/methodology/' }), react(), sitemap()],
+    trustKit({ lang: 'en', siteUrl: 'https://canadanetpay.com', siteName: 'SalaryAfterTax.ca', founded: '2026-06-27', about: '/about/', method: '/methodology/' }), react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },
