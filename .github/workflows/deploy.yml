@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -37,10 +37,16 @@ jobs:
       - name: Build Astro
         run: npm run build
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/
+      - name: Publier sur la branche gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd dist
+          git init -q
+          git checkout -q -b gh-pages
+          git add -A
+          git -c user.email=actions@github.com -c user.name="GitHub Actions" \
+              commit -q -m "Site construit depuis ${GITHUB_SHA::7}"
+          git push -q --force \
+              "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
