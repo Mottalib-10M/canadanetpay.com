@@ -9,11 +9,13 @@ const cadFormatter = new Intl.NumberFormat('en-CA', {
   maximumFractionDigits: 0,
 });
 
+// Les montants s'affichent en entiers : au cent pres, un salaire ne se lit pas
+// mieux. Les decimales restent dans les calculs, jamais a l'ecran.
 const cadDetailFormatter = new Intl.NumberFormat('en-CA', {
   style: 'currency',
   currency: 'CAD',
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
 });
 
 const percentFormatter = new Intl.NumberFormat('en-CA', {
