@@ -41,7 +41,9 @@ import OfficialSources from '../../components/OfficialSources.astro';
   lang="fr"
   faqs={faqs}
 >
-  <SalaryCalculator client:idle defaultProvince="QC" lang="fr" />
+  <div data-chrome>
+    <SalaryCalculator client:idle defaultProvince="QC" lang="fr" />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

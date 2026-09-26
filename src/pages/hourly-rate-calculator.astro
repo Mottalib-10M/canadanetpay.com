@@ -33,7 +33,9 @@ import OfficialSources from '../components/OfficialSources.astro';
   intro="Convert your hourly wage to an annual salary and see your take-home pay after all Canadian taxes. Adjust hours per week and province for accurate results."
   faqs={faqs}
 >
-  <HourlyRateCalculator client:idle />
+  <div data-chrome>
+    <HourlyRateCalculator client:idle />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

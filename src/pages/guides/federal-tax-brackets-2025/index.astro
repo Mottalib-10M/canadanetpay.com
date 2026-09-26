@@ -47,7 +47,7 @@ import OfficialSources from '../../../components/OfficialSources.astro';
             <tr>
               <td>{(b.rate * 100).toFixed(1)}%</td>
               <td>{formatCurrency(b.min)} – {b.max === Infinity ? 'and above' : formatCurrency(b.max)}</td>
-              <td>{b.max === Infinity ? '—' : formatCurrency(taxOnBracket)}</td>
+              <td>{b.max === Infinity ? ', ' : formatCurrency(taxOnBracket)}</td>
             </tr>
           );
         })}

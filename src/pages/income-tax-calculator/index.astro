@@ -51,7 +51,9 @@ import OfficialSources from '../../components/OfficialSources.astro';
   intro="Calculate your federal and provincial income tax for 2026. See how much tax you owe on each bracket and how RRSP contributions reduce your bill."
   faqs={faqs}
 >
-  <IncomeTaxCalculator client:idle />
+  <div data-chrome>
+    <IncomeTaxCalculator client:idle />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

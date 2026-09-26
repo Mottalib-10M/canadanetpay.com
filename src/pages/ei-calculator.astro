@@ -23,7 +23,9 @@ import OfficialSources from '../components/OfficialSources.astro';
   intro="Calculate your Employment Insurance (EI) premiums for 2026. Quebec residents also see QPIP contributions. Select your province for accurate rates."
   faqs={faqs}
 >
-  <EICalculator client:idle />
+  <div data-chrome>
+    <EICalculator client:idle />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

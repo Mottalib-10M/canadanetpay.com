@@ -1,5 +1,6 @@
 ---
 import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import { SALARY_ANGLES } from '../../data/salary-angles';
 import SalaryCalculator from '../../components/calculators/SalaryCalculator';
 import { SALARY_PAGES, MONTANTS_AVEC_PAGE } from '../../data/salary-pages';
 import { calculateTakeHome } from '../../lib/tax-engine-ca';
@@ -69,7 +70,9 @@ import OfficialSources from '../../components/OfficialSources.astro';
   intro={`See exactly how much you take home on a ${formatted} annual salary in Canada. Compare your net pay across all provinces with a detailed tax breakdown for 2026.`}
   faqs={faqs}
 >
-  <SalaryCalculator client:idle />
+  <div data-chrome>
+    <SalaryCalculator client:idle />
+  </div>
 
   <!-- Stat Cards -->
   <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10">
@@ -96,7 +99,18 @@ import OfficialSources from '../../components/OfficialSources.astro';
   </div>
 
   <Fragment slot="content">
+    {/* §6 : ce qui ne vaut que pour ce niveau de salaire. Les vingt-cinq pages
+        partageaient 90 % de leur texte, les chiffres etant neutralises. */}
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      {(SALARY_ANGLES[String(gross)] ?? []).map((a) => (
+        <div>
+          <h2>{a.heading}</h2>
+          {a.paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+      ))}
+    </section>
+
+    <section data-chrome class="mt-12 prose prose-gray dark:prose-invert max-w-none">
 
       <!-- Provincial comparison table -->
       <h2>{formatted} Salary: Take-Home Pay by Province</h2>
@@ -242,7 +256,7 @@ import OfficialSources from '../../components/OfficialSources.astro';
       </table>
     </div>
 
-    <section class="mt-10 prose prose-gray dark:prose-invert max-w-none">
+    <section data-chrome class="mt-10 prose prose-gray dark:prose-invert max-w-none">
       <!-- Saving and Investing -->
       <h2>Saving and Investing on {formatted}</h2>
       <p>{savingsStrategy}</p>
@@ -269,7 +283,7 @@ import OfficialSources from '../../components/OfficialSources.astro';
     </section>
 
     <!-- Cross-links -->
-    <section class="mt-12">
+    <section data-chrome class="mt-12">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
         Calculate Other Canadian Salaries
       </h2>

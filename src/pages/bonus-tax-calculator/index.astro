@@ -54,7 +54,9 @@ import OfficialSources from '../../components/OfficialSources.astro';
   intro="Calculate the tax on your bonus. See how federal tax, provincial tax, CPP, and EI are applied to lump-sum bonus payments."
   faqs={faqs}
 >
-  <BonusCalculator client:idle />
+  <div data-chrome>
+    <BonusCalculator client:idle />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

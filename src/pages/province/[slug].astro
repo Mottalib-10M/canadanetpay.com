@@ -1,5 +1,6 @@
 ---
 import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import { RESUMES_PROVINCES } from '../../data/resumes-provinces';
 import SalaryCalculator from '../../components/calculators/SalaryCalculator';
 import { PROVINCES } from '../../data/provinces';
 import { formatCurrency } from '../../lib/format';
@@ -56,11 +57,18 @@ import OfficialSources from '../../components/OfficialSources.astro';
   h1={`${province.name} Salary After Tax Calculator 2026`}
   intro={`Calculate your take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Updated with 2026 ${province.abbreviation} tax brackets.`}
   faqs={faqs}
+  resume={RESUMES_PROVINCES[province.slug]}
 >
-  <SalaryCalculator client:idle defaultProvince={province.abbreviation} />
+  <div data-chrome>
+    <SalaryCalculator client:idle defaultProvince={province.abbreviation} />
+  </div>
 
   <Fragment slot="content">
-    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+    {/* §6.4 : ce bloc est le meme sur les treize pages, seules les sommes et
+        le nom changent, et le controle neutralise les sommes. Il reste utile au
+        lecteur mais il ne fait pas l'unicite de la page : celle-ci vient du
+        paragraphe propre a la province. */}
+    <section data-chrome class="mt-12 prose prose-gray dark:prose-invert max-w-none">
       <h2>{province.name} Income Tax Overview</h2>
       <p>
         {province.name} uses a progressive provincial income tax system with {province.brackets.length} tax brackets in 2026.

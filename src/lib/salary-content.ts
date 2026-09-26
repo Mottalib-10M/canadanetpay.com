@@ -1,5 +1,5 @@
 /**
- * Dynamic SEO content for salary pages — unique per salary level.
+ * Dynamic SEO content for salary pages, unique per salary level.
  * All text is driven by the actual calculated values for the given salary.
  */
 import type { CalculationResult } from './tax-engine-ca';

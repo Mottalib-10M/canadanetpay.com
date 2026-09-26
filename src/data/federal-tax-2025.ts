@@ -20,7 +20,7 @@ export const FEDERAL_BRACKETS: TaxBracket[] = [
 /** Basic Personal Amount (BPA) for 2025 */
 export const BASIC_PERSONAL_AMOUNT = 16129;
 
-/** BPA clawback threshold — high-income earners get a reduced BPA */
+/** BPA clawback threshold, high-income earners get a reduced BPA */
 export const BPA_CLAWBACK_THRESHOLD = 177882;
 export const BPA_CLAWBACK_FULL = 253414;
 export const BPA_MINIMUM = 14538;
@@ -32,7 +32,7 @@ export const CPP_EXEMPTION = 3500;
 export const CPP_MAX_PENSIONABLE_EARNINGS = 71300;
 export const CPP_MAX_CONTRIBUTION = 4034.10;
 
-/** CPP2 — Second additional CPP ceiling (2025) */
+/** CPP2, Second additional CPP ceiling (2025) */
 export const CPP2_RATE = 0.04;
 export const CPP2_MAX_PENSIONABLE_EARNINGS = 79400;
 export const CPP2_MAX_CONTRIBUTION = 324.00;
@@ -43,7 +43,7 @@ export const EI_RATE = 0.0158;
 export const EI_MAX_INSURABLE_EARNINGS = 65700;
 export const EI_MAX_CONTRIBUTION = 1049.12;
 
-// ─── QPP (Quebec Pension Plan) — Quebec uses QPP instead of CPP ─────────────
+// ─── QPP (Quebec Pension Plan), Quebec uses QPP instead of CPP ─────────────
 
 export const QPP_RATE = 0.064;
 export const QPP_EXEMPTION = 3500;
@@ -64,7 +64,7 @@ export const QPIP_MAX_CONTRIBUTION = 484.12;
 export const EI_RATE_QUEBEC = 0.01248;
 export const EI_MAX_CONTRIBUTION_QUEBEC = 834.24;
 
-/** Quebec federal tax abatement — 16.5% reduction */
+/** Quebec federal tax abatement, 16.5% reduction */
 export const QUEBEC_ABATEMENT = 0.165;
 
 // ─── Pay Periods ────────────────────────────────────────────────────────────

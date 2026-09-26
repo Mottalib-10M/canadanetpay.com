@@ -53,7 +53,9 @@ import OfficialSources from '../../components/OfficialSources.astro';
   intro="Calculate your Canada Pension Plan (CPP) or Quebec Pension Plan (QPP) contributions for 2026, including the new CPP2 second ceiling."
   faqs={faqs}
 >
-  <CPPCalculator client:idle />
+  <div data-chrome>
+    <CPPCalculator client:idle />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

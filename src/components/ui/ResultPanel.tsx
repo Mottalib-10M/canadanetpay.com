@@ -17,7 +17,7 @@ const T = {
     takeHome: 'Votre salaire net', perYear: 'par an', mo: '/mois', biWeekly: '/quinzaine',
     gross: 'Salaire brut', federal: 'Impôt fédéral', qpp: 'RRQ (Régime de rentes du Québec)',
     cpp: 'RPC (Régime de pensions du Canada)', ei: 'AE (assurance-emploi)',
-    qpip: 'RQAP (assurance parentale)', provincial: (p: string) => `Impôt provincial — ${p}`,
+    qpip: 'RQAP (assurance parentale)', provincial: (p: string) => `Impôt provincial, ${p}`,
     ohp: 'Contribution-santé de l\'Ontario', total: 'Total des retenues', net: 'Salaire net annuel',
     effective: "Taux d'imposition effectif", marginal: "Taux d'imposition marginal",
   },

@@ -25,7 +25,9 @@ import OfficialSources from '../components/OfficialSources.astro';
   intro="Calculate your federal income tax with a detailed bracket breakdown. See exactly how much tax you pay at each rate and how RRSP contributions reduce your bill."
   faqs={faqs}
 >
-  <FederalTaxCalculator client:idle />
+  <div data-chrome>
+    <FederalTaxCalculator client:idle />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

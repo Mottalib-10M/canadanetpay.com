@@ -1,5 +1,5 @@
 /**
- * Canadian Tax Engine — Pure calculation functions for federal + provincial taxes
+ * Canadian Tax Engine, Pure calculation functions for federal + provincial taxes
  *
  * All functions are pure, side-effect-free, and operate on annual figures.
  * Sources: CRA, Revenu Québec, provincial finance ministries.

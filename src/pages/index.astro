@@ -56,7 +56,9 @@ import OfficialSources from '../components/OfficialSources.astro';
   intro="Calculate your take-home pay after federal income tax, CPP, EI, and provincial taxes. Updated with the latest 2026 CRA tax brackets for all 13 provinces and territories."
   faqs={faqs}
 >
-  <SalaryCalculator client:idle />
+  <div data-chrome>
+    <SalaryCalculator client:idle />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

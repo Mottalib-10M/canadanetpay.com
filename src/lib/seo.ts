@@ -1,5 +1,5 @@
 /**
- * SEO utilities — Schema.org generators, title/canonical builders
+ * SEO utilities, Schema.org generators, title/canonical builders
  */
 
 import { SITE_NAME, SITE_URL, TAX_YEAR, LAST_UPDATED } from '../data/site-config';

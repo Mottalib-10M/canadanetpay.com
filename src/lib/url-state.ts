@@ -1,5 +1,5 @@
 /**
- * URL state management — encode/decode calculator parameters in the URL hash
+ * URL state management, encode/decode calculator parameters in the URL hash
  */
 
 export interface UrlConfig {

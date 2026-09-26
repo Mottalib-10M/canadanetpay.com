@@ -38,7 +38,9 @@ import OfficialSources from '../components/OfficialSources.astro';
   intro="Enter your desired take-home pay and find out what gross salary you need to earn. Covers federal tax, CPP/QPP, EI, and provincial tax for all 13 provinces."
   faqs={faqs}
 >
-  <NetToGrossCalculator client:idle />
+  <div data-chrome>
+    <NetToGrossCalculator client:idle />
+  </div>
 
   <Fragment slot="content">
     <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">

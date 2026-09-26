@@ -151,7 +151,7 @@ export default function SalaryCalculator({ defaultProvince = 'ON', lang = 'en'}:
               <tbody>
                 {result.federalBands.map((band, i) => (
                   <tr key={i} className={`border-b border-gray-50 dark:border-gray-800 ${i % 2 === 0 ? '' : 'bg-gray-50 dark:bg-gray-800/30'}`}>
-                    <td className="px-5 py-2 text-gray-700 dark:text-gray-300">{`${formatPercentLang(band.rate * 100, lang)}${lang === 'fr' ? ' — tranche' : ' bracket'}`}</td>
+                    <td className="px-5 py-2 text-gray-700 dark:text-gray-300">{`${formatPercentLang(band.rate * 100, lang)}${lang === 'fr' ? ', tranche' : ' bracket'}`}</td>
                     <td className="px-5 py-2 text-right tabular-nums text-gray-600 dark:text-gray-400">{formatCurrency(band.taxableAmount)}</td>
                     <td className="px-5 py-2 text-right tabular-nums font-medium text-gray-900 dark:text-white">{formatCurrency(band.tax)}</td>
                   </tr>

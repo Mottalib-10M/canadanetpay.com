@@ -1,5 +1,6 @@
 ---
 import Header from '../components/layout/Header.astro';
+import { RESUMES } from '../data/resumes';
 import Footer from '../components/layout/Footer.astro';
 import FAQAccordion from '../components/ui/FAQAccordion.astro';
 import RelatedCalculators from '../components/ui/RelatedCalculators.astro';
@@ -9,6 +10,11 @@ import { buildCanonical, SITE_NAME, SITE_URL, OG_IMAGE, OG_IMAGE_WIDTH, OG_IMAGE
 import type { Lang } from '../i18n/index';
 
 interface Props {
+  /**
+   * Paragraphe citable (RECETTE §21) : au moins 120 mots, rendus dans le corps
+   * et non dans l'en-tete, que check-seo retire comme un ornement.
+   */
+  resume?: string;
   slug: string;
   title: string;
   metaTitle: string;
@@ -19,7 +25,11 @@ interface Props {
   lang?: Lang;
 }
 
-const { slug, title, metaTitle, metaDescription, h1, intro, faqs, lang = 'en' } = Astro.props;
+const { slug, title, metaTitle, metaDescription, h1, intro, faqs, lang = 'en', resume} = Astro.props;
+// Le resume se trouve par le chemin quand la page ne le fournit pas : une
+// seule table a tenir, pas quarante appels a modifier.
+const resumeAffiche = resume ?? RESUMES[Astro.url.pathname]
+  ?? RESUMES[Astro.url.pathname.replace(/\/$/, '') + '/'];
 const canonical = buildCanonical(slug);
 
 const breadcrumbItems = [
@@ -42,6 +52,11 @@ if (slug === '/') {
 // Hreflang: EN <-> FR route mapping
 const enToFr: Record<string, string> = { '/': '/fr/', '/glossary/': '/fr/glossaire/' };
 const frToEn: Record<string, string> = { '/fr/': '/', '/fr/glossaire/': '/glossary/' };
+// Le canonique passe par buildCanonical, qui normalise, mais les hreflang
+// concatenaient le slug brut : deux pages le passent sans barre de tete
+// (« salary », « widget »), ce qui donnait « canadanetpay.comsalary » et une
+// auto-reference cassee (2026-09-26).
+const chemin = (p: string) => '/' + String(p).replace(/^\/+|\/+$/g, '') + '/';
 const enPath = lang === 'en' ? slug : (frToEn[slug] ?? null);
 const frPath = lang === 'fr' ? slug : (enToFr[slug] ?? null);
 const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
@@ -58,9 +73,9 @@ const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
   <link rel="canonical" href={canonical} />
 
   <!-- Hreflang -->
-  {enPath && <link rel="alternate" hreflang="en" href={`${SITE_URL}${enPath}`} />}
-  {frPath && <link rel="alternate" hreflang="fr" href={`${SITE_URL}${frPath}`} />}
-  {enPath && <link rel="alternate" hreflang="x-default" href={`${SITE_URL}${enPath}`} />}
+  {enPath && <link rel="alternate" hreflang="en" href={`${SITE_URL}${chemin(enPath)}`} />}
+  {frPath && <link rel="alternate" hreflang="fr" href={`${SITE_URL}${chemin(frPath)}`} />}
+  {enPath && <link rel="alternate" hreflang="x-default" href={`${SITE_URL}${chemin(enPath)}`} />}
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content={metaTitle} />
@@ -103,23 +118,27 @@ const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
       </p>
     </div>
 
+    {resumeAffiche && (
+      <p class="mb-8 leading-relaxed text-gray-700 dark:text-gray-300">{resumeAffiche}</p>
+    )}
+
     <slot />
 
-    <div class="mt-8 flex items-center gap-4 rounded-lg border border-gray-200 dark:border-gray-700 px-5 py-4">
+    <div data-chrome class="mt-8 flex items-center gap-4 rounded-lg border border-gray-200 dark:border-gray-700 px-5 py-4">
       <div class="text-sm">
         <p class="font-semibold text-gray-900 dark:text-white">By <a href="/about/" class="text-brand-600 hover:underline dark:text-brand-400">Radif Partners</a></p>
         <p class="text-gray-500 dark:text-gray-400">Passionate about personal finance, Publisher of calculators and practical guides</p>
       </div>
     </div>
 
-    <p class="mt-4 text-sm text-gray-500 dark:text-gray-500">
+    <p data-chrome class="mt-4 text-sm text-gray-500 dark:text-gray-500">
       Updated for tax year 2026 &middot; Last verified {LAST_UPDATED} &middot; Sources: CRA, Revenu Qu&eacute;bec
     </p>
 
     <slot name="content" />
 
     {faqs.length > 0 && (
-      <section class="mt-12" aria-labelledby="faq-heading">
+      <section data-chrome class="mt-12" aria-labelledby="faq-heading">
         <h2 id="faq-heading" class="text-2xl font-bold text-gray-900 dark:text-white">
           Frequently Asked Questions
         </h2>

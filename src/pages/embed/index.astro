@@ -14,7 +14,9 @@ import SalaryCalculator from '../../components/calculators/SalaryCalculator';
   </head>
   <body>
     <div class="max-w-7xl mx-auto">
-      <SalaryCalculator client:idle />
+      <div data-chrome>
+        <SalaryCalculator client:idle />
+      </div>
       <div class="mt-6 pt-4 border-t border-gray-200 text-center">
         <p class="text-xs text-gray-500">
           Powered by <a href="https://canadanetpay.com" target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:underline">SalaryAfterTax.ca</a>

@@ -38,7 +38,7 @@ export const SALARY_PAGES: SalaryPageConfig[] = amounts.map((amount) => {
     slug: `${amount}-salary-after-tax`,
     grossAnnual: amount,
     title: `$${formatted} After Tax`,
-    metaTitle: `$${formatted} Salary After Tax in Canada 2026 — Take-Home Pay`,
+    metaTitle: `$${formatted} Salary After Tax in Canada 2026, Take-Home Pay`,
     metaDescription: `Calculate your take-home pay on a $${formatted} salary in Canada for 2026. See your federal tax, CPP, EI, and provincial tax breakdown across all provinces.`,
     h1: `$${formatted} Salary After Tax in Canada (2026)`,
   };
