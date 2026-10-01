@@ -21,23 +21,23 @@ const faqs = [
 
   {
     question: 'What is CPP and how much do I pay in 2026?',
-    answer: 'The Canada Pension Plan (CPP) is a mandatory retirement pension. In 2026, employees pay 5.95% on earnings between $3,500 and $71,300, for a maximum of $4,034.10. CPP2 adds 4% on earnings between $71,300 and $79,400 (max $324). Your employer matches both contributions.',
+    answer: 'The Canada Pension Plan (CPP) is a mandatory retirement pension. In 2026, employees pay 5.95% on earnings between $3,500 and $74,600, for a maximum of $4,230.45. CPP2 adds 4% on earnings between $74,600 and $85,000 (max $416). Your employer matches both contributions.',
   },
   {
     question: 'What is the difference between CPP and QPP?',
-    answer: 'The Quebec Pension Plan (QPP) is Quebec\'s equivalent of CPP. QPP has a higher contribution rate (6.4% vs 5.95%) and a higher maximum contribution ($4,341.80 vs $4,034.10). Quebec residents automatically pay into QPP instead of CPP. Both provide similar retirement benefits.',
+    answer: 'The Quebec Pension Plan (QPP) is Quebec\'s equivalent of CPP. QPP has a higher contribution rate (6.3% vs 5.95%) and a higher maximum contribution ($4,479.30 vs $4,230.45). Quebec residents automatically pay into QPP instead of CPP. Both provide similar retirement benefits.',
   },
   {
     question: 'What is CPP2 and when did it start?',
-    answer: 'CPP2 (second additional CPP) started in 2024 as part of the CPP enhancement. It applies a 4% contribution rate on earnings between the first ceiling ($71,300) and second ceiling ($79,400) in 2026. Maximum CPP2 contribution is $324. This increases retirement benefits for higher earners.',
+    answer: 'CPP2 (second additional CPP) started in 2024 as part of the CPP enhancement. It applies a 4% contribution rate on earnings between the first ceiling ($74,600) and second ceiling ($85,000) in 2026. Maximum CPP2 contribution is $416. This increases retirement benefits for higher earners.',
   },
   {
     question: 'Does my employer match my CPP contributions?',
-    answer: 'Yes. Your employer pays the same CPP/CPP2 amount that is deducted from your paycheque. If you pay $4,034.10 in CPP, your employer also pays $4,034.10. Self-employed individuals must pay both the employee and employer portions. That matching contribution never appears in gross pay but is a real cost of employing you, which is worth knowing in a negotiation because it is the number the employer has in mind.',
+    answer: 'Yes. Your employer pays the same CPP/CPP2 amount that is deducted from your paycheque. If you pay $4,230.45 in CPP, your employer also pays $4,230.45. Self-employed individuals must pay both the employee and employer portions. That matching contribution never appears in gross pay but is a real cost of employing you, which is worth knowing in a negotiation because it is the number the employer has in mind.',
   },
   {
     question: 'When do I stop paying CPP?',
-    answer: 'CPP contributions are mandatory from age 18 to 65 (or 70 if you choose to defer). After 65, you can elect to stop contributing. You also stop contributing once your earnings reach the maximum pensionable earnings ($71,300 for CPP, $79,400 for CPP2 in 2026).',
+    answer: 'CPP contributions are mandatory from age 18 to 65 (or 70 if you choose to defer). After 65, you can elect to stop contributing. You also stop contributing once your earnings reach the maximum pensionable earnings ($74,600 for CPP, $85,000 for CPP2 in 2026).',
   },
 ];
 import PayrollContext from '../../components/PayrollContext.astro';
@@ -66,21 +66,21 @@ import OfficialSources from '../../components/OfficialSources.astro';
           <tbody>
             <tr><td>Contribution Rate</td><td>5.95%</td><td>6.40%</td></tr>
             <tr><td>Basic Exemption</td><td>$3,500</td><td>$3,500</td></tr>
-            <tr><td>Max Pensionable Earnings</td><td>$71,300</td><td>$71,300</td></tr>
-            <tr><td>Max Employee Contribution</td><td>$4,034.10</td><td>$4,341.80</td></tr>
+            <tr><td>Max Pensionable Earnings</td><td>$74,600</td><td>$74,600</td></tr>
+            <tr><td>Max Employee Contribution</td><td>$4,230.45</td><td>$4,479.30</td></tr>
             <tr><td>CPP2/QPP2 Rate</td><td>4.00%</td><td>4.00%</td></tr>
-            <tr><td>CPP2 Second Ceiling</td><td>$79,400</td><td>$79,400</td></tr>
-            <tr><td>Max CPP2 Contribution</td><td>$324.00</td><td>$324.00</td></tr>
+            <tr><td>CPP2 Second Ceiling</td><td>$85,000</td><td>$85,000</td></tr>
+            <tr><td>Max CPP2 Contribution</td><td>$416.00</td><td>$416.00</td></tr>
           </tbody>
         </table>
       </div>
 
       <h2>How CPP Is Calculated</h2>
       <p>
-        CPP contributions are calculated on "pensionable earnings," meaning your gross income between the basic exemption ($3,500) and the maximum pensionable earnings ($71,300). The formula is: (min(gross, $71,300) - $3,500) &times; 5.95%. If your result exceeds $4,034.10, you pay the maximum.
+        CPP contributions are calculated on "pensionable earnings," meaning your gross income between the basic exemption ($3,500) and the maximum pensionable earnings ($74,600). The formula is: (min(gross, $74,600) - $3,500) &times; 5.95%. If your result exceeds $4,230.45, you pay the maximum.
       </p>
       <p>
-        CPP2 applies an additional 4% on earnings between $71,300 and $79,400. This means employees earning above $79,400 pay the maximum combined CPP + CPP2 of $4,358.10 ($4,034.10 + $324.00).
+        CPP2 applies an additional 4% on earnings between $74,600 and $85,000. This means employees earning above $85,000 pay the maximum combined CPP + CPP2 of $4,358.10 ($4,230.45 + $416.00).
       </p>
 
       <h2>Sources</h2>

@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     question: `What is the total tax rate in ${province.name}?`,
-    answer: `Your total tax rate in ${province.name} includes federal income tax (15%–33%), ${province.isQuebec ? 'QPP (6.4%)' : 'CPP (5.95%)'}, EI (${province.isQuebec ? '1.248% + QPIP 0.494%' : '1.58%'}), and ${province.name} provincial tax (${(province.brackets[0].rate * 100).toFixed(2)}%–${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%). Use the calculator above for your exact rate. None of these are a single flat percentage. Federal and provincial income tax rise in steps, while the contributions are proportional up to a ceiling and then stop entirely. The result is an effective rate well below the marginal one at every income level, and the gap between the two widens as salary rises.`,
+    answer: `Your total tax rate in ${province.name} includes federal income tax (15%–33%), ${province.isQuebec ? 'QPP (6.3%)' : 'CPP (5.95%)'}, EI (${province.isQuebec ? '1.248% + QPIP 0.43%' : '1.63%'}), and ${province.name} provincial tax (${(province.brackets[0].rate * 100).toFixed(2)}%–${(province.brackets[province.brackets.length - 1].rate * 100).toFixed(2)}%). Use the calculator above for your exact rate. None of these are a single flat percentage. Federal and provincial income tax rise in steps, while the contributions are proportional up to a ceiling and then stop entirely. The result is an effective rate well below the marginal one at every income level, and the gap between the two widens as salary rises.`,
   },
   {
     question: `How much tax do I pay on $75,000 in ${province.name}?`,

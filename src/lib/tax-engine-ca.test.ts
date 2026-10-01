@@ -43,8 +43,8 @@ describe('calculateFederalTax', () => {
     expect(withRrsp.total).toBeLessThan(noRrsp.total);
   });
 
-  it('should calculate tax for high income ($250,000)', () => {
-    const result = calculateFederalTax(250000, 'ON');
+  it('should calculate tax for high income ($300,000)', () => {
+    const result = calculateFederalTax(300000, 'ON');
     expect(result.total).toBeGreaterThan(30000);
     expect(result.bands.length).toBe(5);
   });
@@ -66,7 +66,7 @@ describe('calculateCPPContribution', () => {
 
   it('should cap CPP at maximum', () => {
     const result = calculateCPPContribution(200000, false);
-    expect(result.cpp).toBeLessThanOrEqual(4034.10);
+    expect(result.cpp).toBeLessThanOrEqual(4230.45);
   });
 
   it('should calculate CPP2 for income above first ceiling', () => {
@@ -83,7 +83,7 @@ describe('calculateCPPContribution', () => {
 
   it('should cap QPP at maximum', () => {
     const result = calculateCPPContribution(200000, true);
-    expect(result.cpp).toBeLessThanOrEqual(4341.80);
+    expect(result.cpp).toBeLessThanOrEqual(4479.30);
   });
 });
 
@@ -97,7 +97,7 @@ describe('calculateEIContribution', () => {
 
   it('should cap EI at maximum', () => {
     const result = calculateEIContribution(200000, false);
-    expect(result.ei).toBeLessThanOrEqual(1049.12);
+    expect(result.ei).toBeLessThanOrEqual(1123.07);
   });
 
   it('should use lower EI rate for Quebec', () => {

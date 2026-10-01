@@ -10,6 +10,7 @@ const articles = [
   },
 ];
 import OfficialSources from '../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
 ---
 
 <GuideLayout
@@ -52,6 +53,8 @@ import OfficialSources from '../../components/OfficialSources.astro';
           {article.title}
         </h2>
         <p class="mt-2 text-gray-600 dark:text-gray-400">{article.description}</p>
+<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
+
         <p class="mt-2 text-xs text-gray-500 dark:text-gray-500">
           Published {new Date(article.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>

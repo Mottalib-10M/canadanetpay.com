@@ -1,6 +1,7 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
 import OfficialSources from '../../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
 ---
 
 <GuideLayout
@@ -35,6 +36,8 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     $40,500 per year. This gap between the average and median highlights the income inequality in the Canadian
     labour market.
   </p>
+<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
+
   <p>
     Understanding where your salary falls relative to these benchmarks helps with career planning, salary
     negotiations, and financial decisions. These figures are based on the Labour Force Survey and the Canadian

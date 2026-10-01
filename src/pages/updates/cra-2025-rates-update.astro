@@ -1,6 +1,7 @@
 ---
 import GuideLayout from '../../layouts/GuideLayout.astro';
 import OfficialSources from '../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
 ---
 
 <GuideLayout
@@ -34,6 +35,8 @@ import OfficialSources from '../../components/OfficialSources.astro';
     Pension Plan contributions including the new CPP2 second ceiling, Employment Insurance premiums, and several provincial
     tax rates. Every Canadian employee will see the impact of these changes on their paycheque starting in January 2025.
   </p>
+<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
+
   <p>
     The indexation factor for 2025 is 2.7 percent, which means most thresholds and amounts have been increased by this
     percentage. While the federal tax rates themselves remain unchanged at 15, 20.5, 26, 29, and 33 percent, the income

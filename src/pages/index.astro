@@ -16,15 +16,15 @@ const personSchema = {
 const faqs = [
   {
     question: 'How is my federal income tax calculated in Canada?',
-    answer: 'Canadian federal income tax uses a progressive bracket system. For 2026, there are five brackets: 15% on the first $57,375, 20.5% on $57,375–$114,750, 26% on $114,750–$158,468, 29% on $158,468–$220,000, and 33% on income over $220,000. The Basic Personal Amount ($16,129) is a non-refundable tax credit at the lowest rate, effectively making the first $16,129 of income tax-free.'
+    answer: 'Canadian federal income tax uses a progressive bracket system. For 2026, there are five brackets: 14% on the first $58,523, 20.5% on $58,523–$117,045, 26% on $117,045–$181,440, 29% on $181,440–$258,482, and 33% on income over $258,482. The Basic Personal Amount ($16,452) is a non-refundable tax credit at the lowest rate, effectively making the first $16,452 of income tax-free.'
   },
   {
     question: 'What is CPP and how much do I pay?',
-    answer: 'The Canada Pension Plan (CPP) is a mandatory retirement savings contribution. In 2026, employees contribute 5.95% on earnings between $3,500 and $71,300 (maximum contribution: $4,034.10). CPP2 adds 4% on earnings between $71,300 and $79,400 (maximum: $324). Quebec residents pay into the Quebec Pension Plan (QPP) at 6.4% instead. Your employer matches your contributions.'
+    answer: 'The Canada Pension Plan (CPP) is a mandatory retirement savings contribution. In 2026, employees contribute 5.95% on earnings between $3,500 and $74,600 (maximum contribution: $4,230.45). CPP2 adds 4% on earnings between $74,600 and $85,000 (maximum: $416). Quebec residents pay into the Quebec Pension Plan (QPP) at 6.3% instead. Your employer matches your contributions.'
   },
   {
     question: 'How does Employment Insurance (EI) work?',
-    answer: 'EI premiums are 1.58% of insurable earnings up to $65,700, with a maximum annual contribution of $1,049.12. Quebec residents pay a reduced EI rate (1.248%) because they also contribute to QPIP (Quebec Parental Insurance Plan) at 0.494%. EI provides temporary income support during unemployment, parental leave, or sickness.'
+    answer: 'EI premiums are 1.63% of insurable earnings up to $68,900, with a maximum annual contribution of $1,123.07. Quebec residents pay a reduced EI rate (1.248%) because they also contribute to QPIP (Quebec Parental Insurance Plan) at 0.43%. EI provides temporary income support during unemployment, parental leave, or sickness.'
   },
   {
     question: 'Which province has the lowest income tax?',
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     question: 'How does Quebec tax differ from other provinces?',
-    answer: 'Quebec has its own distinct tax system. Residents pay into QPP (6.4%) instead of CPP (5.95%), contribute to QPIP for parental benefits, pay a reduced EI rate, and receive a 16.5% abatement (reduction) on federal tax. Quebec also has its own provincial tax return and higher overall provincial tax rates (14% to 25.75%), but provides more social services.'
+    answer: 'Quebec has its own distinct tax system. Residents pay into QPP (6.3%) instead of CPP (5.95%), contribute to QPIP for parental benefits, pay a reduced EI rate, and receive a 16.5% abatement (reduction) on federal tax. Quebec also has its own provincial tax return and higher overall provincial tax rates (14% to 25.75%), but provides more social services.'
   },
   {
     question: 'What is the difference between effective and marginal tax rate?',
@@ -71,8 +71,8 @@ import OfficialSources from '../components/OfficialSources.astro';
       </p>
       <ol>
         <li><strong>Federal income tax</strong>: calculated using the 2026 progressive bracket system after applying the Basic Personal Amount non-refundable credit.</li>
-        <li><strong>CPP/QPP contributions</strong>: Canada Pension Plan (5.95% on earnings $3,500–$71,300) plus CPP2 (4% on $71,300–$79,400). Quebec residents pay QPP at 6.4% instead.</li>
-        <li><strong>EI premiums</strong>: Employment Insurance (1.58% on earnings up to $65,700). Quebec residents pay a lower EI rate plus QPIP.</li>
+        <li><strong>CPP/QPP contributions</strong>: Canada Pension Plan (5.95% on earnings $3,500–$74,600) plus CPP2 (4% on $74,600–$85,000). Quebec residents pay QPP at 6.3% instead.</li>
+        <li><strong>EI premiums</strong>: Employment Insurance (1.63% on earnings up to $68,900). Quebec residents pay a lower EI rate plus QPIP.</li>
         <li><strong>Provincial/territorial income tax</strong>: varies by province. Each province has its own brackets, rates, and credits.</li>
       </ol>
 
@@ -96,7 +96,7 @@ import OfficialSources from '../components/OfficialSources.astro';
         </table>
       </div>
       <p>
-        <em>Source: Canada Revenue Agency. The Basic Personal Amount for 2026 is $16,129, which provides a non-refundable tax credit at the 15% rate, effectively making the first $16,129 of income tax-free for most Canadians.</em>
+        <em>Source: Canada Revenue Agency. The Basic Personal Amount for 2026 is $16,452, which provides a non-refundable tax credit at the 14% rate, effectively making the first $16,452 of income tax-free for most Canadians.</em>
       </p>
 
       <h2>Provincial Tax Rates at a Glance</h2>
@@ -130,12 +130,12 @@ import OfficialSources from '../components/OfficialSources.astro';
       <h2>Understanding Your Canadian Paycheque Deductions</h2>
       <h3>Canada Pension Plan (CPP)</h3>
       <p>
-        CPP is a mandatory retirement savings program. In 2026, employees contribute 5.95% of pensionable earnings between the $3,500 exemption and the $71,300 maximum, for a maximum contribution of $4,034.10. The new CPP2 adds 4% on earnings between $71,300 and $79,400. Your employer matches these contributions. Quebec residents contribute to QPP instead, at a slightly higher rate of 6.4%.
+        CPP is a mandatory retirement savings program. In 2026, employees contribute 5.95% of pensionable earnings between the $3,500 exemption and the $74,600 maximum, for a maximum contribution of $4,230.45. The new CPP2 adds 4% on earnings between $74,600 and $85,000. Your employer matches these contributions. Quebec residents contribute to QPP instead, at a slightly higher rate of 6.3%.
       </p>
 
       <h3>Employment Insurance (EI)</h3>
       <p>
-        EI provides temporary income when you lose your job, are on parental leave, or are unable to work due to illness. The 2026 employee premium rate is 1.58% on insurable earnings up to $65,700, with a maximum annual premium of $1,049.12. Employers pay 1.4 times the employee rate. Quebec residents pay a reduced EI rate because QPIP covers parental benefits separately.
+        EI provides temporary income when you lose your job, are on parental leave, or are unable to work due to illness. The 2026 employee premium rate is 1.63% on insurable earnings up to $68,900, with a maximum annual premium of $1,123.07. Employers pay 1.4 times the employee rate. Quebec residents pay a reduced EI rate because QPIP covers parental benefits separately.
       </p>
 
       <h3>Provincial Income Tax</h3>

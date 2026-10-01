@@ -1,6 +1,7 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
 import OfficialSources from '../../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
 ---
 
 <GuideLayout
@@ -34,6 +35,8 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     purposes in the year you make the contribution. This means your immediate tax savings equal your
     contribution amount multiplied by your combined marginal tax rate.
   </p>
+<MiniSimAutonome client:visible kind="rrsp" lang="en" locale="en-CA" href="/income-tax-calculator/" />
+
   <p>
     For example, if your combined federal and provincial marginal rate is 35 percent and you contribute
     $10,000 to an RRSP, you save $3,500 in taxes for that year. The higher your income (and therefore your

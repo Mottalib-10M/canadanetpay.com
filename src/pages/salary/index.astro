@@ -74,6 +74,7 @@ const faqs = [
 ];
 import PayrollContext from '../../components/PayrollContext.astro';
 import OfficialSources from '../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
 ---
 
 <CalculatorLayout
@@ -92,6 +93,8 @@ import OfficialSources from '../../components/OfficialSources.astro';
       offer letter. Switch province on any detail page, or use the province comparison to see how
       much the same salary is worth from one end of the country to the other.
     </p>
+<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
+
 
     <div class="mt-8 overflow-x-auto rounded-xl border border-border">
       <table class="w-full text-sm">

@@ -2,6 +2,7 @@
 import GuideLayout from '../../../layouts/GuideLayout.astro';
 import { formatCurrency } from '../../../lib/format';
 import OfficialSources from '../../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
 ---
 
 <GuideLayout
@@ -41,6 +42,8 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     contributes a portion of their earnings to CPP, and their employer matches those contributions
     dollar-for-dollar.
   </p>
+<MiniSimAutonome client:visible kind="cpp" lang="en" locale="en-CA" href="/cpp-calculator/" />
+
   <p>
     The CPP is managed by the CPP Investments Board (CPPIB), one of the largest pension fund managers in the
     world, with over $570 billion in assets. Unlike a pay-as-you-go system, the CPP is partially funded,
@@ -55,15 +58,15 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     translate into retirement benefits is essential for financial planning.
   </p>
 
-  <h2>2025 CPP Contribution Rates</h2>
+  <h2>2026 CPP Contribution Rates</h2>
   <div class="overflow-x-auto">
     <table>
       <thead><tr><th>Component</th><th>CPP (Rest of Canada)</th><th>QPP (Quebec)</th></tr></thead>
       <tbody>
         <tr><td>Employee Rate</td><td>5.95%</td><td>6.40%</td></tr>
         <tr><td>Basic Exemption</td><td>$3,500</td><td>$3,500</td></tr>
-        <tr><td>Maximum Pensionable Earnings (YMPE)</td><td>$71,300</td><td>$71,300</td></tr>
-        <tr><td>Maximum Employee Contribution</td><td>$4,034.10</td><td>$4,341.80</td></tr>
+        <tr><td>Maximum Pensionable Earnings (YMPE)</td><td>$74,600</td><td>$74,600</td></tr>
+        <tr><td>Maximum Employee Contribution</td><td>$4,230.45</td><td>$4,479.30</td></tr>
         <tr><td>Employer Contribution</td><td>Matches employee</td><td>Matches employee</td></tr>
       </tbody>
     </table>
@@ -72,21 +75,21 @@ import OfficialSources from '../../../components/OfficialSources.astro';
   <h2>What is CPP2?</h2>
   <p>
     Starting in 2024, a second additional CPP contribution (CPP2) applies to earnings above the first ceiling
-    ($71,300) up to a second ceiling ($79,400). The CPP2 rate is 4% for both employee and employer.
+    ($74,600) up to a second ceiling ($85,000). The CPP2 rate is 4% for both employee and employer.
   </p>
   <div class="overflow-x-auto">
     <table>
-      <thead><tr><th>CPP2 Detail</th><th>2025</th></tr></thead>
+      <thead><tr><th>CPP2 Detail</th><th>2026</th></tr></thead>
       <tbody>
-        <tr><td>Second Ceiling (YAMPE)</td><td>$79,400</td></tr>
+        <tr><td>Second Ceiling (YAMPE)</td><td>$85,000</td></tr>
         <tr><td>CPP2 Rate</td><td>4.00%</td></tr>
-        <tr><td>Maximum CPP2 Contribution</td><td>$324.00</td></tr>
+        <tr><td>Maximum CPP2 Contribution</td><td>$416.00</td></tr>
       </tbody>
     </table>
   </div>
   <p>
-    CPP2 means employees earning above $71,300 will pay additional contributions on the portion between
-    $71,300 and $79,400. The maximum additional contribution is $324 per year.
+    CPP2 means employees earning above $74,600 will pay additional contributions on the portion between
+    $74,600 and $85,000. The maximum additional contribution is $416 per year.
   </p>
 
   <h2>How CPP Is Calculated</h2>
@@ -94,15 +97,15 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     CPP contributions are calculated using this formula:
   </p>
   <p class="font-mono bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
-    CPP = (min(gross, $71,300) - $3,500) &times; 5.95%<br/>
-    CPP2 = (min(gross, $79,400) - $71,300) &times; 4.00%
+    CPP = (min(gross, $74,600) - $3,500) &times; 5.95%<br/>
+    CPP2 = (min(gross, $85,000) - $74,600) &times; 4.00%
   </p>
   <p>
     If your gross income is $75,000:
   </p>
   <ul>
-    <li>CPP: ($71,300 - $3,500) &times; 5.95% = $4,034.10 (at maximum)</li>
-    <li>CPP2: ($75,000 - $71,300) &times; 4% = $148.00</li>
+    <li>CPP: ($74,600 - $3,500) &times; 5.95% = $4,230.45 (at maximum)</li>
+    <li>CPP2: ($75,000 - $74,600) &times; 4% = $148.00</li>
     <li>Total: $4,182.10</li>
   </ul>
 
@@ -130,10 +133,10 @@ import OfficialSources from '../../../components/OfficialSources.astro';
   <ul>
     <li><strong>Higher rate:</strong> QPP charges 6.4 percent versus CPP's 5.95 percent. This means Quebec
       employees pay about $307 more per year in pension contributions at the maximum pensionable earnings.</li>
-    <li><strong>Higher maximum contribution:</strong> QPP maximum employee contribution is $4,341.80 versus
-      CPP's $4,034.10.</li>
+    <li><strong>Higher maximum contribution:</strong> QPP maximum employee contribution is $4,479.30 versus
+      CPP's $4,230.45.</li>
     <li><strong>Same benefit levels:</strong> Both plans provide similar retirement pension amounts, with the
-      maximum monthly benefit at age 65 being approximately $1,364 in 2025.</li>
+      maximum monthly benefit at age 65 being approximately $1,433 in 2025.</li>
     <li><strong>Portability:</strong> Years contributed to either plan count toward your pension. If you work
       in Quebec for 10 years and then move to Ontario for 25 years, all 35 years of contributions are combined
       when calculating your retirement benefit.</li>
@@ -144,13 +147,13 @@ import OfficialSources from '../../../components/OfficialSources.astro';
   <h2>Self-Employed CPP</h2>
   <p>
     Self-employed individuals must pay <strong>both</strong> the employee and employer portions of CPP,
-    effectively double the rate: 11.90 percent for CPP or 12.80 percent for QPP. The maximum self-employed CPP
-    contribution in 2025 is $8,068.20 ($4,034.10 multiplied by 2) plus $648.00 for CPP2 ($324.00 multiplied
+    effectively double the rate: 11.90 percent for CPP or 12.60 percent for QPP. The maximum self-employed CPP
+    contribution in 2026 is $8,460.90 ($4,230.45 multiplied by 2) plus $832.00 for CPP2 ($416.00 multiplied
     by 2), for a total of $8,716.20.
   </p>
   <p>
-    For a self-employed individual earning $75,000, the CPP calculation would be: ($71,300 minus $3,500)
-    multiplied by 11.90 percent equals $8,068.20, plus CPP2 of ($75,000 minus $71,300) multiplied by 8 percent
+    For a self-employed individual earning $75,000, the CPP calculation would be: ($74,600 minus $3,500)
+    multiplied by 11.90 percent equals $8,068.20, plus CPP2 of ($75,000 minus $74,600) multiplied by 8 percent
     equals $296.00, for a total of $8,364.20. The employer-equivalent half of the CPP contribution is deductible
     as a business expense, reducing your net self-employment income for income tax purposes.
   </p>
@@ -171,7 +174,7 @@ import OfficialSources from '../../../components/OfficialSources.astro';
 
   <h2>CPP Retirement Benefits</h2>
   <p>
-    The maximum CPP retirement pension at age 65 in 2025 is approximately $1,364 per month, or $16,368 per year.
+    The maximum CPP retirement pension at age 65 in 2025 was approximately $1,433 per month, or $17,196 per year.
     However, the average CPP retirement pension is significantly lower, at about $816 per month, because most
     Canadians have not contributed at the maximum level for the required 39 contributory years. Your actual
     benefit depends on how much you contributed and for how many years.
@@ -211,17 +214,17 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     CPP2 represents a significant evolution of Canada's pension system, introduced on January 1, 2024.
     While the original CPP Enhancement (2019-2023) increased the base contribution rate from 4.95 percent to
     5.95 percent, CPP2 goes further by creating a second earnings ceiling above the Year's Maximum Pensionable
-    Earnings (YMPE). For 2025, this second ceiling, called the Year's Additional Maximum Pensionable Earnings
-    (YAMPE), is set at $79,400, compared to the first ceiling (YMPE) of $71,300. Employees earning between
-    $71,300 and $79,400 pay an additional 4 percent on that income (matched by their employer), resulting in a
-    maximum CPP2 contribution of $324 per year. This is separate from and in addition to the base CPP
-    contribution of up to $4,034.10.
+    Earnings (YMPE). For 2026, this second ceiling, called the Year's Additional Maximum Pensionable Earnings
+    (YAMPE), is set at $85,000, compared to the first ceiling (YMPE) of $74,600. Employees earning between
+    $74,600 and $85,000 pay an additional 4 percent on that income (matched by their employer), resulting in a
+    maximum CPP2 contribution of $416 per year. This is separate from and in addition to the base CPP
+    contribution of up to $4,230.45.
   </p>
   <p>
     The introduction of CPP2 means that higher-earning workers will see a slightly larger payroll deduction than
-    in previous years. For someone earning $79,400 or more, the total maximum CPP contribution (base plus CPP2)
+    in previous years. For someone earning $85,000 or more, the total maximum CPP contribution (base plus CPP2)
     is $4,358.10 per year. For an employee earning exactly $75,000, the base CPP contribution is maxed at
-    $4,034.10 and the CPP2 contribution is ($75,000 minus $71,300) multiplied by 4 percent, which equals $148,
+    $4,230.45 and the CPP2 contribution is ($75,000 minus $74,600) multiplied by 4 percent, which equals $148,
     for a combined total of $4,182.10. This additional contribution is modest on a per-paycheque basis --
     roughly $12.50 per biweekly pay period for someone at the CPP2 maximum -- but it accumulates over a full
     career to provide meaningfully higher retirement benefits.
@@ -233,7 +236,7 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     ceiling. CPP2 partially addresses this gap by capturing an additional $8,100 of earnings for pension
     purposes. Workers who contribute to CPP2 for a full career will receive a higher CPP retirement benefit
     that replaces a greater portion of their pre-retirement income. The CPP2 contribution also qualifies for
-    a non-refundable tax credit at 15 percent (similar to base CPP contributions), reducing your federal tax
+    a non-refundable tax credit at 14 percent (similar to base CPP contributions), reducing your federal tax
     by approximately $48.60 per year at the maximum CPP2 contribution level. Self-employed individuals pay
     both the employee and employer shares of CPP2, meaning their maximum CPP2 contribution is $648 per year.
   </p>

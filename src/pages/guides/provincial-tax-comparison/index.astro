@@ -18,6 +18,7 @@ const provinceData = ALL_PROVINCES.map((code) => ({
   }),
 }));
 import OfficialSources from '../../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
 ---
 
 <GuideLayout
@@ -51,6 +52,8 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     a worker earning $100,000 could take home anywhere from about $70,000 in Quebec to over $78,000 in
     Nunavut, a gap of roughly $8,000 per year purely due to provincial tax differences.
   </p>
+<MiniSimAutonome client:visible kind="provincial" lang="en" locale="en-CA" href="/income-tax-calculator/" />
+
   <p>
     Canada's provincial tax system is layered on top of the federal system. You file a single tax return that
     calculates both federal and provincial tax, and your provincial tax is determined by the province where you

@@ -3,6 +3,7 @@ import GuideLayout from '../../../layouts/GuideLayout.astro';
 import { FEDERAL_BRACKETS, BASIC_PERSONAL_AMOUNT } from '../../../data/federal-tax-2025';
 import { formatCurrency } from '../../../lib/format';
 import OfficialSources from '../../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
 ---
 
 <GuideLayout
@@ -34,6 +35,8 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     The Canada Revenue Agency (CRA) adjusts federal tax brackets annually for inflation. For the 2025 tax year,
     Canada uses five progressive tax brackets:
   </p>
+<MiniSimAutonome client:visible kind="federal" lang="en" locale="en-CA" href="/federal-tax-calculator/" />
+
 
   <div class="overflow-x-auto">
     <table>

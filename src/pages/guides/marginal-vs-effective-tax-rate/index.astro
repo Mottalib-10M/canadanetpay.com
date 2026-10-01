@@ -1,6 +1,7 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
 import OfficialSources from '../../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
 ---
 
 <GuideLayout
@@ -36,6 +37,8 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     Many Canadians overestimate their tax burden because they confuse these two rates, leading to
     suboptimal financial decisions.
   </p>
+<MiniSimAutonome client:visible kind="marginal" lang="en" locale="en-CA" href="/income-tax-calculator/" />
+
   <p>
     In Canada's progressive tax system, you never pay a single flat rate on all your income. Instead,
     different portions of your income are taxed at different rates, with lower rates on your first dollars
@@ -52,7 +55,7 @@ import OfficialSources from '../../../components/OfficialSources.astro';
     For example, if you earn $100,000 in Ontario in 2025:
   </p>
   <ul>
-    <li>Federal marginal rate: 20.5% (you're in the $57,375–$114,750 bracket)</li>
+    <li>Federal marginal rate: 20.5% (you're in the $58,523–$117,045 bracket)</li>
     <li>Ontario marginal rate: 9.15% (you're in the $52,886–$105,775 bracket)</li>
     <li><strong>Combined marginal rate: ~29.65%</strong></li>
   </ul>
@@ -110,7 +113,7 @@ import OfficialSources from '../../../components/OfficialSources.astro';
   </p>
   <p>
     A raise from $57,000 to $60,000 does push you from the 15 percent to the 20.5 percent federal
-    bracket, but only the $2,625 above $57,375 is taxed at 20.5 percent. The first $57,375 is still
+    bracket, but only the $2,625 above $58,523 is taxed at 20.5 percent. The first $58,523 is still
     taxed at 15 percent. The additional federal tax on that $3,000 raise is approximately $548 (the
     first $375 at 15 percent plus the remaining $2,625 at 20.5 percent), leaving you with roughly
     $2,452 more in after-federal-tax income. When you add provincial tax, the net increase is still
@@ -188,8 +191,8 @@ import OfficialSources from '../../../components/OfficialSources.astro';
   <p>
     Consider a concrete example to illustrate why this myth is so wrong. A worker earning $57,000 is
     entirely within the 15 percent federal bracket. If they receive a raise to $60,000, the additional
-    $3,000 is split: the first $375 (from $57,000 to $57,375) is taxed at 15 percent, and the remaining
-    $2,625 (from $57,375 to $60,000) is taxed at 20.5 percent. The total additional federal tax on the
+    $3,000 is split: the first $375 (from $57,000 to $58,523) is taxed at 15 percent, and the remaining
+    $2,625 (from $58,523 to $60,000) is taxed at 20.5 percent. The total additional federal tax on the
     $3,000 raise is approximately $594 ($56.25 plus $538.13), leaving the worker with about $2,406 more
     in after-federal-tax income. When you add provincial tax, the net increase is still clearly positive.
     There is no scenario in the Canadian tax system where earning one more dollar of employment income

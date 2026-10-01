@@ -44,6 +44,7 @@ const faqs = [
 ];
 import PayrollContext from '../../components/PayrollContext.astro';
 import OfficialSources from '../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
 ---
 
 <CalculatorLayout
@@ -62,6 +63,8 @@ import OfficialSources from '../../components/OfficialSources.astro';
           {calc.title}
         </h2>
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{calc.description}</p>
+<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
+
         <span class="mt-3 inline-block text-sm font-medium text-brand-600 dark:text-brand-400">
           Use calculator &rarr;
         </span>

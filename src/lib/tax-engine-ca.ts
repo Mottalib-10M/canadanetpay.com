@@ -7,6 +7,7 @@
 
 import {
   FEDERAL_BRACKETS,
+  FEDERAL_LOWEST_RATE,
   BASIC_PERSONAL_AMOUNT,
   BPA_CLAWBACK_THRESHOLD,
   BPA_CLAWBACK_FULL,
@@ -128,17 +129,17 @@ export function calculateFederalTax(
   const taxableIncome = Math.max(0, grossAnnual - rrspContribution);
   const { total: grossTax, bands } = calcBrackets(taxableIncome, FEDERAL_BRACKETS);
 
-  // BPA non-refundable credit at lowest rate (15%)
+  // BPA non-refundable credit at the lowest federal rate (14% in 2026)
   const bpa = getEffectiveBPA(grossAnnual);
-  const bpaCredit = round2(bpa * 0.15);
+  const bpaCredit = round2(bpa * FEDERAL_LOWEST_RATE);
 
   // CPP/QPP credit
   const province = PROVINCES[provinceCode];
   const isQuebec = province?.isQuebec ?? false;
-  const cppCredit = round2(calculateCPPContribution(grossAnnual, isQuebec).total * 0.15);
+  const cppCredit = round2(calculateCPPContribution(grossAnnual, isQuebec).total * FEDERAL_LOWEST_RATE);
 
   // EI credit
-  const eiCredit = round2(calculateEIContribution(grossAnnual, isQuebec).ei * 0.15);
+  const eiCredit = round2(calculateEIContribution(grossAnnual, isQuebec).ei * FEDERAL_LOWEST_RATE);
 
   let federalTax = Math.max(0, grossTax - bpaCredit - cppCredit - eiCredit);
 
