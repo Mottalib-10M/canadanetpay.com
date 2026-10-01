@@ -15,6 +15,8 @@ export default defineConfig({
    */
   redirects: {
     '/bonus-calculator/': '/bonus-tax-calculator/',
+    '/guides/federal-tax-brackets-2025/': '/guides/federal-tax-brackets-2026/',
+    '/updates/cra-2025-rates-update/': '/updates/cra-2026-rates-update/',
     '/salary/25000-salary-after-tax/': '/salary/',
     '/salary/30000-salary-after-tax/': '/salary/',
     '/salary/35000-salary-after-tax/': '/salary/',

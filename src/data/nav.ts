@@ -45,7 +45,7 @@ export const headerNavEn: NavGroup[] = [
   {
     label: 'Guides',
     children: [
-      { label: 'Federal Tax Brackets 2026', href: '/guides/federal-tax-brackets-2025/' },
+      { label: 'Federal Tax Brackets 2026', href: '/guides/federal-tax-brackets-2026/' },
       { label: 'CPP Explained', href: '/guides/cpp-explained/' },
       { label: 'RRSP Tax Savings', href: '/guides/rrsp-tax-savings/' },
       { label: 'Provincial Tax Comparison', href: '/guides/provincial-tax-comparison/' },
@@ -110,7 +110,7 @@ export const footerProvinceLinksEn: NavLink[] = [
 ];
 
 export const footerGuideLinksEn: NavLink[] = [
-  { label: 'Federal Tax Brackets 2026', href: '/guides/federal-tax-brackets-2025/' },
+  { label: 'Federal Tax Brackets 2026', href: '/guides/federal-tax-brackets-2026/' },
   { label: 'CPP Explained', href: '/guides/cpp-explained/' },
   { label: 'RRSP Tax Savings', href: '/guides/rrsp-tax-savings/' },
   { label: 'Provincial Comparison', href: '/guides/provincial-tax-comparison/' },

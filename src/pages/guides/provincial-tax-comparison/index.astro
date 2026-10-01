@@ -17,6 +17,10 @@ const provinceData = ALL_PROVINCES.map((code) => ({
     return { salary, net: r.netAnnual, rate: r.effectiveTaxRate };
   }),
 }));
+const N = (code: string, g = 100000) => calculateTakeHome({ grossAnnual: g, provinceCode: code, payFrequency: 'annual' });
+const P_ = PROVINCES; const $ = (x: number) => formatCurrency(Math.round(x));
+const nets100 = ALL_PROVINCES.map((c) => N(c).netAnnual); const minNet = Math.min(...nets100); const maxNet = Math.max(...nets100);
+const lowCode = ALL_PROVINCES[nets100.indexOf(minNet)]; const highCode = ALL_PROVINCES[nets100.indexOf(maxNet)];
 import OfficialSources from '../../../components/OfficialSources.astro';
 import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
 ---
@@ -24,7 +28,7 @@ import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
 <GuideLayout
   title="Provincial tax compared: where you keep the most in 2026"
   description="Compare income tax rates and take-home pay across all 13 Canadian provinces and territories for 2026. Side-by-side comparison at multiple salary levels."
-  publishDate="2025-01-15"
+  publishDate="2026-06-27"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Provincial Tax Comparison' }]}
   faqs={[
       {
@@ -49,8 +53,8 @@ import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
   <p>
     Each Canadian province and territory sets its own income tax brackets and rates. Combined with federal tax,
     your total tax burden varies significantly depending on where you live. The difference can be substantial:
-    a worker earning $100,000 could take home anywhere from about $70,000 in Quebec to over $78,000 in
-    Nunavut, a gap of roughly $8,000 per year purely due to provincial tax differences.
+    a worker earning {$(100000)} takes home anywhere from about {$(minNet)} in {P_[lowCode].name} to about {$(maxNet)} in
+    {P_[highCode].name}, a gap of roughly {$(maxNet - minNet)} per year purely due to provincial differences.
   </p>
 <MiniSimAutonome client:visible kind="provincial" lang="en" locale="en-CA" href="/income-tax-calculator/" />
 
@@ -124,20 +128,18 @@ import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
   </p>
   <ol>
     <li><strong>Nunavut</strong>: Has the lowest provincial rates in Canada (4 percent to 11.5 percent) and the
-      highest basic personal amount ($18,767). A worker earning $75,000 in Nunavut keeps more of their income
+      highest basic personal amounts ({$(P_.NU.basicPersonalAmount)}). A worker earning $75,000 in Nunavut keeps more of their income
       than in any other jurisdiction. However, the cost of living in Nunavut is dramatically higher than
       southern Canada: groceries can cost two to three times the national average due to remote shipping
       requirements, and housing costs are heavily influenced by limited supply.</li>
-    <li><strong>Northwest Territories</strong>: Low rates (5.9 percent to 14.05 percent) and a high BPA ($17,373)
+    <li><strong>Northwest Territories</strong>: Low rates (5.9 percent to 14.05 percent) and a high BPA ({$(P_.NT.basicPersonalAmount)})
       make the NWT the second-lowest-tax jurisdiction. Similar to Nunavut, living costs are elevated, though
       Yellowknife has better infrastructure and supply chain access than most northern communities.</li>
-    <li><strong>Alberta</strong>: The only province with a flat-rate first bracket. Alberta's lowest rate starts at
-      10 percent with a very high threshold ($148,269) before the rate increases to 12 percent. This means
-      most Albertans pay a flat 10 percent provincial rate. Combined with no provincial sales tax (PST),
+    <li><strong>Alberta</strong>: Alberta taxes the first {$(P_.AB.brackets[0].max)} at 8 percent, then 10 percent up to a very high threshold ({$(P_.AB.brackets[1].max)}) before the rate increases to 12 percent. It also has the highest basic personal amount among the provinces ({$(P_.AB.basicPersonalAmount)}). Combined with no provincial sales tax (PST),
       Alberta consistently ranks as the lowest-tax province for typical Canadian workers. On a $100,000
-      salary, an Albertan keeps roughly $3,500 more per year than an Ontarian.</li>
+      salary, an Albertan keeps roughly {$(N('AB').netAnnual - N('ON').netAnnual)} more per year than an Ontarian.</li>
     <li><strong>Saskatchewan</strong>: Offers moderate rates (10.5 percent to 14.5 percent) with a high BPA
-      ($18,491), one of the highest in the country. Saskatchewan also has a relatively low cost of living,
+      ({$(P_.SK.basicPersonalAmount)}), one of the highest in the country. Saskatchewan also has a relatively low cost of living,
       making it attractive on an after-tax, after-expenses basis.</li>
     <li><strong>Yukon</strong>: Mirrors federal bracket thresholds at lower rates (6.4 percent to 15 percent).
       The territory also offers the Yukon First Nations Tax Credit for eligible residents, further reducing
@@ -151,38 +153,36 @@ import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
   </p>
   <ol>
     <li><strong>Quebec</strong>: Has the highest provincial income tax rates in Canada (14 percent to 25.75 percent)
-      plus the Quebec Pension Plan (QPP) at 6.4 percent (higher than CPP's 5.95 percent) and the Quebec
+      plus the Quebec Pension Plan (QPP) at 6.3 percent (higher than CPP's 5.95 percent) and the Quebec
       Parental Insurance Plan (QPIP). However, Quebec residents receive a 16.5 percent federal tax abatement
       that partially offsets the higher provincial rates. Quebec also offers subsidized daycare ($8.70 per day),
       generous parental leave, and lower university tuition, which can make a significant difference for
-      families. On a $100,000 salary, a Quebec resident pays roughly $5,000 to $7,000 more in combined income
-      tax than an Albertan, but the subsidized services can offset much of this difference.</li>
-    <li><strong>Nova Scotia</strong>: Provincial rates reach 21 percent on income above $150,000, combined with one
-      of the lowest basic personal amounts in the country ($8,481). A worker earning $150,000 in Nova Scotia
+      families. On a $100,000 salary, a Quebec resident takes home roughly {$(N('AB').netAnnual - N('QC').netAnnual)} less than an Albertan, but the subsidized services can offset much of this difference.</li>
+    <li><strong>Nova Scotia</strong>: Provincial rates reach 21 percent on income above {$(P_.NS.brackets[3].max)}, combined with one
+      of the lowest basic personal amounts in the country ({$(P_.NS.basicPersonalAmount)}). A worker earning $150,000 in Nova Scotia
       faces a combined marginal rate exceeding 54 percent, one of the highest in Canada.</li>
     <li><strong>Newfoundland and Labrador</strong>: Eight brackets reaching 21.8 percent, with the lowest BPA
-      ($10,818) among the provinces. The province also charges a temporary deficit reduction levy on higher
+      ({$(P_.NL.basicPersonalAmount)}) among the provinces. The province also charges a temporary deficit reduction levy on higher
       incomes, adding another layer of taxation.</li>
-    <li><strong>Prince Edward Island</strong>: Three brackets with rates reaching 16.7 percent, plus a provincial
-      surtax of 10 percent on basic provincial tax exceeding $12,500. The surtax effectively creates a
-      steeper marginal rate at higher income levels.</li>
+    <li><strong>Prince Edward Island</strong>: Five brackets with rates from 9.5 to 19 percent. The provincial surtax was abolished
+      when the brackets were restructured, and the basic personal amount is {$(P_.PE.basicPersonalAmount)}.</li>
     <li><strong>Manitoba</strong>: Reaches 17.4 percent above $100,000. Manitoba also has the second-highest
       combined marginal tax rate in Canada at the $100,000 income level when federal tax is included. The
-      province's basic personal amount ($15,780) is moderate.</li>
+      province's basic personal amount ({$(P_.MB.basicPersonalAmount)}) is moderate and its thresholds are not indexed in 2026.</li>
   </ol>
 
   <h2>Historical Context and Year-Over-Year Changes</h2>
   <p>
     Provincial tax rates and brackets are adjusted periodically, though not as predictably as federal brackets.
     Alberta, for instance, introduced higher brackets in 2015 after decades of a flat 10 percent rate.
-    British Columbia added a temporary top rate of 20.5 percent on income above $240,716. Quebec's rates have
+    British Columbia added a top rate of 20.5 percent on income above {$(P_.BC.brackets[5].max)}. Quebec's rates have
     remained relatively stable but its bracket thresholds are indexed annually to inflation.
   </p>
   <p>
     For 2026, most provinces have made modest inflation adjustments to their bracket thresholds and basic
     personal amounts. The most significant recent change was Alberta's increase of the BPA and the continued
     phase-out of the Ontario surtax at higher income levels. Taxpayers should check their province's
-    specific 2025 rates, as changes can occur in provincial budgets released in the spring.
+    specific 2026 rates, as changes can occur in provincial budgets released in the spring.
   </p>
 
   <h2>Health Premiums by Province</h2>

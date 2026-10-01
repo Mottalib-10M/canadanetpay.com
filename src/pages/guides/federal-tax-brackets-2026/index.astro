@@ -1,0 +1,229 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import { FEDERAL_BRACKETS, BASIC_PERSONAL_AMOUNT } from '../../../data/federal-tax-2025';
+import { formatCurrency } from '../../../lib/format';
+import OfficialSources from '../../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
+import { FEDERAL_LOWEST_RATE, BPA_CLAWBACK_THRESHOLD, BPA_CLAWBACK_FULL, BPA_MINIMUM, CPP_MAX_CONTRIBUTION, CPP_MAX_PENSIONABLE_EARNINGS, EI_MAX_CONTRIBUTION, EI_MAX_INSURABLE_EARNINGS } from '../../../data/federal-tax-2025';
+import { calculateFederalTax, calculateProvincialTax } from '../../../lib/tax-engine-ca';
+const $ = (x: number) => formatCurrency(Math.round(x));
+const pc = (x: number, d = 1) => (x * 100).toFixed(d) + '%';
+/** Federal tax before credits, bracket by bracket. */
+const gross = (income: number) => FEDERAL_BRACKETS.reduce((t, b) => t + Math.max(0, Math.min(income, b.max) - b.min) * b.rate, 0);
+const net = (income: number) => calculateFederalTax(income, 'ON').total;
+const B = FEDERAL_BRACKETS; const bpaCredit = BASIC_PERSONAL_AMOUNT * FEDERAL_LOWEST_RATE;
+const levels = [40000, 75000, 120000, 200000, 300000];
+const PREV = [57375, 114750, 177882, 253414]; // 2025 thresholds
+const onProv = calculateProvincialTax(100000, 'ON'); const abProv = calculateProvincialTax(100000, 'AB');
+---
+
+<GuideLayout
+  title="Federal tax brackets 2026: rates, thresholds, credits"
+  description="Complete guide to the 2026 CRA federal income tax brackets with examples showing how progressive taxation works in Canada. Includes BPA and tax credits."
+  publishDate="2026-01-15"
+  modifiedDate="2026-10-01"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Federal Tax Brackets 2026' }]}
+  faqs={[
+      {
+          "question": "Does moving into a higher bracket reduce my take-home pay?",
+          "answer": "No. Each rate applies only to the portion of income within its bracket, so a raise never leaves you worse off. The confusion arises because the marginal rate, which applies to the next dollar, is always higher than the average rate paid across the whole salary. Benefits that phase out with income can create genuine cliffs, but the tax brackets themselves never do."
+      },
+      {
+          "question": "Are federal brackets the same in every province?",
+          "answer": "The federal brackets are identical across the country, but each province sets its own on top, with different rates and thresholds. Quebec is a special case: it collects its own income tax and residents receive a federal abatement in exchange. The combined rate therefore varies by several points depending on where you live, on exactly the same salary."
+      },
+      {
+          "question": "What is the basic personal amount?",
+          "answer": "It is the slice of income on which no federal tax is payable, delivered as a non-refundable credit rather than a deduction. It is reduced gradually for high earners and is indexed each January. Each province has its own equivalent at a different level, which is why two people with the same gross income in different provinces start paying tax at different points."
+      },
+      {
+          "question": "When are the brackets updated?",
+          "answer": "Thresholds are indexed to inflation and take effect on the first of January each year, based on the change in the Consumer Price Index over the twelve months to September. Rates themselves change only through a budget measure, which is far less frequent. A page quoting a threshold from an earlier year will be wrong by a few hundred dollars rather than by a whole bracket."
+      }
+  ]}
+>
+  <h2>2026 Federal Income Tax Brackets</h2>
+  <p>
+    The Canada Revenue Agency (CRA) adjusts federal tax brackets annually for inflation. For the 2026 tax year,
+    Canada uses five progressive tax brackets, and the lowest rate is {pc(FEDERAL_LOWEST_RATE, 0)}, down from 15% before July 2025:
+  </p>
+<MiniSimAutonome client:visible kind="federal" lang="en" locale="en-CA" href="/federal-tax-calculator/" />
+
+
+  <div class="overflow-x-auto">
+    <table>
+      <thead><tr><th>Tax Rate</th><th>Taxable Income Range</th><th>Tax on Maximum</th></tr></thead>
+      <tbody>
+        {FEDERAL_BRACKETS.map((b, i) => {
+          const prevMax = i > 0 ? FEDERAL_BRACKETS[i-1].max : 0;
+          const bracketWidth = b.max === Infinity ? 0 : b.max - b.min;
+          const taxOnBracket = bracketWidth > 0 ? bracketWidth * b.rate : 0;
+          return (
+            <tr>
+              <td>{(b.rate * 100).toFixed(1)}%</td>
+              <td>{formatCurrency(b.min)} – {b.max === Infinity ? 'and above' : formatCurrency(b.max)}</td>
+              <td>{b.max === Infinity ? ', ' : formatCurrency(taxOnBracket)}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>How Progressive Taxation Works</h2>
+  <p>
+    A common misconception is that earning more moves your entire income into a higher tax bracket. In reality, only the
+    income within each bracket is taxed at that rate. This is called progressive or marginal taxation. The system works
+    like a staircase: as your income climbs each step, only the income on that particular step is taxed at that step's
+    rate. Your income on lower steps continues to be taxed at the lower rates, regardless of how much you earn in total.
+  </p>
+  <p>For example, if you earn {$(80000)} in 2026:</p>
+  <ul>
+    <li>The first {$(B[0].max)} is taxed at {pc(B[0].rate, 0)} = {$(B[0].max * B[0].rate)}</li>
+    <li>The remaining {$(80000 - B[0].max)} ({$(80000)} – {$(B[0].max)}) is taxed at {pc(B[1].rate)} = {$((80000 - B[0].max) * B[1].rate)}</li>
+    <li>Total federal tax before credits: {$(gross(80000))}</li>
+  </ul>
+  <p>
+    Your marginal rate is {pc(B[1].rate)} (the rate on your last dollar), but your effective rate is only {pc(gross(80000) / 80000)}
+    ({$(gross(80000))} divided by {$(80000)}). This distinction is crucial for financial planning. When evaluating a raise, a bonus
+    or an RRSP contribution, think in terms of your marginal rate. When budgeting or comparing your overall tax burden, the
+    effective rate is more meaningful.
+  </p>
+
+  <h2>How Federal Tax Affects Different Income Levels</h2>
+  <p>
+    The progressive structure ensures that lower-income earners face a significantly lighter tax burden than higher
+    earners. Here is how federal tax scales across income levels, before credits and after the basic personal amount, CPP
+    and EI credits of an employee:
+  </p>
+  <ul>
+    {levels.map((x) => (
+      <li><strong>{$(x)} income:</strong> federal tax before credits {$(gross(x))}; after credits, about {$(net(x))} (effective rate {pc(net(x) / x)}).</li>
+    ))}
+  </ul>
+  <p>
+    The effective rate rises gradually from {pc(net(40000) / 40000)} at {$(40000)} to {pc(net(300000) / 300000)} at {$(300000)}. Even at {$(300000)},
+    the effective federal rate is well below the 33% top marginal rate, because the bulk of income is taxed at lower rates.
+  </p>
+
+  <h2>Basic Personal Amount (BPA)</h2>
+  <p>
+    The federal Basic Personal Amount for 2026 is <strong>{formatCurrency(BASIC_PERSONAL_AMOUNT)}</strong>. It provides a
+    non-refundable tax credit at {pc(FEDERAL_LOWEST_RATE, 0)}, worth {$(bpaCredit)}, effectively making the first {formatCurrency(BASIC_PERSONAL_AMOUNT)} of income
+    tax-free for most Canadians.
+  </p>
+  <p>
+    High-income earners (net income above {$(BPA_CLAWBACK_THRESHOLD)}) receive a reduced BPA. At {$(BPA_CLAWBACK_FULL)} and above, the BPA
+    is {$(BPA_MINIMUM)}. Very high earners therefore pay slightly more federal tax on their first dollars of income.
+  </p>
+
+  <h2>Tax Calculation Example: {$(100000)} Salary</h2>
+  <p>On a {$(100000)} salary (before deductions):</p>
+  <ul>
+    <li>{pc(B[0].rate, 0)} on the first {$(B[0].max)} = {$(B[0].max * B[0].rate)}</li>
+    <li>{pc(B[1].rate)} on {$(B[0].max)} to {$(100000)} ({$(100000 - B[0].max)}) = {$((100000 - B[0].max) * B[1].rate)}</li>
+    <li><strong>Gross federal tax: {$(gross(100000))}</strong></li>
+    <li>BPA credit: {formatCurrency(BASIC_PERSONAL_AMOUNT)} &times; {pc(FEDERAL_LOWEST_RATE, 0)} = {$(bpaCredit)}</li>
+    <li>CPP credit: about {$(CPP_MAX_CONTRIBUTION)} &times; {pc(FEDERAL_LOWEST_RATE, 0)}</li>
+    <li>EI credit: about {$(EI_MAX_CONTRIBUTION)} &times; {pc(FEDERAL_LOWEST_RATE, 0)}</li>
+    <li><strong>Net federal tax: about {$(net(100000))}</strong></li>
+  </ul>
+
+  <h2>How Brackets Have Changed Over Time</h2>
+  <p>
+    Federal brackets are indexed annually to inflation using the Consumer Price Index (CPI). The 2026 thresholds are
+    2.0% higher than those of 2025, meaning you can earn slightly more before entering higher brackets. This prevents
+    "bracket creep," where inflation-driven raises push you into higher tax brackets without increasing your real
+    purchasing power.
+  </p>
+  <p>
+    Looking back over recent years, the indexation rates have varied: 6.3% for 2023 (reflecting high post-pandemic
+    inflation), 4.7% for 2024, 2.7% for 2025 and 2.0% for 2026 as inflation moderated. The rates themselves had not
+    changed since 2016, when the government added the fifth bracket at 33%. That changed in 2025: the lowest rate was cut
+    from 15% to 14% from July 1, 2025, which gave a blended rate of 14.5% for 2025 and the full 14% for 2026.
+  </p>
+  <p>
+    For historical perspective, Canada introduced its modern income tax system in 1917 as a "temporary" wartime measure
+    with rates ranging from 4% to 25%. The number of brackets has varied from as many as 16 in the 1980s to the current
+    five, with significant simplification occurring in the tax reforms of 1987 and 2000.
+  </p>
+
+  <h2>How Federal Tax Interacts with Provincial Tax</h2>
+  <p>
+    Federal tax brackets are only part of your total income tax burden. Each province and territory sets its own brackets
+    and rates, which are calculated separately and added to your federal tax. For example, a worker earning {$(100000)} in
+    Ontario pays about {$(net(100000))} in net federal tax plus about {$(onProv)} in Ontario provincial tax, for a combined
+    income tax of about {$(net(100000) + onProv)}. The same worker in Alberta pays the same federal tax and about {$(abProv)} in
+    provincial tax, for a combined total of about {$(net(100000) + abProv)}.
+  </p>
+  <p>
+    Quebec is unique because it administers its own income tax separately (you file a separate Quebec return), and Quebec
+    residents receive a 16.5% federal tax abatement. Their federal tax is reduced by 16.5%, but the Quebec provincial tax
+    rates are significantly higher than those of other provinces.
+  </p>
+
+  <h2>Common Misconceptions</h2>
+  <ul>
+    <li><strong>"A raise will push all my income into a higher bracket."</strong> False. Only the income above the bracket threshold is taxed at the higher rate. A raise always increases your after-tax income.</li>
+    <li><strong>"The BPA means I do not pay tax on my first {formatCurrency(BASIC_PERSONAL_AMOUNT)}."</strong> Technically, the BPA is a non-refundable tax credit at {pc(FEDERAL_LOWEST_RATE, 0)}, not a deduction. The effect is similar, but the mechanism is different, and earners above {$(BPA_CLAWBACK_THRESHOLD)} receive a reduced BPA.</li>
+    <li><strong>"Capital gains are taxed at these rates."</strong> Capital gains receive preferential treatment in Canada: only half of a capital gain is included in taxable income, so the effective rate on a gain is about half the rate on employment income.</li>
+    <li><strong>"Everyone pays 33% on high income."</strong> The 33% rate only applies to taxable income above {$(B[3].max)}. Someone earning {$(300000)} pays 33% only on the {$(300000 - B[3].max)} above that threshold, not on their entire income.</li>
+  </ul>
+
+  <h2>Changes from 2025 to 2026: Specific Bracket Adjustments</h2>
+  <p>
+    The CRA applied a 2.0% indexation factor for 2026, based on the average Consumer Price Index over the twelve months
+    ending September 2025. It is lower than the 2.7% used for 2025 and the 4.7% applied for 2024, reflecting the moderation
+    of inflation.
+  </p>
+  <p>
+    The first bracket ceiling increased from {$(PREV[0])} in 2025 to {$(B[0].max)} in 2026, a rise of {$(B[0].max - PREV[0])}. The second
+    threshold rose from {$(PREV[1])} to {$(B[1].max)}, the third from {$(PREV[2])} to {$(B[2].max)}, and the fourth from {$(PREV[3])} to {$(B[3].max)}.
+    A worker who received a 2% cost-of-living raise therefore stays in about the same bracket position. On top of that,
+    the lowest rate applies at {pc(FEDERAL_LOWEST_RATE, 0)} for the whole of 2026, against a blended 14.5% in 2025: on {$(B[0].max)} of taxable income,
+    that half point is worth {$(B[0].max * 0.005)}.
+  </p>
+  <p>
+    The Basic Personal Amount also increased with indexation. For 2026, the maximum BPA is
+    {formatCurrency(BASIC_PERSONAL_AMOUNT)}, up from {$(16129)} in 2025. Because credits are valued at the lowest rate, the cut to
+    {pc(FEDERAL_LOWEST_RATE, 0)} also reduces the value of every non-refundable credit: the BPA credit is {$(bpaCredit)}.
+  </p>
+  <p>
+    Other notable changes for 2026 include the RRSP dollar limit ({$(33810)}, up from {$(32490)}), the TFSA annual contribution
+    room ({$(7000)}, unchanged), the CPP maximum pensionable earnings ({$(CPP_MAX_PENSIONABLE_EARNINGS)}, up from {$(71300)}) and the EI maximum
+    insurable earnings ({$(EI_MAX_INSURABLE_EARNINGS)}, up from {$(65700)}). Workers and financial planners should update their tax
+    projections each January to account for these changes.
+  </p>
+
+  <h2>Practical Tax Planning Tips</h2>
+  <ul>
+    <li><strong>Maximize RRSP contributions at high income.</strong> If your marginal rate is 26 percent or
+      higher (income above {$(B[1].max)}), RRSP contributions provide substantial tax savings. A {$(10000)}
+      contribution saves {$(2600)} to {$(3300)} in federal tax alone, plus provincial tax savings.</li>
+    <li><strong>Use TFSA at lower income levels.</strong> If your income is below {$(B[0].max)} (the {pc(FEDERAL_LOWEST_RATE, 0)}
+      bracket), the RRSP deduction saves only {pc(FEDERAL_LOWEST_RATE, 0)} per dollar. A TFSA may be more valuable because
+      withdrawals in retirement will be tax-free regardless of your future income.</li>
+    <li><strong>Income splitting for couples.</strong> Pension income splitting allows retirees to shift up to
+      50 percent of eligible pension income to a lower-income spouse, potentially saving thousands in combined
+      tax. Spousal RRSP contributions during working years achieve a similar result.</li>
+    <li><strong>Time your income.</strong> If you expect a significantly different income next year (due to
+      retirement, maternity leave, or a career change), consider shifting income or deductions across the
+      year boundary to minimize total tax.</li>
+  </ul>
+
+  <h2>Key Takeaways</h2>
+  <ul>
+    <li>Canada has 5 federal tax brackets from {pc(FEDERAL_LOWEST_RATE, 0)} to 33% in 2026.</li>
+    <li>Only income <em>within</em> each bracket is taxed at that rate (progressive system).</li>
+    <li>The first {formatCurrency(BASIC_PERSONAL_AMOUNT)} is effectively tax-free via the BPA credit.</li>
+    <li>Provincial tax is separate and additional (varies by province).</li>
+    <li>Brackets are indexed annually to inflation, preventing bracket creep.</li>
+    <li>Use our <a href="/">salary calculator</a> to see your exact take-home pay.</li>
+  </ul>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html" target="_blank" rel="noopener">CRA: Canadian income tax rates for individuals, current and previous years</a></li>
+  </ul>
+  <OfficialSources />
+</GuideLayout>

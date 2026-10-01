@@ -1,0 +1,134 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+import OfficialSources from '../../components/OfficialSources.astro';
+import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
+import { FEDERAL_BRACKETS as B, FEDERAL_LOWEST_RATE, BASIC_PERSONAL_AMOUNT, BPA_CLAWBACK_THRESHOLD, BPA_MINIMUM, CPP_RATE, CPP_EXEMPTION, CPP_MAX_PENSIONABLE_EARNINGS, CPP_MAX_CONTRIBUTION, CPP2_MAX_PENSIONABLE_EARNINGS, CPP2_MAX_CONTRIBUTION, CPP2_RATE, EI_RATE, EI_MAX_INSURABLE_EARNINGS, EI_MAX_CONTRIBUTION, EI_RATE_QUEBEC, EI_MAX_CONTRIBUTION_QUEBEC, QPP_RATE, QPP_MAX_CONTRIBUTION, QPIP_RATE, QPIP_MAX_CONTRIBUTION } from '../../data/federal-tax-2025';
+import { PROVINCES } from '../../data/provinces';
+import { formatCurrency } from '../../lib/format';
+const $ = (x: number) => formatCurrency(Math.round(x));
+const $2 = (x: number) => '$' + x.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pc = (x: number, d = 2) => (x * 100).toFixed(d).replace(/\.?0+$/, '') + '%';
+const first = (code: string) => PROVINCES[code].brackets[0];
+---
+
+<GuideLayout
+  title="CRA rate changes for 2026: every figure that moved"
+  description="Every federal figure that changed for 2026: bracket thresholds, the basic personal amount, CPP and CPP2 ceilings, and the employment insurance premium rate."
+  publishDate="2026-01-15"
+  modifiedDate="2026-10-01"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Updates', href: '/updates/' }, { label: 'CRA 2026 Rates Update' }]}
+  faqs={[
+      {
+          "question": "Which of these changes affects my paycheque first?",
+          "answer": "The CPP and EI ceilings, because payroll applies them from the first pay period of January without waiting for anything else. Bracket indexation follows automatically in the same cycle. Changes announced in a budget partway through the year are applied from the date stated in the legislation, which can mean a retroactive adjustment appearing in a later pay period."
+      },
+      {
+          "question": "Do I need to do anything when rates change?",
+          "answer": "Usually not. Payroll systems update automatically and the Canada Revenue Agency publishes the tables employers must use. The exception is anyone with a form TD1 on file claiming credits beyond the basic amount: those figures are indexed too, and an outdated form means the wrong amount is withheld all year, recovered only through the annual return."
+      },
+      {
+          "question": "Why did my deductions rise even though my salary did not?",
+          "answer": "Almost always the CPP and EI ceilings. Contributions restart each January and continue until the annual maximum is reached, so deductions are heaviest early in the year and stop entirely once the ceiling is hit. Someone who reached the maximum in October will see a noticeably smaller net pay in January, with no change to gross."
+      },
+      {
+          "question": "Where can I verify these figures myself?",
+          "answer": "The Canada Revenue Agency publishes the payroll deduction tables and the indexed bracket thresholds on its own site each November for the following year, and Service Canada publishes the EI premium rate and maximum insurable earnings separately. Both are linked at the foot of this page, and either supersedes any summary, including this one."
+      }
+  ]}
+>
+  <h2>Overview of 2026 Changes</h2>
+  <p>
+    The Canada Revenue Agency has released the tax parameters for the 2026 tax year. They affect federal income tax
+    brackets, the Basic Personal Amount, Canada Pension Plan contributions including the CPP2 second ceiling, Employment
+    Insurance premiums and provincial tax tables. Every Canadian employee sees the effect on the first paycheque of January 2026.
+  </p>
+<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
+  <p>
+    The indexation factor for 2026 is 2.0 percent, so most thresholds and amounts rose by that percentage. The bigger
+    change is the lowest federal rate: it is {pc(FEDERAL_LOWEST_RATE)} for the whole of 2026, after the cut from 15 percent that took
+    effect on July 1, 2025. The other four rates are unchanged at 20.5, 26, 29 and 33 percent. Indexation prevents
+    inflation from gradually pushing taxpayers into higher brackets, a phenomenon known as bracket creep.
+  </p>
+
+  <h2>Federal Tax Bracket Changes</h2>
+  <p>
+    The five federal tax brackets for 2026 are as follows. The {pc(B[0].rate)} rate applies to the first {$(B[0].max)} of taxable
+    income, up from {$(57375)} in 2025. The {pc(B[1].rate)} rate applies to income between {$(B[0].max)} and {$(B[1].max)}. The {pc(B[2].rate)} rate
+    covers income from {$(B[1].max)} to {$(B[2].max)}. The {pc(B[3].rate)} rate applies to income between {$(B[2].max)} and {$(B[3].max)}. Finally,
+    the top rate of {pc(B[4].rate)} applies to taxable income above {$(B[3].max)}.
+  </p>
+  <p>
+    For an employee with {$(75000)} of taxable income, the lower first-bracket rate alone is worth {$(B[0].max * 0.005)} compared
+    with the blended 14.5 percent of 2025, before counting the effect of indexation.
+  </p>
+
+  <h2>Basic Personal Amount</h2>
+  <p>
+    The Basic Personal Amount (BPA) for 2026 is {$(BASIC_PERSONAL_AMOUNT)}, up from {$(16129)} in 2025. The non-refundable credit is
+    calculated at the lowest rate, {pc(FEDERAL_LOWEST_RATE)}, so the tax reduction is {$(BASIC_PERSONAL_AMOUNT * FEDERAL_LOWEST_RATE)}. For net income above
+    {$(BPA_CLAWBACK_THRESHOLD)}, the enhanced amount is gradually reduced, down to {$(BPA_MINIMUM)} at the top bracket threshold.
+  </p>
+
+  <h2>CPP and CPP2 Contribution Updates</h2>
+  <p>
+    The maximum pensionable earnings (YMPE), the first ceiling, rise to {$(CPP_MAX_PENSIONABLE_EARNINGS)} in 2026, from {$(71300)} in 2025. The
+    employee contribution rate stays at {pc(CPP_RATE)}, for a maximum employee contribution of {$2(CPP_MAX_CONTRIBUTION)}, calculated as
+    ({$(CPP_MAX_PENSIONABLE_EARNINGS)} minus the {$(CPP_EXEMPTION)} basic exemption) times {pc(CPP_RATE)}.
+  </p>
+  <p>
+    CPP2 applies to earnings between the first ceiling and the second ceiling (YAMPE) of {$(CPP2_MAX_PENSIONABLE_EARNINGS)}, up from
+    {$(81200)} in 2025. The rate is {pc(CPP2_RATE)} for both employee and employer, and the maximum CPP2 contribution is {$2(CPP2_MAX_CONTRIBUTION)}. For
+    employees earning above the second ceiling, the combined maximum is {$2(CPP_MAX_CONTRIBUTION + CPP2_MAX_CONTRIBUTION)}.
+  </p>
+  <p>
+    Quebec employees contribute to the Quebec Pension Plan (QPP) instead. The QPP employee rate for 2026 is {pc(QPP_RATE)},
+    down from 6.4 percent, for a maximum contribution of {$2(QPP_MAX_CONTRIBUTION)}. QPP2 mirrors CPP2 with the same ceilings and rate.
+  </p>
+
+  <h2>Employment Insurance Premium Changes</h2>
+  <p>
+    The EI premium rate for employees outside Quebec is {pc(EI_RATE)} of insurable earnings in 2026, down from 1.64 percent in
+    2025. The maximum insurable earnings increase to {$(EI_MAX_INSURABLE_EARNINGS)}, giving a maximum annual employee premium of
+    {$2(EI_MAX_CONTRIBUTION)}. Quebec employees pay a reduced EI rate of {pc(EI_RATE_QUEBEC)}, at most {$2(EI_MAX_CONTRIBUTION_QUEBEC)}, because the Quebec Parental
+    Insurance Plan (QPIP) covers maternity and parental benefits; the QPIP employee rate is {pc(QPIP_RATE)}, at most {$2(QPIP_MAX_CONTRIBUTION)}.
+  </p>
+  <p>
+    For employers, the EI premium is 1.4 times the employee premium, which makes the employer rate {pc(EI_RATE * 1.4, 3)} outside
+    Quebec. It is a significant component of the total cost of employment and is factored into our employer cost
+    calculator.
+  </p>
+
+  <h2>Provincial Tax Changes</h2>
+  <p>
+    Provinces index their own tables. In Ontario the first bracket now ends at {$(first('ON').max)}, in British Columbia at
+    {$(first('BC').max)}. Alberta has a first bracket of {pc(first('AB').rate)} up to {$(first('AB').max)}, with 10 percent above it. Prince Edward
+    Island has five brackets and no surtax. Manitoba's thresholds are not indexed in 2026.
+  </p>
+  <p>
+    Quebec, which administers its own income tax through Revenu Québec, indexed its four brackets by 2.05 percent: the
+    first rate of {pc(first('QC').rate)} applies to income up to {$(first('QC').max)}. Workers who moved between provinces during the
+    year should note that provincial tax is based on the province of residence on December 31, not where the income was
+    earned.
+  </p>
+
+  <h2>Impact on Your Paycheque</h2>
+  <p>
+    Payroll deductions are updated automatically by employers at the start of each calendar year. Income tax withheld
+    falls slightly at the same gross pay, because of the higher thresholds and the lower first-bracket rate. CPP and EI
+    deductions rise for anyone earning above the old ceilings, since both ceilings moved up.
+  </p>
+  <p>
+    Workers earning above the second ceiling of {$(CPP2_MAX_PENSIONABLE_EARNINGS)} see CPP contributions stop once the first maximum is
+    reached, then CPP2 deductions until the second maximum. Net pay is therefore lower in the first months of the year
+    and higher once both maximums are reached.
+  </p>
+
+  <h2>What You Should Do</h2>
+  <p>
+    Review your first 2026 pay stub to confirm that the updated rates have been applied. If your personal circumstances
+    have changed, such as getting married, having a child or starting a second job, file a new TD1 form with your
+    employer. Use our salary calculator to estimate your 2026 take-home pay under the updated rates.
+  </p>
+
+  <OfficialSources />
+</GuideLayout>
