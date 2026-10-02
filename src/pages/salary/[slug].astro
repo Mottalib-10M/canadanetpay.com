@@ -53,7 +53,8 @@ const savingsStrategy = getSavingsStrategy(gross, onResult);
 const maximiseTips = getMaximiseTips(gross, onResult, abResult, qcResult);
 const provincialIntro = getProvincialIntro(gross, onResult, abResult, qcResult);
 
-const allPages = [...SALARY_PAGES];
+// Seuls les montants qui gardent une page : lier les autres passerait par une redirection.
+const allPages = SALARY_PAGES.filter((p) => MONTANTS_AVEC_PAGE.includes(p.grossAnnual));
 const idx = allPages.findIndex((p) => p.grossAnnual === gross);
 const prevPage = idx > 0 ? allPages[idx - 1] : null;
 const nextPage = idx < allPages.length - 1 ? allPages[idx + 1] : null;
