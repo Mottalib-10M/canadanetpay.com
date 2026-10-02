@@ -57,7 +57,7 @@ const frToEn: Record<string, string> = { '/fr/': '/', '/fr/glossaire/': '/glossa
 // concatenaient le slug brut : deux pages le passent sans barre de tete
 // (« salary », « widget »), ce qui donnait « canadanetpay.comsalary » et une
 // auto-reference cassee (2026-09-26).
-const chemin = (p: string) => '/' + String(p).replace(/^\/+|\/+$/g, '') + '/';
+const chemin = (p: string) => { const c = String(p).replace(/^\/+|\/+$/g, ''); return c ? `/${c}/` : '/'; };
 const enPath = lang === 'en' ? slug : (frToEn[slug] ?? null);
 const frPath = lang === 'fr' ? slug : (enToFr[slug] ?? null);
 const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
