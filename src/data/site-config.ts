@@ -11,7 +11,7 @@ export const BING_VERIFY_CODE = '';
 export const CLARITY_ID = 'yrboj7iap3';
 /** Régime de consentement : 'opt-in' = rien avant l'accord ; 'notice' = mesure active
  *  avec information préalable et retrait possible. */
-export const CONSENT_MODE: 'opt-in' | 'notice' = 'notice';
+export const CONSENT_MODE: 'opt-in' | 'notice' | 'none' = 'none';
 
 export const CONTACT_EMAIL = 'contact@canadanetpay.com';
 

@@ -6,7 +6,9 @@
  *  - part="head" : pose l'état par défaut et ne charge Clarity que si le choix l'autorise ;
  *  - part="body" : le bandeau, et le lien « gérer les cookies » qui le rouvre.
  *
- * Deux régimes, selon CONSENT_MODE dans site-config :
+ * Trois régimes, selon CONSENT_MODE dans site-config :
+ *  - 'none' : aucun bandeau ni lien de réglage ; Clarity se charge à l'ouverture de la page
+ *    et la page de confidentialité le dit (choix de l'éditeur, 2026-10-02).
  *  - 'opt-in' (UE, Royaume-Uni, Suisse) : rien n'est chargé tant que le visiteur n'a pas
  *    accepté ; le refus est au même niveau visuel que l'acceptation.
  *  - 'notice' (Canada, États-Unis, Australie) : mesure active par défaut, avec information
@@ -63,7 +65,7 @@ const defaut = CONSENT_MODE === 'opt-in' ? 'denied' : 'granted';
 {CLARITY_ID && part === 'head' && (
   <script is:inline set:html={`(function(){var d='${defaut}';var c=null;try{c=localStorage.getItem('consent-choice');}catch(e){}window.clarity=window.clarity||function(){(window.clarity.q=window.clarity.q||[]).push(arguments);};window.__clarityLoad=function(){if(window.__clarityOn)return;window.__clarityOn=true;var s=document.createElement('script');s.async=true;s.src='https://www.clarity.ms/tag/${CLARITY_ID}';document.head.appendChild(s);};if(c==='granted')window.clarity('consentv2',{ad_Storage:'denied',analytics_Storage:'granted'});if(c==='granted'||(c===null&&d==='granted'))window.__clarityLoad();})();`} />
 )}
-{CLARITY_ID && part === 'body' && (
+{CLARITY_ID && CONSENT_MODE !== 'none' && part === 'body' && (
   <>
     <p style="margin:0;padding:12px 16px 20px;text-align:center;font-size:13px;">
       <button type="button" data-consent-manage style="background:none;border:0;padding:0;font:inherit;color:inherit;opacity:.75;text-decoration:underline;cursor:pointer;">{s.manage}</button>
