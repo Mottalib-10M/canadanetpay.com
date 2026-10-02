@@ -39,7 +39,9 @@ export function writeUrlParams(values: Record<string, any>): void {
     }
     const hash = params.toString();
     if (hash) {
-      window.history.replaceState(null, '', `#${hash}`);
+      // Appel sur le prototype : un outil de mesure (Clarity) qui surveille history.replaceState
+      // ne voit pas ce changement, et les valeurs saisies ne quittent donc pas le navigateur.
+      History.prototype.replaceState.call(window.history, null, '', `#${hash}`);
     }
   }, 300);
 }
