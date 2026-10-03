@@ -1,0 +1,4 @@
+# Préfixes de titre légitimes (RECETTE §11).
+# Nom de province : « British Columbia » est la requête elle-même, pas un
+# adjectif de pays placé en tête.
+british columbia
