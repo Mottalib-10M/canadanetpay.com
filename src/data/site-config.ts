@@ -9,6 +9,9 @@ export const CURRENCY_SYMBOL = '$';
 export const BING_VERIFY_CODE = '';
 /** Projet Microsoft Clarity (compte amradif). Vide = aucun traceur ni bandeau. */
 export const CLARITY_ID = 'yrboj7iap3';
+/** Identifiant de mesure Google Analytics 4. Chargé par Consent.astro selon
+ *  la même règle que Clarity ; vide = pas de GA4. */
+export const GA4_ID = 'G-D1XK1X1CQW';
 /** Régime de consentement : 'opt-in' = rien avant l'accord ; 'notice' = mesure active
  *  avec information préalable et retrait possible. */
 export const CONSENT_MODE: 'opt-in' | 'notice' | 'none' = 'none';

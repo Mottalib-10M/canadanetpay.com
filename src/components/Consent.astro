@@ -1,13 +1,13 @@
 ---
 /**
- * Mesure d'audience Microsoft Clarity, soumise au choix du visiteur.
+ * Mesure d'audience Microsoft Clarity et Google Analytics 4, soumise au choix du visiteur.
  *
  * Deux emplacements, un seul composant :
- *  - part="head" : pose l'état par défaut et ne charge Clarity que si le choix l'autorise ;
+ *  - part="head" : pose l'état par défaut et ne charge Clarity et GA4 que si le choix l'autorise ;
  *  - part="body" : le bandeau, et le lien « gérer les cookies » qui le rouvre.
  *
  * Trois régimes, selon CONSENT_MODE dans site-config :
- *  - 'none' : aucun bandeau ni lien de réglage ; Clarity se charge à l'ouverture de la page
+ *  - 'none' : aucun bandeau ni lien de réglage ; Clarity et GA4 se chargent à l'ouverture de la page
  *    et la page de confidentialité le dit (choix de l'éditeur, 2026-10-02).
  *  - 'opt-in' (UE, Royaume-Uni, Suisse) : rien n'est chargé tant que le visiteur n'a pas
  *    accepté ; le refus est au même niveau visuel que l'acceptation.
@@ -15,10 +15,10 @@
  *    préalable et retrait possible à tout moment.
  *
  * Le choix est conservé dans localStorage (clé `consent-choice`), jamais dans un cookie.
- * Rien n'est rendu si CLARITY_ID est vide. Les pages /embed/ n'utilisent pas ce composant :
+ * Rien n'est rendu si CLARITY_ID est vide (GA4 : si GA4_ID est vide). Les pages /embed/ n'utilisent pas ce composant :
  * un widget intégré chez un tiers ne mesure rien.
  */
-import { CLARITY_ID, CONSENT_MODE } from '../data/site-config';
+import { CLARITY_ID, CONSENT_MODE, GA4_ID } from '../data/site-config';
 
 interface Props { part: 'head' | 'body'; lang?: string; moreHref: string }
 const { part, lang = 'en', moreHref } = Astro.props;
@@ -65,6 +65,9 @@ const defaut = CONSENT_MODE === 'opt-in' ? 'denied' : 'granted';
 {CLARITY_ID && part === 'head' && (
   <script is:inline set:html={`(function(){var d='${defaut}';var c=null;try{c=localStorage.getItem('consent-choice');}catch(e){}window.clarity=window.clarity||function(){(window.clarity.q=window.clarity.q||[]).push(arguments);};window.__clarityLoad=function(){if(window.__clarityOn)return;window.__clarityOn=true;var s=document.createElement('script');s.async=true;s.src='https://www.clarity.ms/tag/${CLARITY_ID}';document.head.appendChild(s);};if(c==='granted')window.clarity('consentv2',{ad_Storage:'denied',analytics_Storage:'granted'});if(c==='granted'||(c===null&&d==='granted'))window.__clarityLoad();})();`} />
 )}
+{GA4_ID && part === 'head' && (
+  <script is:inline set:html={`(function(){var d='${defaut}';var c=null;try{c=localStorage.getItem('consent-choice');}catch(e){}window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};window.__ga4Load=function(){if(window.__ga4On)return;window.__ga4On=true;window.gtag('js',new Date());window.gtag('config','${GA4_ID}');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${GA4_ID}';document.head.appendChild(s);};if(c==='granted'||(c===null&&d==='granted'))window.__ga4Load();})();`} />
+)}
 {CLARITY_ID && CONSENT_MODE !== 'none' && part === 'body' && (
   <>
     <p style="margin:0;padding:12px 16px 20px;text-align:center;font-size:13px;">
@@ -97,6 +100,10 @@ const defaut = CONSENT_MODE === 'opt-in' ? 'denied' : 'granted';
         var stored = null;
         try { stored = localStorage.getItem(KEY); } catch (e) { /* stockage bloqué : on redemande */ }
         var apply = function (value) {
+          if (typeof window.__ga4Load === 'function') {
+            if (value === 'granted') window.__ga4Load();
+            else if (window.__ga4On) window.gtag('consent', 'update', { analytics_storage: 'denied' });
+          }
           if (typeof window.__clarityLoad !== 'function') return;
           if (value === 'granted') {
             window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' });
