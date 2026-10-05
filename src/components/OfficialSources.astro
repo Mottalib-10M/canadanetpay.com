@@ -47,8 +47,8 @@ const sources = [
   <h2 class="text-2xl font-bold">{lang === 'fr' ? 'Sources officielles' : 'Official sources'}</h2>
   <p class="mt-3 text-sm text-text-muted">
     {intro ?? (lang === 'fr'
-      ? "Tous les taux de cette page proviennent des publications ci-dessous. Aucun chiffre n'est repris d'une synthèse de tiers."
-      : 'Every rate on this page comes from the publications below. No figure is taken from a third-party summary.')}
+      ? "Les tranches d'impôt fédérales et provinciales, les plafonds du RPC et du RPC2 et le taux de cotisation à l'assurance-emploi appliqués par le calculateur sont ceux que publient l'ARC et EDSC ; pour le Québec, le RRQ, le RQAP et l'impôt provincial suivent Revenu Québec."
+      : 'The calculator applies the federal and provincial brackets, the CPP and CPP2 ceilings and the EI premium rate as the CRA and ESDC publish them; for Quebec, QPP, QPIP and provincial tax follow Revenu Québec.')}
   </p>
   <ul class="mt-4 space-y-3">
     {sources.map((s) => (
