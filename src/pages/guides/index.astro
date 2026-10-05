@@ -44,6 +44,24 @@ const guides = [
     href: '/guides/average-salary-canada/',
     date: '2026-07-10',
   },
+  {
+    title: 'Guaranteed Income Supplement',
+    description: 'Who qualifies for GIS, the maximum for each situation, what income counts and how the supplement is renewed each July.',
+    href: '/guides/guaranteed-income-supplement/',
+    date: '2026-10-05',
+  },
+  {
+    title: 'OAS Eligibility',
+    description: 'Age, years of residence after 18, legal status, the 20-year rule for living abroad and social security agreements.',
+    href: '/guides/oas-eligibility/',
+    date: '2026-10-05',
+  },
+  {
+    title: 'OAS Deferral: 65 or 70?',
+    description: 'The 0.6% monthly increase, the break-even age, and the cases where waiting pays or costs, GIS and clawback included.',
+    href: '/guides/oas-deferral/',
+    date: '2026-10-05',
+  },
 ];
 import PayrollContext from '../../components/PayrollContext.astro';
 import OfficialSources from '../../components/OfficialSources.astro';
@@ -89,7 +107,6 @@ import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
           {guide.title}
         </h2>
         <p class="mt-2 text-gray-600 dark:text-gray-400">{guide.description}</p>
-<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
 
         <p class="mt-2 text-xs text-gray-500 dark:text-gray-500">
           Published {new Date(guide.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -97,6 +114,7 @@ import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
       </a>
     ))}
   </div>
+  <div data-chrome><MiniSimAutonome client:idle kind="takehome" lang="en" locale="en-CA" href="/" /></div>
   <PayrollContext />
   <OfficialSources />
 </GuideLayout>

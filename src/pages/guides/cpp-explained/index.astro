@@ -37,12 +37,12 @@ import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
   <p>
     The Canada Pension Plan (CPP) is a mandatory social insurance program that provides retirement income,
     disability benefits, and survivor benefits to Canadians and their families. Established in 1966, the CPP
-    is one of the three pillars of Canada's retirement income system, alongside Old Age Security (OAS) and
+    is one of the three pillars of Canada's retirement income system, alongside <a href="/oas-calculator/">Old Age Security (OAS)</a> and
     private savings (RRSPs, workplace pensions, and TFSAs). Every employed Canadian between ages 18 and 65
     contributes a portion of their earnings to CPP, and their employer matches those contributions
     dollar-for-dollar.
   </p>
-<MiniSimAutonome client:visible kind="cpp" lang="en" locale="en-CA" href="/cpp-calculator/" />
+<div data-chrome><MiniSimAutonome client:visible kind="cpp" lang="en" locale="en-CA" href="/cpp-calculator/" /></div>
 
   <p>
     The CPP is managed by the CPP Investments Board (CPPIB), one of the largest pension fund managers in the
@@ -197,6 +197,12 @@ import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
     beyond 74, deferring to 65 typically provides a higher total lifetime benefit. The breakeven between 65
     and 70 is approximately age 82. These calculations do not account for the time value of money or
     investment returns on early payments, which can shift the breakeven point.
+  </p>
+
+  <p>
+    For retirees with a modest income, the start date of CPP also changes the Guaranteed Income Supplement,
+    which falls as CPP rises. The <a href="/cpp-oas-gis-calculator/">CPP + OAS + GIS calculator</a> shows the
+    combined effect at each CPP amount.
   </p>
 
   <h2>CPP Enhancement and Future Benefits</h2>

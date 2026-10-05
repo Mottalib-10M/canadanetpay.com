@@ -18,7 +18,19 @@ const calculators = [
   { title: 'Employer Cost', description: 'Calculate the true cost of employing someone in Canada', href: '/employer-cost-calculator/' },
 ];
 
-const related = calculators.filter(c => c.href !== current).slice(0, 4);
+// Retirement pages link to each other and to the CPP calculator, whose
+// pension feeds the GIS income test; payroll pages keep their own list.
+const retirement = [
+  { title: 'CPP + OAS + GIS Calculator', description: 'Add up your three public pensions and see how CPP reduces GIS', href: '/cpp-oas-gis-calculator/' },
+  { title: 'OAS Calculator', description: 'Old Age Security by years in Canada, deferral and age', href: '/oas-calculator/' },
+  { title: 'GIS Calculator', description: 'Guaranteed Income Supplement for singles and couples', href: '/gis-calculator/' },
+  { title: 'OAS Clawback Calculator', description: 'Recovery tax on OAS above the income threshold', href: '/oas-clawback-calculator/' },
+  { title: 'Allowance Calculator', description: 'Allowance and Allowance for the Survivor at 60 to 64', href: '/allowance-calculator/' },
+  { title: 'CPP / QPP Calculator', description: 'Calculate your Canada or Quebec Pension Plan contributions', href: '/cpp-calculator/' },
+];
+const norm = (h?: string) => (h ? '/' + h.replace(/^\/+|\/+$/g, '') + '/' : '');
+const isRetirement = retirement.some((c) => c.href === norm(current)) && norm(current) !== '/cpp-calculator/';
+const related = (isRetirement ? retirement : calculators).filter(c => c.href !== norm(current) && c.href !== current).slice(0, 4);
 ---
 
 <section data-chrome class="mt-12" aria-labelledby="related-heading">

@@ -1,0 +1,131 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import AllowanceCalculator from '../../components/calculators/AllowanceCalculator';
+import OasSources from '../../components/OasSources.astro';
+import { allowance, allowanceSurvivor, gis, gisIncome, residualDeduction } from '../../lib/oas-engine';
+import { formatCurrencyLang } from '../../lib/format';
+import { OAS_QUARTER, OAS_VERIFIED, ALLOWANCE_MAX, AFS_MAX, PUBLISHED_CUTOFFS, TOPUP_EXEMPT_COUPLE, TOPUP_EXEMPT_SINGLE } from '../../data/oas-2026';
+
+const m = (x: number) => formatCurrencyLang(x, 'en', true);
+const d = (x: number) => formatCurrencyLang(x, 'en');
+const incomes = [0, 4000, 8000, 12000, 16000, 20000, 26000, 32000, 40000];
+const table = incomes.map((i) => ({ i, a: allowance(i).monthly, g: gis('spouse-allowance', i).monthly, s: allowanceSurvivor(i).monthly }));
+const ex = { alw: allowance(12000), gis: gis('spouse-allowance', 12000) };
+
+const faqs = [
+  {
+    question: 'What is the Allowance and who can get it?',
+    answer: `The Allowance is a monthly benefit for a person aged 60 to 64 whose spouse or common-law partner receives OAS and the Guaranteed Income Supplement. It is paid if the couple's combined income is below ${d(PUBLISHED_CUTOFFS.allowance)} for ${OAS_QUARTER}, and the applicant has lived in Canada for at least 10 years after 18. It reaches up to ${m(ALLOWANCE_MAX)} a month and stops at 65.`,
+  },
+  {
+    question: 'How much is the Allowance for the Survivor in 2026?',
+    answer: `Up to ${m(AFS_MAX)} a month for ${OAS_QUARTER}, for a widow or widower aged 60 to 64 whose income is below ${d(PUBLISHED_CUTOFFS.afs)} a year and who has not remarried or entered a new common-law relationship. The amount is reduced with income, more steeply than the Allowance paid to a spouse, and ends at 65, when OAS and GIS take over.`,
+  },
+  {
+    question: 'Is the Allowance taxable?',
+    answer: 'No. Like the Guaranteed Income Supplement, the Allowance and the Allowance for the Survivor are not taxable, though they must be reported on the return, on line 14600 as net federal supplements, and then deducted on line 25000. They do not count as income for GIS either, so the Allowance paid to one spouse never reduces the supplement of the other.',
+  },
+  {
+    question: 'Does a CPP survivor pension reduce the Allowance for the Survivor?',
+    answer: 'Yes. A CPP or QPP survivor pension is income like any other for this benefit. Each $100 a month of survivor pension first reduces the part of the Allowance that stands in for an OAS pension by $75; once that part is gone, it reduces the supplement part by $50. That is why the calculator asks for all of your income except the OAS benefits themselves.',
+  },
+  {
+    question: 'What happens to the Allowance at 65?',
+    answer: 'It stops the month you turn 65. Service Canada usually enrols the recipient automatically for OAS and, if income is still low enough, for the Guaranteed Income Supplement, and sends a letter beforehand. The OAS pension depends on years of residence, as for anyone else, and GIS is then calculated on the scale for your situation.',
+  },
+  {
+    question: 'Do I need to reapply every year?',
+    answer: 'Not if you and your spouse file your tax returns by 30 April. Service Canada renews the Allowance from the income on those returns, for the payment period starting in July. A survivor renews in the same way. Without a return, a renewal form must be sent, otherwise payments stop at the end of June.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/allowance-calculator"
+  title="Allowance Calculator"
+  metaTitle="Allowance Calculator 2026: OAS Allowance and Survivor"
+  metaDescription="Allowance and Allowance for the Survivor at 60 to 64, Oct-Dec 2026: the amount by income, the spouse's GIS beside it, and the formulas of the OAS Act."
+  h1="Allowance and Allowance for the Survivor Calculator 2026"
+  intro={`The two income-tested benefits for people aged 60 to 64, for ${OAS_QUARTER}: the Allowance, paid to the spouse of a GIS pensioner, and the Allowance for the Survivor.`}
+  faqs={faqs}
+  verified={OAS_VERIFIED}
+  sourcesLine="Service Canada, Old Age Security Act"
+>
+  <div data-chrome data-outil>
+    <AllowanceCalculator client:idle />
+  </div>
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>Amounts by income, {OAS_QUARTER}</h2>
+      <p>
+        The income in the first column is the couple's combined income for the Allowance and the survivor's own
+        income for the Allowance for the Survivor, in both cases without any OAS benefit. The middle column
+        gives the GIS paid to the pensioner spouse at the same combined income.
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Annual income</th><th>Allowance</th><th>Spouse's GIS</th><th>Allowance for the Survivor</th></tr></thead>
+          <tbody>
+            {table.map((r) => <tr><td>{d(r.i)}</td><td>{m(r.a)}</td><td>{m(r.g)}</td><td>{m(r.s)}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Two benefits for the years before 65</h2>
+      <p>
+        OAS cannot start before 65, which leaves a gap for the younger spouse of a low-income pensioner and for a
+        person widowed in their early sixties. Parliament filled it with two benefits under Part III of the Old
+        Age Security Act. Both are paid from 60 to the month before 65, both require 10 years of residence in
+        Canada after 18 and residence in Canada at the time, and neither depends on contributions.
+      </p>
+      <h3>The Allowance</h3>
+      <p>
+        It is paid to the spouse or common-law partner of a pensioner who receives the Guaranteed Income
+        Supplement. In practice the couple applies jointly, and the benefit is calculated on the household's
+        combined income. At zero income it is worth the OAS pension plus the couple rate of the supplement and
+        its top-up, which is the {m(ALLOWANCE_MAX)} Service Canada publishes. At {d(12000)} of combined income,
+        the Allowance comes to {m(ex.alw.monthly)} and the pensioner's GIS to {m(ex.gis.monthly)}.
+      </p>
+      <h3>The Allowance for the Survivor</h3>
+      <p>
+        It is paid to a person whose spouse or common-law partner has died and who has not entered a new union.
+        The deceased spouse did not need to have received OAS. The survivor's own income counts, including a CPP
+        or QPP survivor pension, which often reduces it substantially. Its maximum of {m(AFS_MAX)} is higher than
+        the Allowance because it is built on the single rate of the supplement rather than the couple rate.
+      </p>
+
+      <h2>How income reduces them</h2>
+      <p>
+        The formula of section 22 works in two stages, on monthly income. In the first stage, the part of the
+        benefit that stands in for an OAS pension falls by $3 for every $4 of income, while the supplement part
+        is untouched. Once monthly income reaches four-thirds of the OAS pension (rounded as the Act requires,
+        {d(residualDeduction())} a month this quarter), that first part is exhausted and the supplement part starts to fall: by $1 for
+        every $4 of income above that level for the Allowance, by $1 for every $2 for the Allowance for the
+        Survivor. A top-up, worth the same as the GIS top-up, is reduced separately by $1 for every $4 of
+        income above {d(TOPUP_EXEMPT_COUPLE)} a year for a couple or {d(TOPUP_EXEMPT_SINGLE)} for a survivor.
+      </p>
+      <p>
+        The steeper slope for survivors is the reason the two benefits stop at different incomes: a combined
+        {' '}{d(PUBLISHED_CUTOFFS.allowance)} for the Allowance, {d(PUBLISHED_CUTOFFS.afs)} for the Allowance for the
+        Survivor. The calculator applies both stages and reaches exactly those published limits.
+      </p>
+
+      <h2>Earnings and other income</h2>
+      <p>
+        The same definition of income as for GIS applies: the first $5,000 of employment or self-employment
+        income is exempt, then half of the next $10,000. A survivor of 62 who works part time and earns
+        $12,000 is counted as earning {d(gisIncome(0, 12000))}. Withdrawals from a TFSA are not income. Withdrawals from an RRSP
+        are, which is why a household expecting the Allowance can lose much of it in the year of a large RRSP
+        withdrawal.
+      </p>
+      <p>
+        At 65 the recipient moves to OAS and the GIS scale for their situation: see the
+        {' '}<a href="/oas-calculator/">OAS calculator</a> and the <a href="/gis-calculator/">GIS calculator</a>.
+        The eligibility rules shared by all these benefits are in the
+        {' '}<a href="/guides/oas-eligibility/">OAS eligibility guide</a>.
+      </p>
+    </section>
+    <OasSources only={['payments', 'act', 'gis']} />
+  </Fragment>
+</CalculatorLayout>

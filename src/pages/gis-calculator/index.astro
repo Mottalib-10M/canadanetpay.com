@@ -1,0 +1,137 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import GISCalculator from '../../components/calculators/GISCalculator';
+import OasSources from '../../components/OasSources.astro';
+import { gis } from '../../lib/oas-engine';
+import { formatCurrencyLang } from '../../lib/format';
+import {
+  OAS_QUARTER, OAS_VERIFIED, GIS_SINGLE_MAX, GIS_COUPLE_MAX, GIS_SINGLE_TOPUP, GIS_COUPLE_TOPUP,
+  GIS_SINGLE_BASE, GIS_COUPLE_BASE, PUBLISHED_CUTOFFS, TOPUP_EXEMPT_SINGLE, TOPUP_EXEMPT_COUPLE,
+} from '../../data/oas-2026';
+
+const m = (x: number) => formatCurrencyLang(x, 'en', true);
+const d = (x: number) => formatCurrencyLang(x, 'en');
+const incomes = [0, 2000, 6000, 10000, 14000, 18000, 22000];
+const table = incomes.map((i) => ({ i, s: gis('single', i).monthly, c: gis('spouse-oas', i * 2).monthly }));
+const ex = gis('single', 9600);
+
+const faqs = [
+  {
+    question: 'What is the maximum GIS in October to December 2026?',
+    answer: `A single, widowed or divorced pensioner can receive up to ${m(GIS_SINGLE_MAX)} a month. Each member of a couple who both receive OAS can receive up to ${m(GIS_COUPLE_MAX)}. A pensioner whose spouse receives neither OAS nor the Allowance is paid on the single scale, up to ${m(GIS_SINGLE_MAX)}, with the couple's combined income. These maximums apply only when the income counted is nil.`,
+  },
+  {
+    question: 'What income stops the Guaranteed Income Supplement?',
+    answer: `For the current quarter, GIS stops at an annual income of ${d(PUBLISHED_CUTOFFS.gisSingle)} for a single person, a combined ${d(PUBLISHED_CUTOFFS.gisSpouseOas)} when both spouses receive OAS and ${d(PUBLISHED_CUTOFFS.gisSpouseNoOas)} when the spouse receives no benefit. When the spouse is 60 to 64, the Allowance stops at ${d(PUBLISHED_CUTOFFS.allowance)}; above it the pensioner moves to the last scale. OAS and GIS are never counted.`,
+  },
+  {
+    question: 'Does CPP reduce my GIS?',
+    answer: `Yes, dollar for dollar in the income test. Each $100 of CPP a month adds $1,200 to annual income, which lowers a single person's basic supplement by $50 a month and, while the top-up is still paid, the top-up by another $25. That is why someone with a modest CPP pension often receives much less GIS than the maximum, and why the combined calculator shows the two side by side.`,
+  },
+  {
+    question: 'Which year of income is used for GIS?',
+    answer: 'The payment period runs from July to June and uses the income of the previous calendar year: payments from July 2026 to June 2027 rest on 2025 income, as filed on the tax return. If your income has dropped because you retired or lost a pension, you can ask Service Canada to use an estimate of the current year instead.',
+  },
+  {
+    question: 'Does a partial OAS pension change my GIS?',
+    answer: 'Yes, upwards. The Act adds to the supplement the difference between a full pension and your own pension, so a pensioner with 20 years in Canada receives half the OAS but a correspondingly larger GIS, if income is low. OAS and GIS together therefore come to the same total as for a person with a full pension, before the increase at 75. Enter your years in Canada in the calculator to see it.',
+  },
+  {
+    question: 'Do I need to apply for GIS every year?',
+    answer: 'No, as long as you file a tax return each year by 30 April. Service Canada renews the supplement from the income on your return, for you and your spouse, and many people are enrolled automatically when they start OAS. Someone who does not file must send a renewal form instead, otherwise payments stop in July.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/gis-calculator"
+  title="GIS Calculator"
+  metaTitle="GIS Calculator 2026: Guaranteed Income Supplement Amount"
+  metaDescription="Guaranteed Income Supplement for Oct-Dec 2026: the basic amount and top-up for singles and couples, the earnings exemption and CPP in the income test."
+  h1="GIS Calculator 2026: Guaranteed Income Supplement"
+  intro={`Your Guaranteed Income Supplement for ${OAS_QUARTER}, calculated with the formula and roundings of the Old Age Security Act.`}
+  faqs={faqs}
+  verified={OAS_VERIFIED}
+  sourcesLine="Service Canada, Old Age Security Act"
+>
+  <div data-chrome data-outil>
+    <GISCalculator client:idle />
+  </div>
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>GIS by income, {OAS_QUARTER}</h2>
+      <p>
+        Monthly supplement for a pensioner with a full OAS pension. The couple column gives the amount paid to
+        each spouse when both receive OAS, for a combined income twice the figure in the first column, so that
+        the two columns compare households with the same income per person.
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Annual income (per person)</th><th>Single</th><th>Each spouse, both on OAS</th></tr></thead>
+          <tbody>
+            {table.map((r) => <tr><td>{d(r.i)}</td><td>{m(r.s)}</td><td>{m(r.c)}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>How the supplement is calculated</h2>
+      <p>
+        The amount Service Canada publishes as the maximum is the sum of two parts that shrink at different
+        speeds. The calculator keeps them apart because that is what explains the result.
+      </p>
+      <h3>The basic supplement</h3>
+      <p>
+        For a single person it starts at {m(GIS_SINGLE_BASE)} a month and falls by $1 for every $2 of monthly
+        income, the income being rounded down to an even dollar amount. For each member of a couple on OAS it starts
+        at {m(GIS_COUPLE_BASE)} and falls by $1 for every $4 of combined monthly income, which comes to the
+        same 50% rate on each dollar the household receives. When the spouse receives no benefit, the pensioner is
+        paid on the single scale, and the supplement falls by $1 for every $4 of combined monthly income above
+        the amount of a full OAS pension (rounded up to the next $4), which is why that situation keeps GIS up to
+        the highest income.
+      </p>
+      <h3>The top-up</h3>
+      <p>
+        Added in 2011 and enlarged for single pensioners in 2016, the top-up is worth {m(GIS_SINGLE_TOPUP)} a month for a single
+        pensioner and {m(GIS_COUPLE_TOPUP)} for each spouse in a couple. It falls by $1 for every $4 of
+        monthly income above {d(TOPUP_EXEMPT_SINGLE)} a year for a single person; for a couple, the same rate
+        applies to half of the combined income above {d(TOPUP_EXEMPT_COUPLE)} a year. It therefore disappears well before the
+        basic supplement: a single person with {d(9600)} of income keeps {m(ex.topUp)} of it, against a basic
+        supplement of {m(ex.basic)}.
+      </p>
+      <h3>What counts as income</h3>
+      <p>
+        The income test uses net income as defined by the Income Tax Act, with a few differences that all work in
+        your favour. OAS and GIS are left out. The first $5,000 of employment and self-employment income is
+        exempt, and half of the next $10,000, so that a pensioner earning $15,000 from a job is counted as earning
+        $5,000. Employee CPP and EI contributions are deducted. CPP and QPP pensions, workplace pensions, RRSP
+        and RRIF withdrawals, interest, dividends, the taxable part of capital gains, rental income and foreign
+        pensions all count in full. A withdrawal from a TFSA does not count, because it is not income for tax
+        purposes, which makes the TFSA the account of choice for a future GIS recipient.
+      </p>
+
+      <h2>Who can receive it</h2>
+      <ul>
+        <li>You receive an OAS pension. No OAS, no GIS: a person with fewer than 10 years in Canada after 18, or who has deferred OAS, receives none.</li>
+        <li>You live in Canada. The supplement stops after six consecutive months abroad, even for someone whose OAS continues to be paid outside Canada.</li>
+        <li>Your income is below the cut-off for your situation, using last year's tax return.</li>
+        <li>A sponsored immigrant is not eligible while the sponsorship undertaking is in effect, with the exceptions set out in the regulations.</li>
+      </ul>
+      <p>
+        If your spouse is 60 to 64, the household may also receive the Allowance, calculated on the
+        {' '}<a href="/allowance-calculator/">Allowance calculator</a>. The full set of rules is explained in the
+        {' '}<a href="/guides/guaranteed-income-supplement/">Guaranteed Income Supplement guide</a>, and the
+        interaction with CPP in the <a href="/cpp-oas-gis-calculator/">CPP + OAS + GIS calculator</a>.
+      </p>
+
+      <h2>Limits of the estimate</h2>
+      <p>
+        The calculator applies the Act to the parameters of the quarter, and it lands exactly on each income limit
+        Service Canada publishes. It does not deduct your own CPP and EI contributions if you still work, which
+        slightly overstates the income counted, and it does not handle spouses living apart for reasons beyond
+        their control, which Service Canada can treat as single people on request.
+      </p>
+    </section>
+    <OasSources only={['payments', 'act', 'gis', 'estimator']} />
+  </Fragment>
+</CalculatorLayout>

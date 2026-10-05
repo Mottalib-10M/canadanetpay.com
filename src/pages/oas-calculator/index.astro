@@ -1,0 +1,144 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import OASCalculator from '../../components/calculators/OASCalculator';
+import OasSources from '../../components/OasSources.astro';
+import { oasPension } from '../../lib/oas-engine';
+import { formatCurrencyLang } from '../../lib/format';
+import {
+  OAS_FULL_MONTHLY, OAS_75_PUBLISHED, OAS_QUARTER, OAS_VERIFIED, OAS_QUARTER_INCREASE, OAS_YEAR_INCREASE,
+  OAS_DEFERRED_PUBLISHED, RECOVERY_YEARS, OAS_MIN_YEARS, OAS_FULL_YEARS, OAS_ABROAD_YEARS,
+} from '../../data/oas-2026';
+
+const m = (x: number) => formatCurrencyLang(x, 'en', true);
+const d = (x: number) => formatCurrencyLang(x, 'en');
+const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
+const rec26 = RECOVERY_YEARS.find((y) => y.incomeYear === 2026)!;
+const rows = [40, 35, 30, 25, 20, 15, 10].map((y) => ({ y, a: oasPension({ yearsAt65: y }).monthly, b: oasPension({ yearsAt65: y, age75: true }).monthly }));
+const p22 = oasPension({ yearsAt65: 22 });
+const p22d = oasPension({ yearsAt65: 22, deferralMonths: 60 });
+
+const faqs = [
+  {
+    question: 'How much is the OAS pension from October to December 2026?',
+    answer: `A full Old Age Security pension pays ${m(OAS_FULL_MONTHLY)} a month between 65 and 74 and ${m(OAS_75_PUBLISHED)} from the month after your 75th birthday. The amounts rose ${pct(OAS_QUARTER_INCREASE)} this quarter, ${pct(OAS_YEAR_INCREASE)} over twelve months, and are reviewed again in January to follow the Consumer Price Index. A partial pension is a fraction of these figures.`,
+  },
+  {
+    question: 'How many years in Canada do I need for OAS?',
+    answer: `You need at least ${OAS_MIN_YEARS} years of residence in Canada after age 18 to receive anything, and ${OAS_FULL_YEARS} years for the full pension. Between the two, you receive one fortieth of the full amount for each complete year, so 25 years gives 25/40. Years spent in a country that has a social security agreement with Canada can help you reach the minimum.`,
+  },
+  {
+    question: 'Is the OAS amount based on my income or contributions?',
+    answer: 'Neither. OAS is financed from general tax revenue, so there is no contribution record and no link to earnings. The amount depends only on how long you lived in Canada after 18 and when you start. Income matters in two other places: high incomes repay part of it through the recovery tax, and low incomes add the Guaranteed Income Supplement on top.',
+  },
+  {
+    question: 'Can I keep receiving OAS if I move abroad?',
+    answer: `Yes, without limit, if you had lived in Canada for at least ${OAS_ABROAD_YEARS} years after age 18 when you left. With fewer years, the pension is paid for the month you leave and six more months, then suspended until you return. The Guaranteed Income Supplement stops after six months abroad whatever your history, because it is reserved for residents.`,
+  },
+  {
+    question: 'Does the OAS calculator include the 10 percent increase at 75?',
+    answer: 'Yes. Choose "75 or older" and the calculator adds 10% to the pension, on top of any deferral increase, as section 7(5) of the Old Age Security Act provides. The increase starts the month after the 75th birthday and applies to full and partial pensions alike. It is automatic: Service Canada applies it without an application.',
+  },
+  {
+    question: 'Is Old Age Security taxable?',
+    answer: `Yes. OAS is reported on line 11300 of your return and taxed at your marginal rate, and you can ask Service Canada to withhold tax from each payment. Above a net income of ${d(rec26.threshold)} for 2026, a separate recovery tax takes back 15% of the excess. The Guaranteed Income Supplement, by contrast, is not taxable, although it must be reported.`,
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/oas-calculator"
+  title="OAS Calculator"
+  metaTitle="OAS Calculator 2026: Old Age Security Pension Amount"
+  metaDescription="Old Age Security amount for Oct-Dec 2026: full or partial pension by years in Canada, 0.6% per month deferral to 70, the 10% raise at 75 and the recovery tax."
+  h1="OAS Calculator 2026: your Old Age Security pension"
+  intro={`Your Old Age Security pension for ${OAS_QUARTER}, from your years in Canada, the age you start and your income.`}
+  faqs={faqs}
+  verified={OAS_VERIFIED}
+  sourcesLine="Service Canada, Old Age Security Act, CRA"
+>
+  <div data-chrome data-outil>
+    <OASCalculator client:idle />
+  </div>
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>OAS amounts for {OAS_QUARTER}</h2>
+      <p>
+        The table gives the monthly pension for a person who starts at 65, by complete years of residence in
+        Canada after age 18. The second column adds the 10% increase that applies from the month after the
+        75th birthday. Each line is the full pension multiplied by the number of years over 40, rounded to the cent.
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Years in Canada after 18</th><th>Age 65 to 74</th><th>Age 75 and over</th></tr></thead>
+          <tbody>
+            {rows.map((r) => <tr><td>{r.y}{r.y === 40 ? ' or more' : ''}</td><td>{m(r.a)}</td><td>{m(r.b)}</td></tr>)}
+            <tr><td>Fewer than {OAS_MIN_YEARS}</td><td>none</td><td>none</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>The four things that set your pension</h2>
+      <h3>1. Years of residence, not years of work</h3>
+      <p>
+        OAS counts the time you lived in Canada after your 18th birthday. A year in which you earned nothing
+        counts as much as a year of full-time work, and a year abroad on a Canadian payroll does not count unless
+        a specific rule (posting with the Canadian Forces, a Canadian employer abroad, a spouse in that situation)
+        treats it as residence. The total is rounded down to complete years: 24 years and 11 months is 24.
+      </p>
+      <h3>2. The start date</h3>
+      <p>
+        You can start at 65 or later, never earlier. Every month of delay after you qualify raises the pension
+        by 0.6%, with no increase for months after your 70th birthday, so the maximum is 36%. Service Canada
+        publishes the deferred full pension for this quarter at {m(OAS_DEFERRED_PUBLISHED[66])} at 66,
+        {' '}{m(OAS_DEFERRED_PUBLISHED[68])} at 68 and {m(OAS_DEFERRED_PUBLISHED[70])} at 70. The calculator reproduces each of
+        those figures. Whether waiting pays off is a separate question, treated in the
+        {' '}<a href="/guides/oas-deferral/">OAS deferral guide</a>.
+      </p>
+      <h3>3. Your age after 75</h3>
+      <p>
+        Since July 2022, the pension of anyone aged 75 or over is 10% higher. The increase applies to the pension
+        as already raised by any deferral, so someone who waited until 70 receives both: 36% for the deferral,
+        then 10% on the result.
+      </p>
+      <h3>4. Your income, through two separate mechanisms</h3>
+      <p>
+        A high income does not lower the pension Service Canada calculates, but the recovery tax takes back 15%
+        of net income above {d(rec26.threshold)} for the 2026 income year, withheld from payments between
+        {' '}{rec26.period}. The <a href="/oas-clawback-calculator/">OAS clawback calculator</a> details it. A low
+        income works the other way and opens the Guaranteed Income Supplement, which the
+        {' '}<a href="/gis-calculator/">GIS calculator</a> estimates.
+      </p>
+
+      <h2>Partial pension and deferral: the rule of the greatest amount</h2>
+      <p>
+        For someone with fewer than 40 years, deferring has two effects that the Act lets you combine in your
+        favour: the 0.6% monthly increase, and the extra years of residence accumulated while waiting. Section
+        7.1(3) gives you the greatest of three amounts: the partial pension at the date you qualified, raised for
+        the deferral; the full pension raised for the months after you reached 40 years; and the partial pension
+        recalculated with your residence at the date you start, without any increase.
+      </p>
+      <p>
+        Take a person with 22 years at 65 who keeps living in Canada and starts at 70. At 65 the pension would be
+        {' '}{m(p22.monthly)}. At 70, the deferred partial pension (22/40 raised 36%) comes to {m(p22d.monthly)},
+        more than the 27/40 pension calculated on five additional years. The calculator applies the same
+        comparison for every combination and shows which rule won.
+      </p>
+
+      <h2>What the calculator does not do</h2>
+      <ul>
+        <li>It does not check legal status. A person who was not a Canadian citizen or legal resident the day before approval, or the day before leaving Canada, cannot receive OAS.</li>
+        <li>It does not add periods under social security agreements. If you lived in a partner country, those years can help you reach the 10-year minimum, but the Canadian pension is still paid in fortieths of your Canadian years only, and Service Canada assesses that case on application.</li>
+        <li>It assumes you keep residing in Canada while deferring. Someone who defers while living abroad does not accumulate additional years of residence.</li>
+      </ul>
+      <p>
+        To see OAS alongside your CPP pension and any supplement, use the
+        {' '}<a href="/cpp-oas-gis-calculator/">CPP + OAS + GIS calculator</a>. The eligibility rules in detail,
+        including the special cases of the 20-year and 10-year thresholds, are in the
+        {' '}<a href="/guides/oas-eligibility/">OAS eligibility guide</a>, and the payment calendar on the
+        {' '}<a href="/oas-payment-dates/">OAS payment dates</a> page.
+      </p>
+    </section>
+    <OasSources only={['payments', 'act', 'estimator', 'recovery']} />
+  </Fragment>
+</CalculatorLayout>

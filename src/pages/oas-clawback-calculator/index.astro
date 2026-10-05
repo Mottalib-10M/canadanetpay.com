@@ -1,0 +1,135 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import ClawbackCalculator from '../../components/calculators/ClawbackCalculator';
+import OasSources from '../../components/OasSources.astro';
+import { recoveryTax } from '../../lib/oas-engine';
+import { formatCurrencyLang } from '../../lib/format';
+import { OAS_VERIFIED, OAS_FULL_MONTHLY, RECOVERY_YEARS, RECOVERY_RATE } from '../../data/oas-2026';
+
+const m = (x: number) => formatCurrencyLang(x, 'en', true);
+const d = (x: number) => formatCurrencyLang(x, 'en');
+const rate = `${Math.round(RECOVERY_RATE * 100)}%`;
+const y25 = RECOVERY_YEARS.find((y) => y.incomeYear === 2025)!;
+const y26 = RECOVERY_YEARS.find((y) => y.incomeYear === 2026)!;
+const fullYear = Math.round(OAS_FULL_MONTHLY * 12 * 100) / 100;
+const examples = [100000, 110000, 120000, 135000, 150000].map((n) => ({ n, r: recoveryTax(n, fullYear, 2026) }));
+const ex = recoveryTax(110000, fullYear, 2026);
+
+const faqs = [
+  {
+    question: 'What is the OAS clawback threshold for 2026?',
+    answer: `For the 2026 income year the threshold is ${d(y26.threshold)} of net world income. Above it, the recovery tax takes ${rate} of the excess, and the amount is withheld from OAS payments from ${y26.period}. For 2025 income, the threshold was ${d(y25.threshold)} and the withholding runs from ${y25.period}. The thresholds are indexed to inflation each year.`,
+  },
+  {
+    question: 'At what income is all of my OAS clawed back?',
+    answer: `Service Canada publishes it for each recovery period. On 2025 income, the whole pension is recovered from ${d(y25.max6574)} for a pensioner aged 65 to 74 and ${d(y25.max75)} for one aged 75 or older, whose pension is 10% higher. On 2026 income, the published figures are ${d(y26.max6574)} and ${d(y26.max75)}. Below those incomes, part of the pension is kept.`,
+  },
+  {
+    question: 'Is the OAS clawback calculated on household income?',
+    answer: 'No. The recovery tax is individual: it uses your own net income, and each spouse has a separate threshold. Two pensioners with $80,000 each keep all their OAS, while a single pensioner with $160,000 loses it. Splitting eligible pension income on the tax return moves income from one spouse to the other and can therefore lower or remove the repayment.',
+  },
+  {
+    question: 'Why is recovery tax taken from my payments before I file?',
+    answer: 'Service Canada withholds it in advance on the basis of your last assessed return: income of 2025 sets the monthly deduction from July 2026 to June 2027. The real amount is settled when you file the return for the year concerned, and any excess withheld comes back as a refund. If your income has fallen, form T1213(OAS) asks the CRA to reduce the deduction at source.',
+  },
+  {
+    question: 'Does a TFSA withdrawal increase the OAS clawback?',
+    answer: 'No. Withdrawals from a Tax-Free Savings Account are not income, so they do not enter net income and do not trigger recovery tax. RRSP and RRIF withdrawals, by contrast, count in full, as do pension income, interest, rental income and the grossed-up amount of Canadian dividends, which raises net income by more than the cash received.',
+  },
+  {
+    question: 'Can deferring OAS help me avoid the clawback?',
+    answer: 'Sometimes. If your income will be high between 65 and 70, for instance because you keep working, OAS deferred during those years is not recovered, and you receive a pension 0.6% higher for each month of delay once your income falls. If your income stays high after 70, deferring only increases a pension that will still be clawed back.',
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/oas-clawback-calculator"
+  title="OAS Clawback Calculator"
+  metaTitle="OAS Clawback Calculator 2026: Recovery Tax on Your Pension"
+  metaDescription="OAS clawback for 2026 income: 15% of net income above the indexed threshold, capped at the pension, with the monthly amount withheld July 2027 to June 2028."
+  h1="OAS Clawback Calculator 2026: the recovery tax"
+  intro="How much of your Old Age Security the recovery tax takes back, for the 2024, 2025 and 2026 income years."
+  faqs={faqs}
+  verified={OAS_VERIFIED}
+  sourcesLine="Service Canada, CRA"
+>
+  <div data-chrome data-outil>
+    <ClawbackCalculator client:idle />
+  </div>
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>Thresholds by income year</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Income year</th><th>Withheld from OAS</th><th>Threshold</th><th>All OAS recovered, 65-74</th><th>All OAS recovered, 75+</th></tr></thead>
+          <tbody>
+            {RECOVERY_YEARS.map((y) => <tr><td>{y.incomeYear}</td><td>{y.period}</td><td>{d(y.threshold)}</td><td>{d(y.max6574)}</td><td>{d(y.max75)}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>How the recovery tax works</h2>
+      <p>
+        The name &ldquo;clawback&rdquo; describes the effect, not the mechanism. Service Canada pays the pension
+        in full; the recovery tax is a separate tax, computed on the return and entered on line 23500 as a
+        social benefits repayment. Its amount is {rate} of the difference between your net world income and the
+        threshold of the year, with a ceiling: you never repay more OAS than you received that year.
+      </p>
+      <p>
+        Net world income is line 23400 of the return, the figure before deductions such as the capital gains
+        exemption or the northern residents deduction. It includes your OAS itself, CPP or QPP, employment and
+        business income, workplace pensions, RRSP and RRIF withdrawals, interest, rental income, the taxable half
+        of capital gains and the grossed-up amount of dividends. Income earned abroad counts as well, which is
+        why non-residents receiving OAS must file an annual statement of world income.
+      </p>
+      <h3>Worked example</h3>
+      <p>
+        A pensioner aged 65 to 74 with a full pension all year and a net income of {d(110000)} in 2026 exceeds
+        the threshold by {d(ex.excess)}. The recovery tax is {rate} of that, {m(ex.annual)} for the year, and
+        Service Canada deducts {m(ex.monthly)} from each payment from {y26.period}. The pensioner keeps
+        {' '}{m(fullYear - ex.annual)} of a {m(fullYear)} pension.
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>Net income 2026</th><th>Repayment for the year</th><th>Withheld per month</th><th>OAS kept</th></tr></thead>
+          <tbody>
+            {examples.map((e) => <tr><td>{d(e.n)}</td><td>{m(e.r.annual)}</td><td>{m(e.r.monthly)}</td><td>{m(fullYear - e.r.annual)}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <p>
+        These lines assume a full pension at the current monthly rate for the twelve months; the real amount you
+        received in 2026 is on your T4A(OAS) slip, and the calculator lets you enter it.
+      </p>
+
+      <h2>The marginal rate it adds</h2>
+      <p>
+        Between the threshold and the income at which the pension is fully recovered, each extra dollar of income
+        costs {rate} more than the tax brackets alone suggest, on top of your federal and provincial marginal
+        rate, which the <a href="/guides/marginal-vs-effective-tax-rate/">marginal rate guide</a> explains. The
+        repayment is itself deducted on line 23500 in arriving at net income for tax, which slightly softens the
+        combined rate. It is
+        this band, roughly the first {d(y26.max6574 - y26.threshold)} above the threshold, where planning pays
+        best: splitting pension income with a spouse, drawing down an RRSP before 65, holding growth assets in a
+        TFSA, or timing a capital gain.
+      </p>
+
+      <h2>Reducing the amount withheld at source</h2>
+      <p>
+        The monthly deduction is based on the income of two years earlier. A pensioner who retired, sold a rental
+        property the previous year or had a one-off gain can find the deduction out of line with current income.
+        Form T1213(OAS), sent to the CRA, asks for the withholding to be reduced; it is accepted when your expected
+        income for the year justifies it. Any difference is settled on the return either way.
+      </p>
+      <p>
+        To see the pension before recovery, use the <a href="/oas-calculator/">OAS calculator</a>; for the
+        overall picture with CPP, the <a href="/cpp-oas-gis-calculator/">CPP + OAS + GIS calculator</a>.
+        Federal and provincial income tax on the rest of your income is broken down by the
+        {' '}<a href="/income-tax-calculator/">income tax calculator</a>.
+      </p>
+    </section>
+    <OasSources only={['recovery', 'cra', 'payments', 'act']} />
+  </Fragment>
+</CalculatorLayout>

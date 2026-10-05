@@ -1,0 +1,132 @@
+---
+import CalculatorLayout from '../../layouts/CalculatorLayout.astro';
+import RetirementIncomeCalculator from '../../components/calculators/RetirementIncomeCalculator';
+import OasSources from '../../components/OasSources.astro';
+import { retirementIncome } from '../../lib/oas-engine';
+import { formatCurrencyLang } from '../../lib/format';
+import { OAS_QUARTER, OAS_VERIFIED, CPP_MAX_RETIREMENT_65, GIS_SINGLE_MAX, GIS_SINGLE_TOPUP, TOPUP_EXEMPT_SINGLE, OAS_FULL_MONTHLY, GIS_EARNINGS_FULL_EXEMPTION, GIS_EARNINGS_HALF_EXEMPTION } from '../../data/oas-2026';
+
+const m = (x: number) => formatCurrencyLang(x, 'en', true);
+const cppLevels = [0, 300, 600, 900, 1200, CPP_MAX_RETIREMENT_65];
+const table = cppLevels.map((c) => {
+  const r = retirementIncome({ situation: 'single', yearsAt65: 40, cppMonthly: c });
+  return { c, gis: r.gis.monthly, total: r.monthlyTotal };
+});
+const a = retirementIncome({ situation: 'single', yearsAt65: 40, cppMonthly: 600 });
+const b = retirementIncome({ situation: 'single', yearsAt65: 40, cppMonthly: 900 });
+const part = retirementIncome({ situation: 'single', yearsAt65: 20, cppMonthly: 400 });
+const atMax = retirementIncome({ situation: 'single', yearsAt65: 40, cppMonthly: CPP_MAX_RETIREMENT_65 });
+const d = (x: number) => formatCurrencyLang(x, 'en');
+// CPP a month at which the single top-up is exhausted (OASA s. 12.1: C/4 >= top-up, C rounded to $4)
+const topUpEndsCpp = (TOPUP_EXEMPT_SINGLE + 12 * Math.ceil(GIS_SINGLE_TOPUP) * 4) / 12;
+
+const faqs = [
+  {
+    question: 'How much can a single senior receive from CPP, OAS and GIS?',
+    answer: `With no other income, OAS at ${m(OAS_FULL_MONTHLY)} and the maximum GIS of ${m(GIS_SINGLE_MAX)} give about ${m(OAS_FULL_MONTHLY + GIS_SINGLE_MAX)} a month in ${OAS_QUARTER}. Adding CPP raises the total, but by less than the CPP amount, because GIS falls as CPP rises. Even at the 2026 maximum CPP of ${m(CPP_MAX_RETIREMENT_65)} at 65, a single person with no other income keeps ${m(atMax.gis.monthly)} of GIS.`,
+  },
+  {
+    question: 'Why does my GIS go down when my CPP goes up?',
+    answer: 'GIS is income-tested and CPP is income, while OAS is not counted. For a single pensioner, every extra $1 of CPP lowers the basic supplement by 50 cents, and the top-up by another 25 cents while it lasts. The calculator shows the GIS lost for each additional $100 of monthly CPP so that you can see the trade-off before choosing when to start CPP.',
+  },
+  {
+    question: 'Should a low-income senior delay CPP to 70?',
+    answer: 'Often not. Delaying CPP raises it by 0.7% a month, but for someone who will receive GIS, a larger CPP later mostly replaces supplement that would have been paid anyway, and the CPP forgone in the meantime is lost. Starting CPP at 65, or even earlier, tends to suit people expecting substantial GIS. Check both cases in the calculator before deciding.',
+  },
+  {
+    question: 'Is the total shown before or after tax?',
+    answer: 'Before income tax. CPP and OAS are taxable, while GIS and the Allowance are not. For most people receiving GIS, the basic personal amount, the age amount and the pension credit mean little or no federal tax is due, but provinces differ. The OAS recovery tax, a separate repayment for high incomes, is deducted when it applies.',
+  },
+  {
+    question: 'Where do I find my CPP amount?',
+    answer: `My Service Canada Account shows your contributions and an estimate of your CPP retirement pension at 60, 65 and 70. The maximum at 65 in 2026 is ${m(CPP_MAX_RETIREMENT_65)} a month, but most retirees receive much less because few people contribute at the ceiling for a full career. Quebec residents should enter their QPP pension, which Retraite Québec estimates in the same way.`,
+  },
+  {
+    question: 'Does this calculator work for couples?',
+    answer: "Yes. Choose your marital situation and enter your spouse's income, CPP included. The calculator gives your own CPP, OAS and GIS, plus the Allowance paid to your spouse if they are 60 to 64. Each spouse's GIS is calculated on the couple's combined income, so run it a second time from your spouse's side to see the household total.",
+  },
+];
+---
+
+<CalculatorLayout
+  slug="/cpp-oas-gis-calculator"
+  title="CPP + OAS + GIS Calculator"
+  metaTitle="CPP OAS GIS Calculator 2026: Your Total Retirement Income"
+  metaDescription="CPP, OAS and GIS together for Oct-Dec 2026: your monthly retirement income, how each dollar of CPP reduces GIS, the recovery tax, singles and couples."
+  h1="CPP, OAS and GIS Calculator 2026: your public pensions together"
+  intro={`Your Canada Pension Plan, Old Age Security and Guaranteed Income Supplement added up for ${OAS_QUARTER}, with the way they affect each other.`}
+  faqs={faqs}
+  verified={OAS_VERIFIED}
+  sourcesLine="Service Canada, Old Age Security Act, CRA"
+>
+  <div data-chrome data-outil>
+    <RetirementIncomeCalculator client:idle />
+  </div>
+
+  <Fragment slot="content">
+    <section class="mt-12 prose prose-gray dark:prose-invert max-w-none">
+      <h2>CPP against GIS, single pensioner</h2>
+      <p>
+        Monthly amounts in {OAS_QUARTER} for a single person with a full OAS pension and no income other
+        than CPP. The right-hand column is what reaches the bank account before tax.
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead><tr><th>CPP per month</th><th>OAS</th><th>GIS</th><th>Total</th></tr></thead>
+          <tbody>
+            {table.map((r) => <tr><td>{m(r.c)}</td><td>{m(OAS_FULL_MONTHLY)}</td><td>{m(r.gis)}</td><td>{m(r.total)}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Three programs, three logics</h2>
+      <p>
+        Canada's public retirement income rests on programs that work in entirely different ways, and most
+        surprises come from treating them as one.
+      </p>
+      <ul>
+        <li><strong>CPP (or QPP in Quebec)</strong> is an earnings-related pension, financed by contributions on employment and self-employment income. Its amount depends on your contribution record and on the age you start, between 60 and 70. The contributions themselves are calculated on the <a href="/cpp-calculator/">CPP / QPP calculator</a>, and the rules of the plan are explained in the <a href="/guides/cpp-explained/">CPP guide</a>.</li>
+        <li><strong>OAS</strong> is a flat pension financed from general revenue, set by years of residence in Canada after 18. It is not reduced by CPP or by any other income, except through the recovery tax at high incomes.</li>
+        <li><strong>GIS</strong> is a supplement for OAS pensioners with low income. Every dollar of other income, CPP first among them, reduces it.</li>
+      </ul>
+
+      <h2>The interaction in numbers</h2>
+      <p>
+        Moving from {m(600)} to {m(900)} of CPP a month raises the total by {m(b.monthlyTotal - a.monthlyTotal)},
+        not {m(300)}: GIS falls from {m(a.gis.monthly)} to {m(b.gis.monthly)}. Below about {d(topUpEndsCpp)} of CPP a month, a
+        single pensioner still receives part of the top-up and keeps only 25 cents of each additional dollar of
+        CPP; above it, 50 cents. That is the reason a modest CPP pension can look almost invisible on the total,
+        and the reason the start date of CPP deserves more thought for someone who expects GIS than for someone
+        who does not.
+      </p>
+      <p>
+        The lag matters too. GIS is calculated on the previous year's income, so the first year after CPP starts,
+        GIS is still computed on the lower income, and the reduction arrives in the following July. The
+        calculator shows the steady state, once both years carry the same income.
+      </p>
+
+      <h2>Partial OAS and GIS</h2>
+      <p>
+        Newcomers who arrived in Canada as adults often receive a partial OAS pension. GIS compensates for the
+        missing part of OAS, so for low incomes the two together reach the same total as for a person with a
+        full pension. A single person with 20 years in Canada and {m(400)} of CPP receives
+        {' '}{m(part.oas.monthly)} of OAS and {m(part.gis.monthly)} of GIS. Once income passes the point where
+        GIS stops, the partial pension is no longer made up.
+      </p>
+
+      <h2>What to enter</h2>
+      <ul>
+        <li>Your CPP or QPP retirement pension per month, as paid or as estimated in your My Service Canada Account. A CPP survivor pension or disability pension counts as well, since all of it is income for GIS.</li>
+        <li>Other taxable income per year: workplace pension, RRIF or annuity payments, interest, rent, foreign pensions.</li>
+        <li>Employment income separately, because the first {d(GIS_EARNINGS_FULL_EXEMPTION)} and half of the next {d(GIS_EARNINGS_HALF_EXEMPTION * 2)} are exempt for GIS.</li>
+        <li>For a couple, your spouse's income without OAS, GIS or Allowance.</li>
+      </ul>
+      <p>
+        Each program has its own detailed calculator: <a href="/oas-calculator/">OAS</a>,
+        {' '}<a href="/gis-calculator/">GIS</a>, <a href="/oas-clawback-calculator/">OAS recovery tax</a> and
+        {' '}<a href="/allowance-calculator/">Allowance</a>.
+      </p>
+    </section>
+    <OasSources only={['payments', 'act', 'recovery', 'estimator']} />
+  </Fragment>
+</CalculatorLayout>

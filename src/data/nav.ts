@@ -32,6 +32,20 @@ export const headerNavEn: NavGroup[] = [
     ],
   },
   {
+    label: 'Retirement',
+    children: [
+      { label: 'CPP + OAS + GIS Calculator', href: '/cpp-oas-gis-calculator/' },
+      { label: 'OAS Calculator', href: '/oas-calculator/' },
+      { label: 'GIS Calculator', href: '/gis-calculator/' },
+      { label: 'OAS Clawback Calculator', href: '/oas-clawback-calculator/' },
+      { label: 'Allowance Calculator', href: '/allowance-calculator/' },
+      { label: 'OAS Payment Dates 2026', href: '/oas-payment-dates/' },
+      { label: 'OAS Eligibility', href: '/guides/oas-eligibility/' },
+      { label: 'Guaranteed Income Supplement', href: '/guides/guaranteed-income-supplement/' },
+      { label: 'OAS Deferral', href: '/guides/oas-deferral/' },
+    ],
+  },
+  {
     label: 'By Province',
     children: [
       { label: 'Ontario', href: '/province/ontario/' },
@@ -96,6 +110,9 @@ export const footerCalcLinksEn: NavLink[] = [
   { label: 'Bonus Tax Calculator', href: '/bonus-tax-calculator/' },
   { label: 'Hourly to Salary', href: '/hourly-to-salary/' },
   { label: 'Employer Cost', href: '/employer-cost-calculator/' },
+  { label: 'OAS Calculator', href: '/oas-calculator/' },
+  { label: 'GIS Calculator', href: '/gis-calculator/' },
+  { label: 'CPP + OAS + GIS', href: '/cpp-oas-gis-calculator/' },
   { label: 'All Calculators', href: '/calculators/' },
   { label: 'Widget', href: '/embed/' },
 ];
@@ -117,6 +134,8 @@ export const footerGuideLinksEn: NavLink[] = [
   { label: 'Marginal vs Effective Rate', href: '/guides/marginal-vs-effective-tax-rate/' },
   { label: 'Minimum Wage Canada', href: '/guides/minimum-wage-canada/' },
   { label: 'Average Salary Canada', href: '/guides/average-salary-canada/' },
+  { label: 'OAS Payment Dates 2026', href: '/oas-payment-dates/' },
+  { label: 'Guaranteed Income Supplement', href: '/guides/guaranteed-income-supplement/' },
   { label: 'All Guides', href: '/guides/' },
   { label: 'Updates', href: '/updates/' },
 ];

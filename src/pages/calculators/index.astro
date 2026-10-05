@@ -9,6 +9,11 @@ const calculators = [
   { title: 'Bonus Tax Calculator', href: '/bonus-tax-calculator/', description: 'See how much tax you\'ll pay on a lump-sum bonus payment.' },
   { title: 'Hourly to Salary Calculator', href: '/hourly-to-salary/', description: 'Convert your hourly wage to annual salary and see after-tax pay.' },
   { title: 'Employer Cost Calculator', href: '/employer-cost-calculator/', description: 'Calculate the true cost of employing someone including CPP, EI, WCB.' },
+  { title: 'CPP + OAS + GIS Calculator', href: '/cpp-oas-gis-calculator/', description: 'Add up your public pensions and see how CPP reduces the supplement.' },
+  { title: 'OAS Calculator', href: '/oas-calculator/', description: 'Old Age Security by years in Canada, start age and the 75+ increase.' },
+  { title: 'GIS Calculator', href: '/gis-calculator/', description: 'Guaranteed Income Supplement for singles and couples, top-up included.' },
+  { title: 'OAS Clawback Calculator', href: '/oas-clawback-calculator/', description: 'Recovery tax on OAS for the 2024, 2025 and 2026 income years.' },
+  { title: 'Allowance Calculator', href: '/allowance-calculator/', description: 'Allowance and Allowance for the Survivor between 60 and 64.' },
 ];
 
 const faqs = [
@@ -63,7 +68,6 @@ import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
           {calc.title}
         </h2>
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{calc.description}</p>
-<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
 
         <span class="mt-3 inline-block text-sm font-medium text-brand-600 dark:text-brand-400">
           Use calculator &rarr;
@@ -71,6 +75,7 @@ import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
       </a>
     ))}
   </div>
+  <div data-chrome><MiniSimAutonome client:idle kind="takehome" lang="en" locale="en-CA" href="/" /></div>
   <PayrollContext />
 
   <section class="mx-auto max-w-7xl px-4 mt-12">

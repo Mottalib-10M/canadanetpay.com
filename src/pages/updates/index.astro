@@ -53,7 +53,6 @@ import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
           {article.title}
         </h2>
         <p class="mt-2 text-gray-600 dark:text-gray-400">{article.description}</p>
-<MiniSimAutonome client:visible kind="takehome" lang="en" locale="en-CA" href="/" />
 
         <p class="mt-2 text-xs text-gray-500 dark:text-gray-500">
           Published {new Date(article.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -61,6 +60,7 @@ import MiniSimAutonome from '../../components/calc/MiniSimAutonome';
       </a>
     ))}
   </div>
+  <div data-chrome><MiniSimAutonome client:idle kind="takehome" lang="en" locale="en-CA" href="/" /></div>
 
   <section class="mx-auto max-w-7xl px-4 mt-12">
     <h2 class="text-2xl font-bold">Why this page exists</h2>

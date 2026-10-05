@@ -24,13 +24,23 @@ interface Props {
   intro: string;
   faqs: { question: string; answer: string }[];
   lang?: Lang;
+  /** Date the figures of this page were last checked against their sources (defaults to LAST_UPDATED). */
+  verified?: string;
+  /** Organisations behind the figures, for the line under the calculator. */
+  sourcesLine?: string;
 }
 
-const { slug, title, metaTitle, metaDescription, h1, intro, faqs, lang = 'en', resume} = Astro.props;
+const { slug, title, metaTitle, metaDescription, h1, intro, faqs, lang = 'en', resume, verified = LAST_UPDATED, sourcesLine = 'CRA, Revenu Qu&eacute;bec'} = Astro.props;
 // Le resume se trouve par le chemin quand la page ne le fournit pas : une
 // seule table a tenir, pas quarante appels a modifier.
 const resumeAffiche = resume ?? RESUMES[Astro.url.pathname]
   ?? RESUMES[Astro.url.pathname.replace(/\/$/, '') + '/'];
+// RECETTE §26 : sur une page a calculateur, l'ecran montre les deux premieres
+// phrases entieres du resume et la suite se deplie, sans JavaScript. Le texte
+// reste un seul <p> complet dans le HTML (§21, check-seo).
+const phrases = resumeAffiche ? resumeAffiche.split(/(?<=[.!?])\s+(?=[A-Z0-9])/) : [];
+const resumeTete = phrases.slice(0, 2).join(' ');
+const resumeSuite = phrases.slice(2).join(' ');
 const canonical = buildCanonical(slug);
 
 const breadcrumbItems = [
@@ -121,7 +131,9 @@ const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
     </div>
 
     {resumeAffiche && (
-      <p class="mb-8 leading-relaxed text-gray-700 dark:text-gray-300">{resumeAffiche}</p>
+      <p class="mb-8 leading-relaxed text-gray-700 dark:text-gray-300">
+        {resumeTete}{resumeSuite && (<><input type="checkbox" id="resume-suite" class="peer sr-only" aria-label="Read more" /><span class="hidden peer-checked:inline">{' '}{resumeSuite}</span>{' '}<label for="resume-suite" class="cursor-pointer whitespace-nowrap font-medium text-brand-600 underline dark:text-brand-400 peer-checked:hidden">Read more</label></>)}
+      </p>
     )}
 
     <slot />
@@ -134,7 +146,7 @@ const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
     </div>
 
     <p data-chrome class="mt-4 text-sm text-gray-500 dark:text-gray-500">
-      Updated for tax year 2026 &middot; Last verified {LAST_UPDATED} &middot; Sources: CRA, Revenu Qu&eacute;bec
+      Updated for 2026 &middot; Last verified {verified} &middot; Sources: <Fragment set:html={sourcesLine} />
     </p>
 
     <slot name="content" />

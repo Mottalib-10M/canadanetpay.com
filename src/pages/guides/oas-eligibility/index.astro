@@ -1,0 +1,133 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
+import OasSources from '../../../components/OasSources.astro';
+import { oasPension } from '../../../lib/oas-engine';
+import { formatCurrencyLang } from '../../../lib/format';
+import { OAS_QUARTER, OAS_VERIFIED, OAS_MIN_YEARS, OAS_FULL_YEARS, OAS_ABROAD_YEARS } from '../../../data/oas-2026';
+
+const m = (x: number) => formatCurrencyLang(x, 'en', true);
+const p12 = oasPension({ yearsAt65: 12 });
+const p31 = oasPension({ yearsAt65: 31 });
+---
+
+<GuideLayout
+  title="OAS Eligibility 2026: residence, age and legal status"
+  description="OAS eligibility: 65 and over, 10 to 40 years of residence after 18, legal status, the 20-year rule abroad, social security agreements and how to apply."
+  publishDate="2026-10-05"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'OAS Eligibility' }]}
+  faqs={[
+    {
+      question: 'Do I qualify for OAS if I never worked in Canada?',
+      answer: 'Yes. Old Age Security is not linked to employment or contributions. A person who raised children, studied, or lived on a spouse\'s income qualifies on exactly the same terms as someone who worked for forty years, provided the residence conditions are met. Work history matters for the Canada Pension Plan, which is a separate benefit, not for OAS.',
+    },
+    {
+      question: 'Do years before age 18 count for OAS?',
+      answer: 'No. Only residence after the 18th birthday counts. Someone who grew up in Canada, left at 25 and came back at 60 has 7 years before leaving and 5 after returning, 12 in all by 65, whatever the childhood years. That person would receive 12/40 of the pension, unless years in a country with an agreement help in another way.',
+    },
+    {
+      question: 'Can a permanent resident receive OAS?',
+      answer: 'Yes. Citizenship is not required: a permanent resident who meets the residence conditions qualifies. What the Act requires is that you are a Canadian citizen or legal resident on the day before your application is approved, or were one on the day before you stopped living in Canada. Time spent in Canada as a visitor or without status is not residence for OAS.',
+    },
+    {
+      question: 'What is the difference between residence and presence?',
+      answer: 'Residence means making your home and ordinarily living in Canada; presence means simply being physically here. A snowbird who spends winters in Arizona keeps Canadian residence if their home, ties and life remain in Canada. Conversely, someone who spends a few months a year in Canada while living elsewhere is present but not resident, and those months do not count.',
+    },
+    {
+      question: 'At what age should I apply for OAS?',
+      answer: 'Service Canada accepts applications up to eleven months before the month you want the pension to start. If you receive a letter saying you have been enrolled automatically, you do not need to apply at all. If you plan to defer, simply do not apply yet, or tell Service Canada in writing that you want to start later than 65.',
+    },
+  ]}
+>
+  <h2>The conditions in short</h2>
+  <ul>
+    <li><strong>Age:</strong> 65 or older. There is no early OAS pension; at 60 to 64, only the Allowance and the Allowance for the Survivor exist.</li>
+    <li><strong>Residence:</strong> at least {OAS_MIN_YEARS} years in Canada after age 18 if you live in Canada when you apply, at least {OAS_ABROAD_YEARS} years if you live abroad.</li>
+    <li><strong>Status:</strong> Canadian citizen or legal resident on the day before approval, or on the day before you left Canada.</li>
+    <li><strong>Amount:</strong> the full pension with {OAS_FULL_YEARS} years, one fortieth per complete year below that.</li>
+  </ul>
+
+  <div data-chrome><MiniSimAutonome client:visible kind="oas" lang="en" locale="en-CA" href="/oas-calculator/" /></div>
+
+  <h2>Counting your years of residence</h2>
+  <p>
+    The Old Age Security Act counts the total time you resided in Canada after your 18th birthday and before
+    your application is approved. The periods do not need to be continuous: someone who lived here from 20 to
+    30 and again from 50 to 65 has 25 years. The total is rounded down to complete years, so 24 years and 11
+    months gives a pension of 24/40.
+  </p>
+  <p>
+    Some absences do not interrupt residence. Temporary absences of up to a year, for a holiday, a family
+    matter or medical treatment, generally do not, and the regulations treat certain periods abroad as
+    residence: service with the Canadian Forces, employment abroad with a Canadian employer, or accompanying a
+    spouse in either case, provided you returned to Canada within six months of the end of the posting or
+    turned 65 during it. Service Canada assesses these on the evidence you supply: passports, leases, tax
+    returns, letters from employers.
+  </p>
+  <p>
+    Each year matters directly. For {OAS_QUARTER}, 12 years give {m(p12.monthly)} a month at 65, 31 years
+    {' '}{m(p31.monthly)}. Since the partial pension is fixed when it starts and never increases afterwards for
+    later years of residence, a person short of 40 years who keeps living in Canada can gain by deferring, as the
+    {' '}<a href="/guides/oas-deferral/">OAS deferral guide</a> explains.
+  </p>
+
+  <h2>The older full-pension rules</h2>
+  <p>
+    Before July 1977 the full pension required only 10 years of residence. People who were already adults
+    living in Canada then kept a transitional right: someone who was 25 or older on 1 July 1977 and resided in
+    Canada at that date, or had resided here after 18, can receive the full pension with 10 years of residence
+    immediately before approval, or with shorter recent residence offset by earlier years at three times the
+    absence. Anyone turning 65 in 2026 was born in 1961 and was 16 in July 1977, so this route is now closed
+    to new applicants; it still explains why some older relatives receive a full pension with fewer than 40
+    years.
+  </p>
+
+  <h2>Living abroad: the 20-year threshold</h2>
+  <p>
+    Where you live when the pension starts, and afterwards, changes the minimum. A person living in Canada can
+    start with 10 years. A person living abroad needs 20 years of residence in Canada after 18 to receive it
+    outside the country. The same threshold governs pensioners who leave: with 20 years or more, the pension
+    follows you anywhere, without time limit; with fewer, it is paid for six months after the month you leave
+    and then suspended until you come back.
+  </p>
+  <p>
+    Pensioners abroad must also file an Old Age Security Return of Income each year, declaring their world
+    income, so that the recovery tax can be calculated. The Guaranteed Income Supplement and the Allowance,
+    unlike the pension, are never paid to people who live abroad, and stop after six months of absence.
+  </p>
+
+  <h2>Social security agreements</h2>
+  <p>
+    Canada has agreements with many countries, among them the United States, France, Italy, Portugal,
+    India, the Philippines and most member states of the European Union. Under an agreement,
+    periods of residence or contribution in the other country can be added to Canadian residence to meet the
+    minimum of 10 years (or 20 years abroad). The Canadian pension is still calculated on Canadian years only:
+    someone with 6 years in Canada and 30 in a partner country can qualify, and receives 6/40. Because the rules
+    differ from one agreement to the next, Service Canada assesses each case on application.
+  </p>
+
+  <h2>Legal status and sponsorship</h2>
+  <p>
+    The pension is reserved for citizens and people legally resident in Canada, assessed on the day before
+    approval or on the day before leaving Canada. Time spent in Canada before obtaining legal status does not
+    count as residence. Sponsored immigrants can receive the OAS pension once they meet the residence
+    conditions, but not the Guaranteed Income Supplement or the Allowance while the sponsorship undertaking is
+    in force, except in the situations listed in the regulations.
+  </p>
+
+  <h2>Applying</h2>
+  <p>
+    Many people never apply: Service Canada writes, usually the month after the 64th birthday, to say they will
+    be enrolled automatically from the month after they turn 65. Those who do not receive that letter apply
+    online through My Service Canada Account or on paper, up to eleven months before the month they want
+    payments to start. Late applicants can receive up to eleven months of back payments. Anyone who wants to
+    defer simply does not apply, or tells Service Canada the month they wish to start.
+  </p>
+  <p>
+    Once eligible, your amount is set by the <a href="/oas-calculator/">OAS calculator</a>; low incomes add the
+    supplement calculated on the <a href="/gis-calculator/">GIS calculator</a>, and the payment calendar is on
+    the <a href="/oas-payment-dates/">OAS payment dates</a> page.
+  </p>
+  <p class="text-sm">Rules of the Old Age Security Act as consolidated on 21 September 2026; amounts for {OAS_QUARTER}, checked on {OAS_VERIFIED}.</p>
+  <OasSources only={['act', 'payments', 'estimator']} />
+</GuideLayout>

@@ -1,0 +1,133 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
+import OasSources from '../../../components/OasSources.astro';
+import { oasPension, recoveryTax } from '../../../lib/oas-engine';
+import { formatCurrencyLang } from '../../../lib/format';
+import { OAS_QUARTER, OAS_VERIFIED, OAS_FULL_MONTHLY, OAS_DEFERRAL_PER_MONTH, RECOVERY_YEARS } from '../../../data/oas-2026';
+
+const m = (x: number) => formatCurrencyLang(x, 'en', true);
+const d = (x: number) => formatCurrencyLang(x, 'en');
+const step = `${(OAS_DEFERRAL_PER_MONTH * 100).toFixed(1)}%`;
+const rows = [65, 66, 67, 68, 69, 70].map((a) => {
+  const months = (a - 65) * 12;
+  const r = oasPension({ yearsAt65: 40, deferralMonths: months });
+  const gain = r.monthly - OAS_FULL_MONTHLY;
+  const be = gain > 0 ? 65 + (r.monthly * months) / gain / 12 : null;
+  return { a, inc: months * OAS_DEFERRAL_PER_MONTH, monthly: r.monthly, at75: Math.round(r.monthly * 1.1 * 100) / 100, be };
+});
+const rec26 = RECOVERY_YEARS.find((y) => y.incomeYear === 2026)!;
+const worker = recoveryTax(140000 + OAS_FULL_MONTHLY * 12, OAS_FULL_MONTHLY * 12, 2026);
+---
+
+<GuideLayout
+  title="OAS Deferral 2026: start your pension at 65 or wait to 70?"
+  description="Deferring OAS adds 0.6% a month, up to 36% at 70. Amounts by start age for Oct-Dec 2026, the break-even age, the clawback and GIS cases, and who gains."
+  publishDate="2026-10-05"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'OAS Deferral' }]}
+  faqs={[
+    {
+      question: 'How much does OAS increase if I wait until 70?',
+      answer: `By ${step} for each month after you become eligible, with no increase for months after your 70th birthday: 7.2% a year and 36% at the most. For ${OAS_QUARTER}, a full pension started at 70 is worth ${m(rows[5].monthly)} a month instead of ${m(OAS_FULL_MONTHLY)}. The increase is permanent and indexed, and the 10% increase at 75 is applied on top of it.`,
+    },
+    {
+      question: 'Can I defer OAS for just a few months?',
+      answer: 'Yes. Deferral is counted in months, not years, so you can start at any month between 65 and 70. Some people defer only until they stop working, for instance from 65 to 66 and a half, which gives a pension 10.8% higher. Tell Service Canada the month you want to start, or apply later; the increase is calculated automatically.',
+    },
+    {
+      question: 'Can I get GIS if I defer OAS?',
+      answer: 'No. The Guaranteed Income Supplement is paid only to people who receive the OAS pension, so during deferral there is no supplement at all. For anyone who would qualify for GIS, deferring OAS usually means giving up the supplement for those years without getting it back later.',
+    },
+    {
+      question: 'If I start OAS at 65, can I change my mind and defer?',
+      answer: 'Yes, within six months of the start of payments you can ask to cancel the pension, repay what you received, and start again later with the deferral increase. After that, the start date is final. The same rule applies if you were enrolled automatically and did not want to be: act quickly and contact Service Canada in writing.',
+    },
+    {
+      question: 'Does deferring OAS reduce the clawback?',
+      answer: `It moves it. While OAS is deferred, there is no pension to recover, so a high earner between 65 and 70 loses nothing in those years. Once the pension starts, recovery tax is calculated as usual, at 15% of net income above the threshold, ${d(rec26.threshold)} for 2026. Deferral pays best when income will fall below that threshold after 70.`,
+    },
+  ]}
+>
+  <h2>Deferred OAS amounts, {OAS_QUARTER}</h2>
+  <p>
+    The pension rises by {step} for each month you wait after 65, up to 70. The table shows the full pension by
+    start age, the same pension after the 10% increase at 75, and the age at which the total received from the
+    later start catches up with the total from a start at 65, before indexation and tax.
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead><tr><th>Start age</th><th>Increase</th><th>Per month to 74</th><th>Per month from 75</th><th>Break-even age</th></tr></thead>
+      <tbody>
+        {rows.map((r) => <tr><td>{r.a}</td><td>{(r.inc * 100).toFixed(1)}%</td><td>{m(r.monthly)}</td><td>{m(r.at75)}</td><td>{r.be ? r.be.toFixed(1) : 'n/a'}</td></tr>)}
+      </tbody>
+    </table>
+  </div>
+
+  <div data-chrome><MiniSimAutonome client:visible kind="deferral" lang="en" locale="en-CA" href="/oas-calculator/" /></div>
+
+  <h2>The arithmetic of waiting</h2>
+  <p>
+    Deferring means giving up payments now in exchange for larger payments later. With a full pension, each
+    month of delay costs one month of pension and adds {step} to all future payments. The break-even point is
+    therefore about 13.9 years after the start date, whatever the start age: someone who starts at 70 needs to
+    live to about 83.9 before the larger pension has made up for the five years without payments, and someone
+    who starts at 67 to about 80.9. The break-even does not move much with indexation, since both streams are
+    indexed the same way.
+  </p>
+  <p>
+    Life expectancy at 65 in Canada is well above those break-even ages for many people, which is why
+    deferral is often presented as a good deal. It is, for someone in good health who can live on other money
+    between 65 and 70. It is a poor one for someone with a shorter expected lifespan, or who would have to
+    draw down savings at a cost, or who would receive GIS.
+  </p>
+
+  <h2>Who gains from deferring</h2>
+  <h3>People still working at 65</h3>
+  <p>
+    A person with a salary between 65 and 70 pays tax on OAS at a high marginal rate, and above the threshold
+    the recovery tax takes back 15% of the excess on top. A pensioner with {d(140000)} of other income in 2026
+    would repay {m(worker.annual)} of a {m(OAS_FULL_MONTHLY * 12)} pension. Deferring until income falls
+    avoids paying it out only to recover it, and raises the pension that arrives once the salary stops.
+  </p>
+  <h3>People short of 40 years</h3>
+  <p>
+    For someone with a partial pension who keeps living in Canada, each year of deferral also adds a year of
+    residence. The Act then pays the greater of the deferred partial pension and the pension recalculated on the
+    longer residence. Both effects cannot be added, but the better of the two is guaranteed, and the
+    <a href="/oas-calculator/">OAS calculator</a> shows which applies.
+  </p>
+  <h3>People with RRSP or RRIF savings to draw first</h3>
+  <p>
+    Drawing on registered savings between 65 and 70 while deferring OAS and CPP can smooth taxable income over
+    retirement and reduce the RRIF withdrawals forced later, which in turn limits the recovery tax after 70.
+  </p>
+
+  <h2>Who should not defer</h2>
+  <ul>
+    <li><strong>Anyone who would receive the Guaranteed Income Supplement.</strong> No GIS is paid while OAS is deferred, and the supplement for those years is lost for good. The <a href="/gis-calculator/">GIS calculator</a> shows how much is at stake.</li>
+    <li><strong>A couple where the younger spouse could receive the Allowance.</strong> The Allowance requires the older spouse to receive OAS and GIS; deferring OAS removes it.</li>
+    <li><strong>Someone in poor health</strong>, or without other income to cover the years between 65 and the later start.</li>
+    <li><strong>Someone whose income will stay above the recovery threshold after 70</strong>, since a larger pension will simply be recovered at a higher amount.</li>
+  </ul>
+
+  <h2>Deferring OAS and CPP together</h2>
+  <p>
+    CPP can also be deferred, by 0.7% a month to 70, a better rate than OAS, and it can start as early as 60
+    with a reduction. When only one can be deferred, CPP usually offers more per month of delay. For people
+    likely to receive GIS, the logic reverses for CPP as well: every dollar of CPP reduces the supplement, so a
+    larger CPP later is partly offset. The <a href="/cpp-oas-gis-calculator/">CPP + OAS + GIS calculator</a> lets
+    you test both start ages, and the <a href="/guides/cpp-explained/">CPP guide</a> covers the plan itself.
+  </p>
+
+  <h2>How to defer in practice</h2>
+  <p>
+    If Service Canada writes to say you will be enrolled automatically, reply in writing with the month you
+    want the pension to start, or the pension will begin at 65. If you were not enrolled automatically, simply
+    apply when you want payments to begin, up to eleven months in advance. There is no form to fill in for the
+    increase itself: it is applied from the month after you become eligible to the month your application is
+    approved, up to your 70th birthday. Waiting beyond 70 adds nothing and can cost up to eleven months of
+    payments if you apply too late, since back payments are limited to that period.
+  </p>
+  <p class="text-sm">Amounts for {OAS_QUARTER}, checked against Service Canada on {OAS_VERIFIED}; rules of the Old Age Security Act, s. 7.1.</p>
+  <OasSources only={['act', 'estimator', 'payments', 'recovery']} />
+</GuideLayout>

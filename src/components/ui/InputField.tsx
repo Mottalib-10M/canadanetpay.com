@@ -34,8 +34,9 @@ export default function InputField({ label, value, onChange, prefix = '$', suffi
     const pos = el.selectionStart ?? 0;
     const oldVal = el.value;
 
-    // Strip all whitespace to get raw digits
-    const raw = oldVal.replace(/\s/g, '');
+    // Strip whitespace and thousands commas: « 2,500 », « 2 500 » and « 2500 »
+    // are the same figure (RECETTE §17.1, tolerance de saisie).
+    const raw = oldVal.replace(/[\s,]/g, '');
     if (raw === '') { setDisplay(''); onChange(0); return; }
 
     const num = parseFloat(raw);
@@ -46,7 +47,7 @@ export default function InputField({ label, value, onChange, prefix = '$', suffi
     setDisplay(formatted);
 
     // Restore cursor: count digits before old cursor, find same position in formatted string
-    const digitsBeforeCursor = oldVal.slice(0, pos).replace(/\s/g, '').length;
+    const digitsBeforeCursor = oldVal.slice(0, pos).replace(/[\s,]/g, '').length;
     let newPos = 0, counted = 0;
     for (let i = 0; i < formatted.length; i++) {
       if (counted >= digitsBeforeCursor) break;

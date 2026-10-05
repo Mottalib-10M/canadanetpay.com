@@ -47,6 +47,17 @@ const faqPageSchema = faqs.length
     }
   : null;
 const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).href;
+// Hreflang : les quatre pages qui existent dans les deux langues se declarent
+// l'une l'autre (check-anglais, 2026-10-05 : les pages francaises n'avaient
+// aucune version anglaise declaree alors qu'elle existe).
+const PAIRES: Array<[string, string]> = [
+  ['/guides/minimum-wage-canada/', '/fr/guides/salaire-minimum-canada/'],
+  ['/guides/average-salary-canada/', '/fr/guides/salaire-moyen-canada/'],
+  ['/glossary/', '/fr/glossaire/'],
+  ['/methodology/', '/fr/methodologie/'],
+];
+const chemin = Astro.url.pathname.replace(/\/?$/, '/');
+const paire = PAIRES.find(([en, fr]) => en === chemin || fr === chemin);
 const articleSchema = buildArticleSchema(
   title,
   description,
@@ -64,6 +75,9 @@ const articleSchema = buildArticleSchema(
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalUrl} />
+  {paire && <link rel="alternate" hreflang="en" href={new URL(paire[0], SITE_URL).href} />}
+  {paire && <link rel="alternate" hreflang="fr" href={new URL(paire[1], SITE_URL).href} />}
+  {paire && <link rel="alternate" hreflang="x-default" href={new URL(paire[0], SITE_URL).href} />}
 
   <meta property="og:type" content="article" />
   <meta property="og:image" content={OG_IMAGE} />
