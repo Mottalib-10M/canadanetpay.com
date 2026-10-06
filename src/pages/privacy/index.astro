@@ -1,54 +1,87 @@
 ---
 import GuideLayout from '../../layouts/GuideLayout.astro';
 import OfficialSources from '../../components/OfficialSources.astro';
+import { CONTACT_EMAIL, LEGAL } from '../../data/site-config';
 ---
 
 <GuideLayout
   title="Privacy policy of this Canadian salary calculator 2026"
-  description="How Canada Net Pay handles your data. No personal salary or financial data is collected, stored, or transmitted. All calculations run in your browser."
+  description="Your salary, province and pay frequency stay in your browser. Canada Net Pay sets no cookies and keeps no personal information; only site stability is checked."
   publishDate="2026-06-27"
+  modifiedDate="2026-10-06"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }]}
 >
-  <p><em>Last updated: October 4, 2026</em></p>
+  <p><em>Last updated: October 6, 2026</em> · <a href="/fr/confidentialite/" hreflang="fr" lang="fr">Version française</a></p>
 
-  <h2>Summary</h2>
+  <h2>In short</h2>
   <p>
-    Canada Net Pay is a static website. All calculations run entirely in your browser.
-    We do not collect, store, or transmit any salary or personal information.
+    Canada Net Pay is a static website published by {LEGAL.entityName}. It sets no cookies, and its
+    publisher collects and keeps no personal information about you. This policy is written with the
+    federal <em>Personal Information Protection and Electronic Documents Act</em> (PIPEDA) in mind and,
+    for visitors in Quebec, the <em>Act respecting the protection of personal information in the private
+    sector</em> as amended by Law 25.
   </p>
 
-  <h2>Data Collection</h2>
-  <p><strong>The calculator collects nothing.</strong> Specifically:</p>
+  <h2>What you type into the calculators</h2>
+  <p>
+    Gross salary, province or territory, pay frequency, RRSP contributions, CPP or OAS figures: whatever you
+    enter to estimate take-home pay, income tax, CPP, EI or Old Age Security is computed by JavaScript on
+    your own device. None of it is sent to a server, stored in a database or saved on your device; closing
+    the tab erases it. When you share a link to a result, the amount and province travel in the part of the
+    address after the <code>#</code>, which browsers never send to the server.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    No cookie is set by canadanetpay.com, by its calculators or by the stability tool described below, and
+    nothing is written to your browser’s local or session storage. There is therefore no cookie banner:
+    nothing has to be accepted or declined. The site carries no advertising and no advertising or social
+    media trackers.
+  </p>
+
+  <h2>Anonymous stability monitoring</h2>
+  <p>
+    To spot what breaks (script errors, slow loading, buttons that do not respond to clicks, odd scrolling),
+    the site runs <strong>Microsoft Clarity in cookieless mode</strong>. In this mode Clarity writes none of
+    the cookies <code>_clck</code>, <code>_clsk</code>, <code>MUID</code> or <code>CLID</code>. Every page view
+    gets its own identifier, so two page views, or two visits, are never tied together. The text of the
+    page and the figures you type are masked in your browser before anything leaves it: Microsoft never
+    sees your salary or your province.
+  </p>
   <ul>
-    <li>No salary, income, or financial information is sent to any server.</li>
-    <li>No account registration is required.</li>
-    <li>No advertising cookies are used.</li>
-    <li>No personal information is sold to third parties.</li>
+    <li><strong>Who processes it</strong>: Microsoft Ireland Operations Limited, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Ireland. The data may be processed outside Canada, including in the United States; see <a href="https://privacy.microsoft.com/privacystatement" rel="nofollow noopener" target="_blank">Microsoft’s privacy statement</a>.</li>
+    <li><strong>Why</strong>: a technical, anonymous check that the pay and pension calculators load and compute correctly.</li>
+    <li><strong>How long</strong>: page-view recordings are deleted after 30 days, aggregated figures after 13 months.</li>
+    <li><strong>On what basis</strong>: the publisher’s legitimate interest in a calculator that works, a purpose a reasonable person would consider appropriate (PIPEDA, s. 5(3)); for visitors from the European Union, Article 6(1)(f) of the GDPR.</li>
+    <li><strong>How to opt out</strong>: block <code>clarity.ms</code> in your browser or content blocker (every calculator works the same without it), or write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</li>
   </ul>
 
-  <h2>How the Calculator Works</h2>
-  <p>All tax calculations are performed client-side in your web browser using JavaScript. The numbers you enter never leave your device. When you share a URL with calculator parameters (e.g., salary amount and province), that information is encoded in the URL hash fragment, which is not sent to our servers. If someone opens such a link, the page address, including those parameters, is part of what our audience measurement records (see below).</p>
-
-  <h2>Analytics</h2>
-  <p>Microsoft Clarity shows us how visitors move through the salary and tax pages: which links get clicked, how far each page is scrolled, which pages are opened (with their address), the device and browser in use, and a rough location inferred from the IP address. Salary, province or pay-frequency values typed into the calculator are masked in the browser before anything leaves it. Microsoft Clarity sets the cookies <code>_clck</code> (one year) and <code>_clsk</code> (one day), and Microsoft may set <code>MUID</code> and <code>CLID</code> on its own domains.</p>
-  <p>Nothing asks for your agreement first: Clarity starts with the page, and canadanetpay.com displays neither a notice nor a consent banner. You can keep it out by blocking clarity.ms or third-party cookies in your browser settings, then clearing this site's stored data to delete any cookie already written; net pay, CPP and EI results are computed the same way without it. Microsoft keeps session recordings 30 days and aggregated statistics up to 13 months. Microsoft may process this data outside Canada, including in the United States; its handling is described in its <a href="https://privacy.microsoft.com/privacystatement" rel="nofollow noopener" target="_blank">privacy statement</a>.</p>
-  <p>We also use Google Analytics 4, provided by Google Ireland Limited (Google LLC for transfers), which loads the same way when the page opens, with no notice and no consent banner. It records the pages viewed, where the visit came from, visit duration and engagement, device type and browser, and an approximate location (country, city) derived from the IP address, which Google Analytics 4 does not store. The purpose is audience measurement, on the basis of our legitimate interest in understanding how the site is used. Google Analytics 4 sets the cookies <code>_ga</code> (2 years) and <code>_ga_&lt;ID&gt;</code> (2 years). The data is kept for 14 months (set on our property) and is transferred to Google LLC in the United States, which is certified under the EU-U.S. Data Privacy Framework. To refuse it, block third-party cookies or the domain google-analytics.com in your browser, or install the <a href="https://tools.google.com/dlpage/gaoptout" rel="nofollow noopener" target="_blank">official Google Analytics opt-out add-on</a>; the calculator works without it.</p>
-
-  <h2>Local Storage</h2>
-  <p>The website uses your browser’s local storage to save your theme preference (light/dark mode). This data stays on your device and is not transmitted anywhere.</p>
-
-  <h2>Third-Party Services</h2>
-  <p>The website is hosted on static hosting infrastructure. Apart from Microsoft Clarity and Google Analytics 4 (Google Ireland Limited, Google LLC), described above, we do not use third-party advertising, tracking pixels, or social media widgets that could collect your data.</p>
-
-  <h2>Changes to This Policy</h2>
+  <h2>Hosting logs</h2>
   <p>
-    When this policy changes, for instance because a measurement tool is added or removed, the new
-    text replaces this one and the "Last updated" date at the top moves forward.
+    The site is served by GitHub Pages (GitHub, Inc.). Like any web server, it records technical details of
+    each request, such as IP address, time, page requested and browser, to keep the service secure and
+    running. The publisher cannot see these logs and makes no use of them.
   </p>
 
-  <h2>Contact</h2>
+  <h2>If you contact us</h2>
   <p>
-    If you have questions about this privacy policy, please <a href="/contact/">contact us</a>.
+    A message sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> or through the
+    <a href="/contact/">contact page</a> is used only to reply. Your address is not put on a mailing list or
+    shared with anyone.
+  </p>
+
+  <h2>Your rights and complaints</h2>
+  <p>
+    Under PIPEDA and Quebec’s Law 25 you may ask what information is held about you and have it corrected.
+    Since the publisher keeps none, this in practice concerns only messages you have sent us; for stability
+    monitoring you can also contact Microsoft. If you are not satisfied, you may complain to the
+    {LEGAL.supervisoryAuthority} (<a href={LEGAL.supervisoryAuthorityUrl} rel="nofollow noopener" target="_blank">report a concern</a>)
+    or, in Quebec, to the Commission d’accès à l’information.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    If the way the site works changes, this page is updated first and the date at the top moves forward.
   </p>
   <OfficialSources />
 </GuideLayout>

@@ -1,133 +1,24 @@
 ---
 /**
- * Mesure d'audience Microsoft Clarity et Google Analytics 4, soumise au choix du visiteur.
+ * Mesure technique de la stabilité du site avec Microsoft Clarity, en mode SANS COOKIE
+ * (décision de l'éditeur du 2026-10-06, RECETTE-SITE.md §15.6).
  *
  * Deux emplacements, un seul composant :
- *  - part="head" : pose l'état par défaut et ne charge Clarity et GA4 que si le choix l'autorise ;
- *  - part="body" : le bandeau, et le lien « gérer les cookies » qui le rouvre.
+ *  - part="head" : met en file le signal consentv2 { ad_Storage: denied, analytics_Storage: denied }
+ *    AVANT d'insérer le script Clarity. Clarity tourne alors sans aucun cookie (_clck, _clsk, MUID,
+ *    CLID), avec un identifiant par page vue, sans relier les visites ; le contenu est masqué par
+ *    `data-clarity-mask="true"` sur le <body> du layout.
+ *  - part="body" : ne rend plus rien (aucun bandeau, aucun lien « gérer les cookies ») ; conservé
+ *    pour ne pas toucher aux appels existants.
  *
- * Trois régimes, selon CONSENT_MODE dans site-config :
- *  - 'none' : aucun bandeau ni lien de réglage ; Clarity et GA4 se chargent à l'ouverture de la page
- *    et la page de confidentialité le dit (choix de l'éditeur, 2026-10-02).
- *  - 'opt-in' (UE, Royaume-Uni, Suisse) : rien n'est chargé tant que le visiteur n'a pas
- *    accepté ; le refus est au même niveau visuel que l'acceptation.
- *  - 'notice' (Canada, États-Unis, Australie) : mesure active par défaut, avec information
- *    préalable et retrait possible à tout moment.
- *
- * Le choix est conservé dans localStorage (clé `consent-choice`), jamais dans un cookie.
- * Rien n'est rendu si CLARITY_ID est vide (GA4 : si GA4_ID est vide). Les pages /embed/ n'utilisent pas ce composant :
- * un widget intégré chez un tiers ne mesure rien.
+ * Aucun GA4 ni autre traceur. Rien n'est rendu si CLARITY_ID est vide ou si CONSENT_MODE n'est pas
+ * 'none'. Les pages /embed/ n'utilisent pas ce composant : un widget intégré chez un tiers ne mesure rien.
  */
-import { CLARITY_ID, CONSENT_MODE, GA4_ID } from '../data/site-config';
+import { CLARITY_ID, CONSENT_MODE } from '../data/site-config';
 
-interface Props { part: 'head' | 'body'; lang?: string; moreHref: string }
-const { part, lang = 'en', moreHref } = Astro.props;
-
-interface Strings { title: string; body: string; accept: string; reject: string; more: string; manage: string }
-const OPT_IN: Record<string, Strings> = {
-  en: {
-    title: 'Cookies and audience measurement',
-    body: 'The calculator runs entirely in your browser and needs no cookies. We would only like to measure how the site is used, to see which pages are useful. Nothing is set without your consent.',
-    accept: 'Accept', reject: 'Continue without accepting', more: 'Learn more', manage: 'Cookie settings',
-  },
-  fr: {
-    title: 'Cookies et mesure d’audience',
-    body: 'Le calculateur fonctionne entièrement dans votre navigateur et n’a besoin d’aucun cookie. Nous souhaitons seulement mesurer l’audience du site pour savoir quelles pages sont utiles. Rien n’est déposé sans votre accord.',
-    accept: 'Accepter', reject: 'Continuer sans accepter', more: 'En savoir plus', manage: 'Gérer les cookies',
-  },
-  pt: {
-    title: 'Cookies e medição de audiência',
-    body: 'A calculadora funciona inteiramente no seu navegador e não precisa de cookies. Gostaríamos apenas de medir a utilização do site para saber que páginas são úteis. Nada é instalado sem o seu consentimento.',
-    accept: 'Aceitar', reject: 'Continuar sem aceitar', more: 'Saber mais', manage: 'Definições de cookies',
-  },
-  sv: {
-    title: 'Kakor och besöksstatistik',
-    body: 'Kalkylatorn körs helt i din webbläsare och behöver inga kakor. Vi vill bara mäta hur webbplatsen används för att se vilka sidor som är till nytta. Ingenting lagras utan ditt samtycke.',
-    accept: 'Godkänn', reject: 'Fortsätt utan att godkänna', more: 'Läs mer', manage: 'Inställningar för kakor',
-  },
-};
-const NOTICE: Record<string, Strings> = {
-  en: {
-    title: 'Cookies and analytics',
-    body: 'The calculator runs entirely in your browser and needs no cookies. We use analytics only to see which pages are useful. You can opt out now or change your choice at any time.',
-    accept: 'Accept', reject: 'Opt out', more: 'Learn more', manage: 'Cookie settings',
-  },
-  fr: {
-    title: 'Témoins et mesure d’audience',
-    body: 'Le calculateur fonctionne entièrement dans votre navigateur et n’a besoin d’aucun témoin. Nous mesurons seulement l’audience du site pour savoir quelles pages sont utiles. Vous pouvez refuser maintenant ou changer d’avis à tout moment.',
-    accept: 'Accepter', reject: 'Refuser', more: 'En savoir plus', manage: 'Gérer les témoins',
-  },
-};
-const table = CONSENT_MODE === 'opt-in' ? OPT_IN : NOTICE;
-const s = table[lang] ?? table.en;
-const defaut = CONSENT_MODE === 'opt-in' ? 'denied' : 'granted';
+interface Props { part: 'head' | 'body'; lang?: string; moreHref?: string }
+const { part } = Astro.props;
 ---
-{CLARITY_ID && part === 'head' && (
-  <script is:inline set:html={`(function(){var d='${defaut}';var c=null;try{c=localStorage.getItem('consent-choice');}catch(e){}window.clarity=window.clarity||function(){(window.clarity.q=window.clarity.q||[]).push(arguments);};window.__clarityLoad=function(){if(window.__clarityOn)return;window.__clarityOn=true;var s=document.createElement('script');s.async=true;s.src='https://www.clarity.ms/tag/${CLARITY_ID}';document.head.appendChild(s);};if(c==='granted')window.clarity('consentv2',{ad_Storage:'denied',analytics_Storage:'granted'});if(c==='granted'||(c===null&&d==='granted'))window.__clarityLoad();})();`} />
-)}
-{GA4_ID && part === 'head' && (
-  <script is:inline set:html={`(function(){var d='${defaut}';var c=null;try{c=localStorage.getItem('consent-choice');}catch(e){}window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};window.__ga4Load=function(){if(window.__ga4On)return;window.__ga4On=true;window.gtag('js',new Date());window.gtag('config','${GA4_ID}');var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${GA4_ID}';document.head.appendChild(s);};if(c==='granted'||(c===null&&d==='granted'))window.__ga4Load();})();`} />
-)}
-{CLARITY_ID && CONSENT_MODE !== 'none' && part === 'body' && (
-  <>
-    <p style="margin:0;padding:12px 16px 20px;text-align:center;font-size:13px;">
-      <button type="button" data-consent-manage style="background:none;border:0;padding:0;font:inherit;color:inherit;opacity:.75;text-decoration:underline;cursor:pointer;">{s.manage}</button>
-    </p>
-    <div
-      id="consent-banner"
-      hidden
-      role="dialog"
-      aria-modal="false"
-      aria-labelledby="consent-title"
-      style="position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;color:#111827;border-top:1px solid #d1d5db;box-shadow:0 -4px 16px rgba(0,0,0,.08);"
-    >
-      <div style="max-width:56rem;margin:0 auto;padding:16px;">
-        <h2 id="consent-title" style="margin:0 0 6px;font-size:14px;font-weight:600;color:#111827;">{s.title}</h2>
-        <p style="margin:0 0 12px;font-size:14px;line-height:1.55;color:#374151;">
-          {s.body}{' '}<a href={moreHref} style="color:#111827;text-decoration:underline;">{s.more}</a>.
-        </p>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <button type="button" data-consent="granted" style="min-height:44px;padding:8px 16px;border-radius:8px;border:1px solid #111827;background:#111827;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">{s.accept}</button>
-          <button type="button" data-consent="denied" style="min-height:44px;padding:8px 16px;border-radius:8px;border:1px solid #6b7280;background:#fff;color:#111827;font-size:14px;font-weight:600;cursor:pointer;">{s.reject}</button>
-        </div>
-      </div>
-    </div>
-    <script is:inline>
-      (function () {
-        var KEY = 'consent-choice';
-        var banner = document.getElementById('consent-banner');
-        if (!banner) return;
-        var stored = null;
-        try { stored = localStorage.getItem(KEY); } catch (e) { /* stockage bloqué : on redemande */ }
-        var apply = function (value) {
-          if (typeof window.__ga4Load === 'function') {
-            if (value === 'granted') window.__ga4Load();
-            else if (window.__ga4On) window.gtag('consent', 'update', { analytics_storage: 'denied' });
-          }
-          if (typeof window.__clarityLoad !== 'function') return;
-          if (value === 'granted') {
-            window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' });
-            window.__clarityLoad();
-          } else if (window.__clarityOn) {
-            // Refus après chargement : Clarity retire ses cookies ; il n'est plus chargé ensuite.
-            window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' });
-          }
-        };
-        var open = function () { banner.hidden = false; };
-        var close = function () { banner.hidden = true; };
-        if (stored === null) open();
-        banner.querySelectorAll('[data-consent]').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            var value = btn.getAttribute('data-consent');
-            try { localStorage.setItem(KEY, value); } catch (e) { /* choix valable pour la session */ }
-            apply(value);
-            close();
-          });
-        });
-        document.querySelectorAll('[data-consent-manage]').forEach(function (el) {
-          el.addEventListener('click', function (e) { e.preventDefault(); open(); });
-        });
-      })();
-    </script>
-  </>
+{CLARITY_ID && CONSENT_MODE === 'none' && part === 'head' && (
+  <script is:inline set:html={`(function(){window.clarity=window.clarity||function(){(window.clarity.q=window.clarity.q||[]).push(arguments);};window.clarity('consentv2',{ad_Storage:'denied',analytics_Storage:'denied'});var s=document.createElement('script');s.async=true;s.src='https://www.clarity.ms/tag/${CLARITY_ID}';document.head.appendChild(s);})();`} />
 )}

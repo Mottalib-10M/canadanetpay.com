@@ -1,0 +1,65 @@
+---
+import LegalIdentity from '../../../components/LegalIdentity.astro';
+import { CONTACT_EMAIL, LEGAL } from '../../../data/site-config';
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+---
+
+<GuideLayout
+  title="Conditions d’utilisation du calculateur de salaire canadien"
+  description="Éditeur, hébergeur et portée des résultats de Canada Net Pay : chaque montant de paie nette, d’impôt ou de pension est une estimation, pas un conseil fiscal."
+  publishDate="2026-10-06"
+  lang="fr"
+  breadcrumbs={[{ label: 'Accueil', href: '/fr/' }, { label: 'Conditions d’utilisation' }]}
+>
+  <p><em>Dernière mise à jour : 6 octobre 2026</em> · <a href="/terms/" hreflang="en" lang="en">English version</a></p>
+
+  <h2>Éditeur</h2>
+  <LegalIdentity mode="publisher" lang="fr" />
+
+  <h2>Hébergeur</h2>
+  <p>Le site est servi par GitHub Pages, service de {LEGAL.hosting.name} (88 Colin P. Kelly Jr. Street, San Francisco, Californie 94107, États-Unis ; <a href={LEGAL.hosting.url} rel="nofollow noopener" target="_blank">github.com</a>).</p>
+
+  <h2>Nature du service</h2>
+  <p>
+    Canada Net Pay propose gratuitement des calculateurs de salaire net, d’impôt fédéral et provincial,
+    de cotisations au RPC, au RRQ et à l’assurance-emploi, ainsi que de prestations de vieillesse. Les
+    résultats reposent sur les barèmes publiés par l’Agence du revenu du Canada, Revenu Québec et les
+    organismes fédéraux ; ce sont des estimations fournies à titre informatif.
+  </p>
+
+  <h2>Aucun conseil fiscal</h2>
+  <p>
+    <strong>Le site ne donne aucun conseil fiscal, juridique ou financier.</strong> Votre situation réelle
+    (crédits, déductions, avantages imposables, autres revenus) peut produire un montant différent. Avant une
+    décision importante, vérifiez auprès d’un professionnel de la fiscalité, de l’ARC ou de Revenu Québec.
+    L’éditeur ne peut être tenu responsable d’une décision prise sur la seule foi d’un résultat du site.
+  </p>
+
+  <h2>Renseignements personnels et témoins</h2>
+  <p>
+    Les calculateurs ne gardent rien : le salaire et la province que vous saisissez sont traités dans votre
+    navigateur et disparaissent à la fermeture de l’onglet. Le site ne dépose aucun témoin et l’éditeur
+    n’enregistre aucun renseignement personnel. Seule une vérification technique et anonyme de la stabilité
+    des pages est faite avec Microsoft Clarity, sans témoin et contenu masqué ; la
+    <a href="/fr/confidentialite/">politique de confidentialité</a> la décrit en détail.
+  </p>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>
+    Les textes, calculateurs et le code du site sont protégés par le droit d’auteur. Vous pouvez utiliser
+    les calculateurs pour vos besoins personnels ; toute reproduction ou diffusion du contenu demande
+    l’accord préalable de l’éditeur.
+  </p>
+
+  <h2>Liens externes</h2>
+  <p>
+    Le site renvoie vers des sites gouvernementaux (ARC, Revenu Québec, Service Canada…). L’éditeur
+    n’est pas responsable de leur contenu ni de leur disponibilité.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Pour toute question sur ces conditions : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+    La version anglaise, <a href="/terms/">Terms of Use</a>, fait foi en cas d’écart.
+  </p>
+</GuideLayout>

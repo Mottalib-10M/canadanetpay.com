@@ -1,0 +1,86 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import { CONTACT_EMAIL, LEGAL } from '../../../data/site-config';
+---
+
+<GuideLayout
+  title="Confidentialité du calculateur de salaire canadien 2026"
+  description="Salaire, province, fréquence de paie : vos chiffres restent dans le navigateur. Aucun témoin ni renseignement personnel gardé ; seule la stabilité est vérifiée."
+  publishDate="2026-10-06"
+  lang="fr"
+  breadcrumbs={[{ label: 'Accueil', href: '/fr/' }, { label: 'Confidentialité' }]}
+>
+  <p><em>Dernière mise à jour : 6 octobre 2026</em> · <a href="/privacy/" hreflang="en" lang="en">English version</a></p>
+
+  <h2>L’essentiel</h2>
+  <p>
+    Canada Net Pay est un site statique publié par {LEGAL.entityName}. Il ne dépose aucun témoin (cookie) et
+    son éditeur ne recueille ni ne conserve aucun renseignement personnel vous concernant. Cette politique
+    tient compte de la <em>Loi sur la protection des renseignements personnels et les documents
+    électroniques</em> (LPRPDE) et, pour les visiteurs du Québec, de la <em>Loi sur la protection des
+    renseignements personnels dans le secteur privé</em> telle que modifiée par la Loi 25.
+  </p>
+
+  <h2>Ce que vous saisissez dans les calculateurs</h2>
+  <p>
+    Salaire brut, province ou territoire, fréquence de paie, cotisations REER, montants du RPC ou de la
+    Sécurité de la vieillesse : tout ce que vous entrez pour estimer votre salaire net, votre impôt, vos
+    cotisations au RPC ou à l’assurance-emploi est calculé par du JavaScript sur votre propre appareil.
+    Rien n’est transmis à un serveur, rien n’est inscrit dans une base de données, rien n’est gardé sur
+    votre appareil : fermer l’onglet efface tout. Si vous partagez le lien d’un résultat, le montant et la
+    province figurent après le <code>#</code> de l’adresse, partie que le navigateur n’envoie jamais au serveur.
+  </p>
+
+  <h2>Témoins (cookies)</h2>
+  <p>
+    Ni le site, ni ses calculateurs, ni l’outil de stabilité décrit plus bas ne déposent de témoin, et rien
+    n’est écrit dans le stockage local ou de session de votre navigateur. C’est pourquoi aucun bandeau ne
+    s’affiche : il n’y a rien à accepter ni à refuser. Le site ne présente aucune publicité et n’utilise
+    aucun traceur publicitaire ou de réseau social.
+  </p>
+
+  <h2>Mesure anonyme de la stabilité</h2>
+  <p>
+    Pour repérer ce qui ne fonctionne pas (erreurs de script, chargement lent, boutons qui ne réagissent pas
+    au clic, défilement anormal), le site utilise <strong>Microsoft Clarity en mode sans témoin</strong>.
+    Dans ce mode, Clarity ne dépose ni <code>_clck</code>, ni <code>_clsk</code>, ni <code>MUID</code>, ni
+    <code>CLID</code>. Chaque page vue reçoit son propre identifiant : deux pages vues, ou deux visites, ne
+    sont jamais reliées. Le texte des pages et les chiffres saisis sont masqués dans votre navigateur avant
+    tout envoi ; Microsoft ne voit ni votre salaire ni votre province.
+  </p>
+  <ul>
+    <li><strong>Qui traite ces données</strong> : Microsoft Ireland Operations Limited, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irlande. Elles peuvent être traitées hors du Canada, notamment aux États-Unis ; voir la <a href="https://privacy.microsoft.com/fr-ca/privacystatement" rel="nofollow noopener" target="_blank">déclaration de confidentialité de Microsoft</a>.</li>
+    <li><strong>Pourquoi</strong> : vérifier, de façon technique et anonyme, que les calculateurs de paie et de pension s’affichent et calculent correctement.</li>
+    <li><strong>Combien de temps</strong> : 30 jours pour les enregistrements de pages vues, 13 mois pour les statistiques agrégées.</li>
+    <li><strong>Sur quelle base</strong> : l’intérêt légitime de l’éditeur à offrir un calculateur qui fonctionne, fin qu’une personne raisonnable estimerait acceptable (LPRPDE, par. 5(3)) ; pour les visiteurs de l’Union européenne, l’article 6, paragraphe 1, point f du RGPD.</li>
+    <li><strong>Comment vous y opposer</strong> : bloquez <code>clarity.ms</code> dans votre navigateur ou votre bloqueur de contenu (les calculateurs fonctionnent alors de la même façon), ou écrivez à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</li>
+  </ul>
+
+  <h2>Journaux de l’hébergeur</h2>
+  <p>
+    Le site est servi par GitHub Pages (GitHub, Inc.). Comme tout serveur Web, il consigne des données
+    techniques sur chaque requête (adresse IP, heure, page demandée, navigateur) pour la sécurité et le bon
+    fonctionnement du service. L’éditeur n’a pas accès à ces journaux et ne s’en sert pas.
+  </p>
+
+  <h2>Si vous nous écrivez</h2>
+  <p>
+    Un courriel envoyé à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> sert uniquement à vous
+    répondre. Votre adresse n’est inscrite sur aucune liste d’envoi et n’est communiquée à personne.
+  </p>
+
+  <h2>Vos droits et vos recours</h2>
+  <p>
+    La LPRPDE et la Loi 25 vous permettent de savoir quels renseignements sont détenus sur vous et de les
+    faire corriger. L’éditeur n’en conservant aucun, cela ne vise en pratique que les messages que vous
+    lui avez adressés ; pour la mesure de stabilité, vous pouvez aussi vous adresser à Microsoft. Vous pouvez
+    porter plainte auprès du <a href="https://www.priv.gc.ca/fr/signaler-un-probleme/" rel="nofollow noopener" target="_blank">Commissariat à la protection de la vie privée du Canada</a>
+    ou, au Québec, de la <a href="https://www.cai.gouv.qc.ca/" rel="nofollow noopener" target="_blank">Commission d’accès à l’information</a>.
+  </p>
+
+  <h2>Modifications</h2>
+  <p>
+    Si le fonctionnement du site change, cette page est mise à jour d’abord et la date en haut de page avance.
+    Les <a href="/fr/conditions/">conditions d’utilisation</a> présentent l’éditeur et l’hébergeur.
+  </p>
+</GuideLayout>

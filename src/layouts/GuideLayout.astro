@@ -55,6 +55,8 @@ const PAIRES: Array<[string, string]> = [
   ['/guides/average-salary-canada/', '/fr/guides/salaire-moyen-canada/'],
   ['/glossary/', '/fr/glossaire/'],
   ['/methodology/', '/fr/methodologie/'],
+  ['/privacy/', '/fr/confidentialite/'],
+  ['/terms/', '/fr/conditions/'],
 ];
 const chemin = Astro.url.pathname.replace(/\/?$/, '/');
 const paire = PAIRES.find(([en, fr]) => en === chemin || fr === chemin);
@@ -109,7 +111,7 @@ const articleSchema = buildArticleSchema(
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <Consent part="head" lang={lang} moreHref="/privacy/" />
 </head>
-<body class="min-h-screen flex flex-col bg-gray-50 dark:bg-dark-bg text-gray-900 dark:text-gray-100 antialiased">
+<body class="min-h-screen flex flex-col bg-gray-50 dark:bg-dark-bg text-gray-900 dark:text-gray-100 antialiased" data-clarity-mask="true">
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:rounded focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500">{lang === 'fr' ? 'Aller au contenu principal' : 'Skip to main content'}</a>
   <Header lang={lang} />
 
@@ -148,6 +150,5 @@ const articleSchema = buildArticleSchema(
   </main>
 
   <Footer />
-  <Consent part="body" lang={lang} moreHref="/privacy/" />
 </body>
 </html>
