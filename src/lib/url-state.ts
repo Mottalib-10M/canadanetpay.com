@@ -25,8 +25,17 @@ export function readUrlParams(config: UrlConfig): Record<string, any> {
   return result;
 }
 
+// The address bar stays exactly the page URL (sitemap, canonical, trailing slash) until the
+// visitor does something: calculators call writeUrlParams from effects that also run on mount.
+// RECETTE-SITE.md §18.1, check-url-propre.mjs.
+let interacted = false;
+if (typeof window !== 'undefined') {
+  const mark = () => { interacted = true; };
+  for (const t of ['input', 'change', 'click', 'keydown']) document.addEventListener(t, mark, { once: true, capture: true });
+}
+
 export function writeUrlParams(values: Record<string, any>): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !interacted) return;
 
   if (debounceTimer) clearTimeout(debounceTimer);
 
