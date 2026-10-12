@@ -37,15 +37,8 @@ export function FormCard({ title, children }: { title: string; children: ReactNo
   );
 }
 
-export function Headline({ label, value, sub }: { label: string; value: string; sub?: ReactNode }) {
-  return (
-    <div className="bg-brand-500 px-6 py-8 text-center">
-      <p className="text-sm font-medium text-brand-100 uppercase tracking-wider">{label}</p>
-      <p className="mt-2 text-4xl sm:text-5xl font-bold text-white tabular-nums">{value}</p>
-      {sub && <p className="mt-1 text-brand-200 text-sm">{sub}</p>}
-    </div>
-  );
-}
+// Le chiffre clé (data-resultat + barre téléphone) est partagé avec les autres calculateurs.
+export { Headline } from '../ui/Headline';
 
 export function Line({ label, value, strong, muted }: { label: ReactNode; value: string; strong?: boolean; muted?: boolean }) {
   return (

@@ -132,7 +132,7 @@ const progression = paliers[paliers.length - 1].taux - paliers[0].taux;
             <td class="px-4 py-2">{classement.indexOf(p) + 1}. {p.nom}{p.code === province.abbreviation ? ' (this page)' : ''}</td>
             <td class="px-4 py-2 text-right tabular-nums">{formatCurrency(p.net)}</td>
             <td class="px-4 py-2 text-right tabular-nums text-text-muted">
-              {p.net === moi.net ? ', ' : (p.net > moi.net ? '+' : '−') + formatCurrency(Math.abs(p.net - moi.net))}
+              {p.net === moi.net ? '–' : (p.net > moi.net ? '+' : '−') + formatCurrency(Math.abs(p.net - moi.net))}
             </td>
           </tr>
         ))}

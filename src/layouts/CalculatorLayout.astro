@@ -39,7 +39,10 @@ const resumeAffiche = resume ?? RESUMES[Astro.url.pathname]
 // phrases entieres du resume et la suite se deplie, sans JavaScript. Le texte
 // reste un seul <p> complet dans le HTML (§21, check-seo).
 const phrases = resumeAffiche ? resumeAffiche.split(/(?<=[.!?])\s+(?=[A-Z0-9])/) : [];
-const resumeTete = phrases.slice(0, 2).join(' ');
+// Premier écran (RECETTE §5, 2026-10-11) : sur téléphone, seule la première phrase s'affiche
+// d'abord ; la deuxième apparaît dès la tablette. Le texte reste le même <p> complet.
+const resumeTete = phrases.slice(0, 1).join(' ');
+const resumeMilieu = phrases.slice(1, 2).join(' ');
 const resumeSuite = phrases.slice(2).join(' ');
 const canonical = buildCanonical(slug);
 
@@ -119,20 +122,20 @@ const ogLocale = lang === 'fr' ? 'fr_CA' : 'en_CA';
 
   <Header lang={lang} />
 
-  <main id="main-content" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
-    <div class="mb-8">
+  <main id="main-content" class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+    <div class="mb-4">
       {slug !== '/' && <Breadcrumbs items={breadcrumbItems} />}
       <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
         {h1}
       </h1>
-      <p class="mt-3 text-lg text-gray-500 dark:text-gray-400">
+      <p class="mt-2 text-base text-gray-500 sm:mt-3 sm:text-lg dark:text-gray-400">
         {intro}
       </p>
     </div>
 
     {resumeAffiche && (
-      <p class="mb-8 leading-relaxed text-gray-700 dark:text-gray-300">
-        {resumeTete}{resumeSuite && (<><input type="checkbox" id="resume-suite" class="peer sr-only" aria-label="Read more" /><span class="hidden peer-checked:inline">{' '}{resumeSuite}</span>{' '}<label for="resume-suite" class="cursor-pointer whitespace-nowrap font-medium text-brand-600 underline dark:text-brand-400 peer-checked:hidden">Read more</label></>)}
+      <p class="mb-5 leading-relaxed text-gray-700 dark:text-gray-300">
+        {resumeTete}{(resumeMilieu || resumeSuite) && (<><input type="checkbox" id="resume-suite" class="peer sr-only" aria-label="Read more" />{resumeMilieu && <span class="hidden sm:inline peer-checked:inline">{' '}{resumeMilieu}</span>}{resumeSuite && <span class="hidden peer-checked:inline">{' '}{resumeSuite}</span>}{' '}<label for="resume-suite" class={`cursor-pointer whitespace-nowrap font-medium text-brand-600 underline dark:text-brand-400 peer-checked:hidden${resumeSuite ? '' : ' sm:hidden'}`}>Read more</label></>)}
       </p>
     )}
 

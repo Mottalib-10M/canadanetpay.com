@@ -4,6 +4,7 @@ import { PROVINCES, ALL_PROVINCES } from '../../data/provinces';
 import { readUrlParams, writeUrlParams } from '../../lib/url-state';
 import { formatCurrency, formatPercent } from '../../lib/format';
 import InputField from '../ui/InputField';
+import { Headline } from '../ui/Headline';
 import BreakdownBar from '../ui/BreakdownBar';
 
 export default function IncomeTaxCalculator() {
@@ -53,11 +54,7 @@ export default function IncomeTaxCalculator() {
 
       <div className="lg:col-span-3 space-y-6">
         <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface overflow-hidden">
-          <div className="bg-brand-500 px-6 py-8 text-center">
-            <p className="text-sm font-medium text-brand-100 uppercase tracking-wider">Total Income Tax</p>
-            <p className="mt-2 text-4xl sm:text-5xl font-bold text-white tabular-nums">{formatCurrency(totalIncomeTax)}</p>
-            <p className="mt-1 text-brand-200 text-sm">effective rate: {formatPercent(effectiveRate)}</p>
-          </div>
+          <Headline label="Total Income Tax" value={formatCurrency(totalIncomeTax)} sub={<>effective rate: {formatPercent(effectiveRate)}</>} />
           <div className="px-6 py-5 space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600 dark:text-gray-400">Gross Income</span>

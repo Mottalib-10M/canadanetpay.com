@@ -47,7 +47,7 @@ const onProv = calculateProvincialTax(100000, 'ON'); const abProv = calculatePro
     The Canada Revenue Agency (CRA) adjusts federal tax brackets annually for inflation. For the 2026 tax year,
     Canada uses five progressive tax brackets, and the lowest rate is {pc(FEDERAL_LOWEST_RATE, 0)}, down from 15% before July 2025:
   </p>
-<div data-chrome><MiniSimAutonome client:visible kind="federal" lang="en" locale="en-CA" href="/federal-tax-calculator/" /></div>
+<div slot="simulateur" data-chrome><MiniSimAutonome client:visible spacing="mb-4 mt-0" kind="federal" lang="en" locale="en-CA" href="/federal-tax-calculator/" /></div>
 
 
   <div class="overflow-x-auto">
@@ -62,7 +62,7 @@ const onProv = calculateProvincialTax(100000, 'ON'); const abProv = calculatePro
             <tr>
               <td>{(b.rate * 100).toFixed(1)}%</td>
               <td>{formatCurrency(b.min)} – {b.max === Infinity ? 'and above' : formatCurrency(b.max)}</td>
-              <td>{b.max === Infinity ? ', ' : formatCurrency(taxOnBracket)}</td>
+              <td>{b.max === Infinity ? '–' : formatCurrency(taxOnBracket)}</td>
             </tr>
           );
         })}

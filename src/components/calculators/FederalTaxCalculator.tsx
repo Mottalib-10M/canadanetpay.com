@@ -5,6 +5,7 @@ import { PROVINCES, ALL_PROVINCES } from '../../data/provinces';
 import { readUrlParams, writeUrlParams } from '../../lib/url-state';
 import { formatCurrency, formatPercent } from '../../lib/format';
 import InputField from '../ui/InputField';
+import { Headline } from '../ui/Headline';
 import BreakdownBar from '../ui/BreakdownBar';
 
 export default function FederalTaxCalculator() {
@@ -49,11 +50,7 @@ export default function FederalTaxCalculator() {
       </div>
       <div className="lg:col-span-3 space-y-6">
         <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface overflow-hidden">
-          <div className="bg-brand-500 px-6 py-8 text-center">
-            <p className="text-sm font-medium text-brand-100 uppercase tracking-wider">Federal Income Tax</p>
-            <p className="mt-2 text-4xl sm:text-5xl font-bold text-white tabular-nums">{formatCurrency(result.total)}</p>
-            <p className="mt-1 text-brand-200 text-sm">Effective rate: {formatPercent(effectiveRate)}</p>
-          </div>
+          <Headline label="Federal Income Tax" value={formatCurrency(result.total)} sub={<>Effective rate: {formatPercent(effectiveRate)}</>} />
         </div>
 
         {result.bands.length > 0 && (

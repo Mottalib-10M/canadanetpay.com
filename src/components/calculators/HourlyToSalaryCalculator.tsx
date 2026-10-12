@@ -4,6 +4,7 @@ import { PROVINCES, ALL_PROVINCES } from '../../data/provinces';
 import { readUrlParams, writeUrlParams } from '../../lib/url-state';
 import { formatCurrency, formatPercent } from '../../lib/format';
 import InputField from '../ui/InputField';
+import { Headline } from '../ui/Headline';
 
 export default function HourlyToSalaryCalculator() {
   const [hourly, setHourly] = useState(25);
@@ -46,11 +47,7 @@ export default function HourlyToSalaryCalculator() {
 
       <div className="lg:col-span-3 space-y-6">
         <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface overflow-hidden">
-          <div className="bg-brand-500 px-6 py-8 text-center">
-            <p className="text-sm font-medium text-brand-100 uppercase tracking-wider">Annual Salary Equivalent</p>
-            <p className="mt-2 text-4xl sm:text-5xl font-bold text-white tabular-nums">{formatCurrency(annual)}</p>
-            <p className="mt-1 text-brand-200 text-sm">${hourly}/hr &times; {hoursPerWeek} hrs/wk &times; 52 weeks</p>
-          </div>
+          <Headline label="Annual Salary Equivalent" value={formatCurrency(annual)} sub={<>${hourly}/hr &times; {hoursPerWeek} hrs/wk &times; 52 weeks</>} />
           <div className="px-6 py-5 space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600 dark:text-gray-400">Gross Hourly</span>

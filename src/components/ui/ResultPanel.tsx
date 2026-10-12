@@ -1,5 +1,7 @@
 import { formatCurrencyLang, formatPercentLang } from '../../lib/format';
 import type { CalculationResult } from '../../lib/tax-engine-ca';
+import { useRef } from 'react';
+import { PhoneBar, useBelow } from './Headline';
 
 
 // Le panneau de résultats s'affichait en anglais sur les pages françaises :
@@ -30,10 +32,13 @@ interface Props {
 
 export default function ResultPanel({ result, lang = 'en' }: Props) {
   const t = T[lang];
+  // Chiffre clé marqué data-resultat ; barre téléphone tant qu'il est sous l'écran (RECETTE §5).
+  const head = useRef<HTMLDivElement>(null);
+  const below = useBelow(head);
   return (
     <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface overflow-hidden">
       {/* Main net amount */}
-      <div className="bg-brand-500 px-6 py-8 text-center">
+      <div ref={head} data-resultat className="bg-brand-500 px-6 py-8 text-center">
         <p className="text-sm font-medium text-brand-100 uppercase tracking-wider">{t.takeHome}</p>
         <p className="mt-2 text-4xl sm:text-5xl font-bold text-white tabular-nums result-value">
           {formatCurrencyLang(result.netAnnual, lang)}
@@ -41,6 +46,7 @@ export default function ResultPanel({ result, lang = 'en' }: Props) {
         <p className="mt-1 text-brand-200 text-sm">
           {t.perYear} &middot; {formatCurrencyLang(result.netMonthly, lang)}{t.mo} &middot; {formatCurrencyLang(result.netBiWeekly, lang)}{t.biWeekly}
         </p>
+        <PhoneBar show={below} label={t.takeHome} value={formatCurrencyLang(result.netAnnual, lang)} target={head} />
       </div>
 
       {/* Breakdown */}

@@ -34,6 +34,15 @@ const { title, description, publishDate, modifiedDate, breadcrumbs, lang = 'en',
 // seule table a tenir, pas quarante appels a modifier.
 const resumeAffiche = resume ?? RESUMES[Astro.url.pathname]
   ?? RESUMES[Astro.url.pathname.replace(/\/$/, '') + '/'];
+// Premier écran (RECETTE §5, règle du 2026-10-11) : le mini-simulateur du sujet passe juste
+// sous le titre et la réponse directe ; le résumé se replie (première phrase entière, la suite se
+// déplie sans JavaScript, un seul <p> complet dans le HTML) et la ligne d'auteur descend sous le
+// simulateur.
+const avecSimu = Astro.slots.has('simulateur');
+const phrases = resumeAffiche ? resumeAffiche.split(/(?<=[.!?])\s+(?=[A-Z0-9])/) : [];
+const resumeTete = phrases.slice(0, 1).join(' ');
+const resumeSuite = phrases.slice(1).join(' ');
+const plusLabel = lang === 'fr' ? 'Lire la suite' : 'Read more';
 
 const faqPageSchema = faqs.length
   ? {
@@ -115,18 +124,23 @@ const articleSchema = buildArticleSchema(
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:rounded focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500">{lang === 'fr' ? 'Aller au contenu principal' : 'Skip to main content'}</a>
   <Header lang={lang} />
 
-  <main id="main-content" class="flex-1 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:py-12">
-    <Breadcrumbs items={breadcrumbs} />
+  <main id="main-content" class="flex-1 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:py-8">
+    <Breadcrumbs items={breadcrumbs.map((b) => ({ name: b.label, url: b.href ?? '' }))} />
 
-    <article class="prose prose-lg dark:prose-invert max-w-none mt-6">
-      <header class="not-prose mb-8">
+    <article class="prose prose-lg dark:prose-invert max-w-none mt-4">
+      <header class={`not-prose ${avecSimu ? 'mb-3' : 'mb-8'}`}>
         <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">{title}</h1>
-        <p class="mt-3 text-lg text-gray-600 dark:text-gray-400">{description}</p>
-        <AuthorByline publishDate={publishDate} modifiedDate={modifiedDate} />
+        <p class={`mt-3 text-gray-600 dark:text-gray-400 ${avecSimu ? 'text-base sm:text-lg' : 'text-lg'}`}>{description}</p>
+        {!avecSimu && <AuthorByline publishDate={publishDate} modifiedDate={modifiedDate} />}
       </header>
-      {resumeAffiche && (
+      {resumeAffiche && (avecSimu ? (
+      <p class="not-prose mb-4 text-base leading-relaxed text-gray-700 dark:text-gray-300">
+        {resumeTete}{resumeSuite && (<><input type="checkbox" id="resume-suite" class="peer sr-only" aria-label={plusLabel} /><span class="hidden peer-checked:inline">{' '}{resumeSuite}</span>{' '}<label for="resume-suite" class="cursor-pointer whitespace-nowrap font-medium text-brand-600 underline dark:text-brand-400 peer-checked:hidden">{plusLabel}</label></>)}
+      </p>
+      ) : (
       <p class="mb-8 leading-relaxed text-gray-700 dark:text-gray-300">{resumeAffiche}</p>
-      )}
+      ))}
+      {avecSimu && (<><slot name="simulateur" /><div class="not-prose mb-8"><AuthorByline publishDate={publishDate} modifiedDate={modifiedDate} /></div></>)}
 
       <slot />
 

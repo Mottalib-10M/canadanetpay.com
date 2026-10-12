@@ -4,6 +4,7 @@ import { PROVINCES, ALL_PROVINCES } from '../../data/provinces';
 import { readUrlParams, writeUrlParams } from '../../lib/url-state';
 import { formatCurrency } from '../../lib/format';
 import InputField from '../ui/InputField';
+import { Headline } from '../ui/Headline';
 import BreakdownBar from '../ui/BreakdownBar';
 
 export default function BonusCalculator() {
@@ -49,11 +50,7 @@ export default function BonusCalculator() {
       </div>
       <div className="lg:col-span-3 space-y-6">
         <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-surface overflow-hidden">
-          <div className="bg-brand-500 px-6 py-8 text-center">
-            <p className="text-sm font-medium text-brand-100 uppercase tracking-wider">Your Bonus After Tax</p>
-            <p className="mt-2 text-4xl sm:text-5xl font-bold text-white tabular-nums">{formatCurrency(result.bonusNet)}</p>
-            <p className="mt-1 text-brand-200 text-sm">out of {formatCurrency(bonus)} gross bonus</p>
-          </div>
+          <Headline label="Your Bonus After Tax" value={formatCurrency(result.bonusNet)} sub={<>out of {formatCurrency(bonus)} gross bonus</>} />
           <div className="px-6 py-5 space-y-3">
             <div className="flex justify-between text-sm"><span className="text-gray-600 dark:text-gray-400">Gross Bonus</span><span className="font-medium tabular-nums text-gray-900 dark:text-white">{formatCurrency(bonus)}</span></div>
             <hr className="border-gray-100 dark:border-gray-700" />
