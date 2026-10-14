@@ -188,7 +188,15 @@ export default function trustKit(opts) {
             // Juste avant le premier <h1> ; si ce <h1> est dans un îlot React (<astro-island>),
             // avant l'îlot : React compare son rendu au HTML servi, on n'y insère jamais rien.
             const h1 = html.search(/<h1[\s>]/);
-            if (h1 >= 0) {
+            // Fil d'Ariane juste avant le <h1> : la date va à droite sur sa ligne fine,
+            // pas seule sur une ligne de plus (RECETTE §10.3, check-layout contrôle 13).
+            const nav = h1 >= 0 ? html.lastIndexOf('<nav aria-label="Breadcrumb"', h1) : -1;
+            const navEnd = nav >= 0 ? html.indexOf('</nav>', nav) + 6 : -1;
+            if (nav >= 0 && navEnd > 5 && navEnd < h1 && html.lastIndexOf('<astro-island', h1) < nav) {
+              const aside = top.replace('style="margin:0 0 0.5rem;', 'style="margin:0 0 0 auto;');
+              html = html.slice(0, nav) + '<div data-trust-kit style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;column-gap:1.5rem">'
+                + html.slice(nav, navEnd) + aside + '</div>' + html.slice(navEnd);
+            } else if (h1 >= 0) {
               let at = h1;
               const open = html.lastIndexOf('<astro-island', h1);
               if (open >= 0 && html.lastIndexOf('</astro-island>', h1) < open) at = open;
