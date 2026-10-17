@@ -1,22 +1,23 @@
 ---
 import GuideLayout from '../../layouts/GuideLayout.astro';
 import OfficialSources from '../../components/OfficialSources.astro';
-import { CONTACT_EMAIL, LEGAL } from '../../data/site-config';
+import { CONTACT_EMAIL, GA4_ID, LEGAL } from '../../data/site-config';
 ---
 
 <GuideLayout
   title="Privacy policy of this Canadian salary calculator 2026"
-  description="Your salary, province and pay frequency stay in your browser. Canada Net Pay sets no cookies and keeps no personal information; only site stability is checked."
+  description="Your salary, province and pay frequency stay in your browser. Visits are measured with Google Analytics (cookies, no advertising); site stability is checked cookie-free."
   publishDate="2026-06-27"
-  modifiedDate="2026-10-06"
+  modifiedDate="2026-10-17"
   breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }]}
 >
-  <p><em>Last updated: October 6, 2026</em> · <a href="/fr/confidentialite/" hreflang="fr" lang="fr">Version française</a></p>
+  <p><em>Last updated: October 17, 2026</em> · <a href="/fr/confidentialite/" hreflang="fr" lang="fr">Version française</a></p>
 
   <h2>In short</h2>
   <p>
-    Canada Net Pay is a static website published by {LEGAL.entityName}. It sets no cookies, and its
-    publisher collects and keeps no personal information about you. This policy is written with the
+    Canada Net Pay is a static website published by {LEGAL.entityName}. It measures visits with Google
+    Analytics, which sets audience measurement cookies, and shows no advertising; its publisher keeps no
+    personal information about you. This policy is written with the
     federal <em>Personal Information Protection and Electronic Documents Act</em> (PIPEDA) in mind and,
     for visitors in Quebec, the <em>Act respecting the protection of personal information in the private
     sector</em> as amended by Law 25.
@@ -31,13 +32,22 @@ import { CONTACT_EMAIL, LEGAL } from '../../data/site-config';
     address after the <code>#</code>, which browsers never send to the server.
   </p>
 
-  <h2>Cookies</h2>
+  <h2>Cookies and audience measurement (Google Analytics)</h2>
   <p>
-    No cookie is set by canadanetpay.com, by its calculators or by the stability tool described below, and
-    nothing is written to your browser’s local or session storage. There is therefore no cookie banner:
-    nothing has to be accepted or declined. The site carries no advertising and no advertising or social
-    media trackers.
+    The site uses <strong>Google Analytics 4</strong> to count visits and see which calculators and guides are
+    useful: pages viewed, referring page, visit length, device and browser type, approximate country and city.
+    To do so Google Analytics sets two cookies on your device: <code>_ga</code>, which tells visitors apart with
+    a random identifier, and <code>_ga_{GA4_ID.replace('G-', '')}</code>, which keeps the state of the visit.
+    Their lifetime is set to 13 months at most (390 days) and is not extended on each visit; Google’s default
+    is 2 years. These two are the only cookies the site uses; your browser’s local and session storage stay empty.
   </p>
+  <ul>
+    <li><strong>What Google receives</strong>: the IP address is anonymised (Google Analytics 4 neither logs nor stores it). The page address is sent without its parameters, so the figures you type never reach Google. The site carries no advertising: ad storage, ad personalisation and Google signals are switched off, and no data is shared with any advertiser.</li>
+    <li><strong>Who processes it</strong>: Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland, as a processor (Article 28 GDPR). Data may be transferred to Google LLC in the United States, under the EU–U.S. Data Privacy Framework and the European Commission’s standard contractual clauses.</li>
+    <li><strong>How long</strong>: 14 months at Google for visit-level and identifier-level data, then deletion.</li>
+    <li><strong>On what basis</strong>: the publisher’s legitimate interest in knowing which pages are used, a purpose a reasonable person would consider appropriate (PIPEDA, s. 5(3)); for visitors from the European Union, Article 6(1)(f) of the GDPR. There is no banner to click through.</li>
+    <li><strong>How to opt out</strong>: block or delete cookies in your browser settings, or install the <a href="https://tools.google.com/dlpage/gaoptout" rel="nofollow noopener" target="_blank">Google Analytics opt-out browser add-on</a>. Every calculator works the same way.</li>
+  </ul>
 
   <h2>Anonymous stability monitoring</h2>
   <p>
@@ -74,7 +84,7 @@ import { CONTACT_EMAIL, LEGAL } from '../../data/site-config';
   <p>
     Under PIPEDA and Quebec’s Law 25 you may ask what information is held about you and have it corrected.
     Since the publisher keeps none, this in practice concerns only messages you have sent us; for stability
-    monitoring you can also contact Microsoft. If you are not satisfied, you may complain to the
+    monitoring you can also contact Microsoft, and for audience measurement Google. If you are not satisfied, you may complain to the
     {LEGAL.supervisoryAuthority} (<a href={LEGAL.supervisoryAuthorityUrl} rel="nofollow noopener" target="_blank">report a concern</a>)
     or, in Quebec, to the Commission d’accès à l’information.
   </p>

@@ -1,21 +1,22 @@
 ---
 import GuideLayout from '../../../layouts/GuideLayout.astro';
-import { CONTACT_EMAIL, LEGAL } from '../../../data/site-config';
+import { CONTACT_EMAIL, GA4_ID, LEGAL } from '../../../data/site-config';
 ---
 
 <GuideLayout
   title="Confidentialité du calculateur de salaire canadien 2026"
-  description="Salaire, province, fréquence de paie : vos chiffres restent dans le navigateur. Aucun témoin ni renseignement personnel gardé ; seule la stabilité est vérifiée."
+  description="Salaire, province, fréquence de paie : vos chiffres restent dans le navigateur. Audience mesurée avec Google Analytics (témoins, aucune publicité)."
   publishDate="2026-10-06"
   lang="fr"
   breadcrumbs={[{ label: 'Accueil', href: '/fr/' }, { label: 'Confidentialité' }]}
 >
-  <p><em>Dernière mise à jour : 6 octobre 2026</em> · <a href="/privacy/" hreflang="en" lang="en">English version</a></p>
+  <p><em>Dernière mise à jour : 17 octobre 2026</em> · <a href="/privacy/" hreflang="en" lang="en">English version</a></p>
 
   <h2>L’essentiel</h2>
   <p>
-    Canada Net Pay est un site statique publié par {LEGAL.entityName}. Il ne dépose aucun témoin (cookie) et
-    son éditeur ne recueille ni ne conserve aucun renseignement personnel vous concernant. Cette politique
+    Canada Net Pay est un site statique publié par {LEGAL.entityName}. Il mesure son audience avec Google
+    Analytics, qui dépose des témoins (cookies) de mesure, sans aucune publicité ; son éditeur ne conserve
+    aucun renseignement personnel vous concernant. Cette politique
     tient compte de la <em>Loi sur la protection des renseignements personnels et les documents
     électroniques</em> (LPRPDE) et, pour les visiteurs du Québec, de la <em>Loi sur la protection des
     renseignements personnels dans le secteur privé</em> telle que modifiée par la Loi 25.
@@ -31,13 +32,23 @@ import { CONTACT_EMAIL, LEGAL } from '../../../data/site-config';
     province figurent après le <code>#</code> de l’adresse, partie que le navigateur n’envoie jamais au serveur.
   </p>
 
-  <h2>Témoins (cookies)</h2>
+  <h2>Témoins (cookies) et mesure d’audience (Google Analytics)</h2>
   <p>
-    Ni le site, ni ses calculateurs, ni l’outil de stabilité décrit plus bas ne déposent de témoin, et rien
-    n’est écrit dans le stockage local ou de session de votre navigateur. C’est pourquoi aucun bandeau ne
-    s’affiche : il n’y a rien à accepter ni à refuser. Le site ne présente aucune publicité et n’utilise
-    aucun traceur publicitaire ou de réseau social.
+    Le site utilise <strong>Google Analytics 4</strong> pour compter les visites et voir quels calculateurs et
+    guides sont utiles : pages vues, page de provenance, durée de la visite, type d’appareil et de navigateur,
+    pays et ville approximatifs. Google Analytics dépose pour cela deux témoins sur votre appareil :
+    <code>_ga</code>, qui distingue les visiteurs par un identifiant aléatoire, et
+    <code>_ga_{GA4_ID.replace('G-', '')}</code>, qui garde l’état de la visite. Leur durée est réglée à 13 mois
+    au plus (390 jours), sans prolongation à chaque visite ; celle de Google par défaut est de 2 ans. Ce sont
+    les deux seuls témoins du site ; le stockage local et de session de votre navigateur reste vide.
   </p>
+  <ul>
+    <li><strong>Ce que Google reçoit</strong> : l’adresse IP est anonymisée (Google Analytics 4 ne l’enregistre ni ne la conserve). L’adresse de la page est envoyée sans ses paramètres : les chiffres saisis ne parviennent jamais à Google. Le site ne présente aucune publicité : stockage publicitaire, personnalisation des annonces et signaux Google sont désactivés, et rien n’est partagé avec un annonceur.</li>
+    <li><strong>Qui traite ces données</strong> : Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irlande, en sous-traitant (article 28 du RGPD). Elles peuvent être transférées à Google LLC aux États-Unis, dans le cadre du Data Privacy Framework UE–États-Unis et des clauses contractuelles types de la Commission européenne.</li>
+    <li><strong>Combien de temps</strong> : 14 mois chez Google pour les données liées aux visites et aux identifiants, puis suppression.</li>
+    <li><strong>Sur quelle base</strong> : l’intérêt légitime de l’éditeur à savoir quelles pages servent, fin qu’une personne raisonnable estimerait acceptable (LPRPDE, par. 5(3)) ; pour les visiteurs de l’Union européenne, l’article 6, paragraphe 1, point f du RGPD. Il n’y a pas de bandeau.</li>
+    <li><strong>Comment vous y opposer</strong> : bloquez ou supprimez les témoins dans les réglages de votre navigateur, ou installez le <a href="https://tools.google.com/dlpage/gaoptout" rel="nofollow noopener" target="_blank">module de désactivation de Google Analytics</a>. Les calculateurs fonctionnent alors de la même façon.</li>
+  </ul>
 
   <h2>Mesure anonyme de la stabilité</h2>
   <p>
