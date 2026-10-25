@@ -1,5 +1,6 @@
 ---
 import { headerNav } from '../../data/nav';
+import { SITE_NAME, BRAND_ACCENT } from '../../data/site-config';
 
 interface Props {
   lang?: string;
@@ -9,7 +10,8 @@ const { lang = 'en' } = Astro.props;
 
 const navItems = headerNav[lang] ?? headerNav.en;
 const homeHref = lang === 'fr' ? '/fr/' : '/';
-const siteName = lang === 'fr' ? 'Salaire Net Canada' : 'Salary After Tax';
+// Nom du site = mots du domaine, le meme dans les deux langues ; BRAND_ACCENT s'affiche en couleur.
+const marque = (() => { const nom = SITE_NAME; const i = BRAND_ACCENT ? nom.lastIndexOf(BRAND_ACCENT) : -1; return i < 0 ? { avant: nom, accent: '', apres: '' } : { avant: nom.slice(0, i), accent: BRAND_ACCENT, apres: nom.slice(i + BRAND_ACCENT.length) }; })();
 const langSwitchLabel = lang === 'fr' ? 'EN' : 'FR';
 const langSwitchHref = lang === 'fr' ? '/' : '/fr/';
 const langSwitchMobileLabel = lang === 'fr' ? 'English version' : 'Version francaise';
@@ -18,9 +20,9 @@ const langSwitchMobileLabel = lang === 'fr' ? 'English version' : 'Version franc
 <header class="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-950/95 backdrop-blur-sm">
   <nav class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6" aria-label="Main navigation">
     <!-- Logo -->
-    <a href={homeHref} class="flex items-center gap-2 font-bold text-brand-600 dark:text-brand-400 text-lg">
+    <a href={homeHref} class="flex shrink-0 items-center gap-2 whitespace-nowrap font-bold text-gray-900 dark:text-white text-lg">
       <img src="/logo.svg" width="32" height="32" alt="" class="h-8 w-8">
-      <span class="hidden sm:inline">{siteName}</span>
+      <span class="hidden sm:inline">{marque.avant}{marque.accent && <span class="text-brand-600 dark:text-brand-400">{marque.accent}</span>}{marque.apres}</span>
     </a>
 
     <!-- Desktop nav -->

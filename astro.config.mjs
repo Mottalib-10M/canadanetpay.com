@@ -48,7 +48,7 @@ export default defineConfig({
     },
   },
   integrations: [
-    trustKit({ lang: 'en', siteUrl: 'https://canadanetpay.com', siteName: 'SalaryAfterTax.ca', founded: '2026-06-27', about: '/about/', method: '/methodology/' }), react(),
+    trustKit({ lang: 'en', siteUrl: 'https://canadanetpay.com', siteName: 'Canada Net Pay', founded: '2026-06-27', about: '/about/', method: '/methodology/' }), react(),
     // /embed/ : page d'iframe en noindex, hors sitemap
     sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/embed/') })],
   vite: {

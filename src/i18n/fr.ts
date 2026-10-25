@@ -3,7 +3,7 @@ import type { Translations } from './en';
 export const fr: Translations = {
   lang: 'fr',
   locale: 'fr-CA',
-  siteName: 'Salaire Après Impôt Canada',
+  siteName: 'Canada Net Pay',
   siteDescription: 'Calculez votre salaire net après impôts au Canada',
 
   nav: {

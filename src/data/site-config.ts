@@ -1,4 +1,6 @@
 export const SITE_NAME = 'Canada Net Pay';
+// Partie du nom en couleur dans l'en-tete ('' = aucune).
+export const BRAND_ACCENT = 'Net Pay';
 export const SITE_URL = 'https://canadanetpay.com';
 export const SITE_LOCALE = 'en-CA';
 export const SITE_LANGUAGE = 'en';

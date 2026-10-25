@@ -1,6 +1,6 @@
 {
   "name": "Canada Net Pay",
-  "short_name": "SalaryAfterTax",
+  "short_name": "Canada Net Pay",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
