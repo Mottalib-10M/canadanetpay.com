@@ -24,11 +24,11 @@ const faqs = [
   },
   {
     question: 'How does Employment Insurance (EI) work?',
-    answer: 'EI premiums are 1.63% of insurable earnings up to $68,900, with a maximum annual contribution of $1,123.07. Quebec residents pay a reduced EI rate (1.248%) because they also contribute to QPIP (Quebec Parental Insurance Plan) at 0.43%. EI provides temporary income support during unemployment, parental leave, or sickness.'
+    answer: 'EI premiums are 1.63% of insurable earnings up to $68,900, with a maximum annual contribution of $1,123.07. Quebec residents pay a reduced EI rate (1.30%) because they also contribute to QPIP (Quebec Parental Insurance Plan) at 0.43%. EI provides temporary income support during unemployment, parental leave, or sickness.'
   },
   {
     question: 'Which province has the lowest income tax?',
-    answer: 'Nunavut has the lowest provincial income tax rates, starting at just 4%. Alberta has a 10% flat rate on income up to $148,269, the highest threshold for a low rate. Among the larger provinces, Alberta and Ontario generally result in the lowest total tax burden for most income levels.'
+    answer: `Nunavut has the lowest provincial income tax rates, starting at just ${PROVINCES.NU.brackets[0].rate * 100}%. Alberta starts at ${PROVINCES.AB.brackets[0].rate * 100}% on income up to ${formatCurrency(PROVINCES.AB.brackets[0].max)}. Among the larger provinces, Alberta and Ontario generally result in the lowest total tax burden for most income levels.`
   },
   {
     question: 'How does Quebec tax differ from other provinces?',

@@ -2,7 +2,15 @@
  * Dynamic SEO content for salary pages, unique per salary level.
  * All text is driven by the actual calculated values for the given salary.
  */
-import type { CalculationResult } from './tax-engine-ca';
+import { calculateTakeHome, netIncome, type CalculationResult } from './tax-engine-ca';
+import { FEDERAL_BRACKETS, BASIC_PERSONAL_AMOUNT, BPA_CLAWBACK_THRESHOLD, FEDERAL_LOWEST_RATE, CANADA_EMPLOYMENT_AMOUNT } from '../data/federal-tax-2025';
+import { PROVINCES } from '../data/provinces';
+
+// Thresholds and rates read from the parameter files (RECETTE §22: no value written twice).
+const FB = FEDERAL_BRACKETS.map((b) => b.min); // 0, 58523, 117045, 181440, 258482
+const fmtRate = (r: number): string => (Math.round(r * 10000) / 100).toString() + '%';
+const ON_BRACKETS = PROVINCES.ON.brackets;
+const AB_BRACKETS = PROVINCES.AB.brackets;
 
 // ── formatters (pure, no DOM) ───────────────────────────────────────────────
 const fmtC = (v: number): string =>
@@ -200,7 +208,7 @@ export function getBandContext(
       (prev ? 'Stepping up from ' + fmtC(prev) + ' to ' + fmtC(amount) + ' adds approximately ' + fmtC((amount - prev) * (1 - onResult.marginalTaxRate / 100) / 12) + ' to your monthly net pay. ' : '') +
       'In Alberta you would keep ' + fmtC(abResult.netAnnual) +
       ' (' + fmtC(abResult.netAnnual - onResult.netAnnual) + ' more than Ontario), while Quebec deductions bring your net to ' + fmtC(qcResult.netAnnual) + '. ' +
-      'On ' + fmtAmount + ' specifically, your federal marginal rate is ' + (amount <= 58523 ? '15%' : '20.5%') +
+      'On ' + fmtAmount + ' specifically, your federal marginal rate is ' + (amount <= FB[1] ? '14%' : amount <= FB[2] ? '20.5%' : amount <= FB[3] ? '26%' : amount <= FB[4] ? '29%' : '33%') +
       ' and your CPP contribution of ' + cppOnThis + ' is calculated on ' + fmtC(amount - 3500) + ' of pensionable earnings. ' +
       'At $' + hourly + '/hour, your ' + fmtAmount + ' salary breaks down to ' + fmtC(onResult.netAnnual / 2080) + '/hour after tax in Ontario. ' +
       'Approximately 30% of full-time Canadian workers earn between $40,000 and $65,000, with ' + fmtAmount + ' representing ' + (((amount - 40000) / 25000) * 100).toFixed(0) + '% of the way through this range.'
@@ -257,7 +265,7 @@ export function getBandContext(
     ', saving you ' + fmtC(abResult.netAnnual - onResult.netAnnual) + ' per year compared to Ontario. ' +
     'Quebec has the highest total burden at ' + fmtP(qcResult.effectiveTaxRate) +
     ' (' + fmtC(qcResult.netAnnual) + ' net). ' +
-    'Your federal marginal bracket is ' + (amount < 220000 ? '29%' : '33%') +
+    'Your federal marginal bracket is ' + (amount <= FB[1] ? '14%' : amount <= FB[2] ? '20.5%' : amount <= FB[3] ? '26%' : amount <= FB[4] ? '29%' : '33%') +
     ' and combined marginal rates reach 44% in Alberta and up to 54% in Quebec and Nova Scotia. ' +
     'Every tax optimisation matters: maximising RRSP contributions, structuring compensation through a CCPC if applicable, ' +
     'and using prescribed-rate spousal loans for income splitting are all strategies worth exploring with a qualified tax advisor.'
@@ -385,19 +393,19 @@ export function buildFaqs(
     {
       question: 'What federal tax do I pay on ' + fmtAmount + ' in Canada?',
       answer:
-        'Federal income tax on ' + fmtAmount + ' totals approximately ' + fmtC(onResult.federalIncomeTax) + ' after credits (BPA: ' + fmtC(Math.round(16452 * 0.15)) + ', CPP: ' + fmtC(Math.round(onResult.cpp * 0.15)) + ', EI: ' + fmtC(Math.round(onResult.ei * 0.15)) + '). ' +
-        (amount <= 58523
-          ? 'Your ' + fmtAmount + ' taxable income sits entirely in the 14% first bracket (up to $58,523), with ' + fmtC(58523 - amount) + ' of room before hitting the 20.5% bracket.'
-          : amount <= 117045
-            ? 'On ' + fmtAmount + ', the first $58,523 is taxed at 15% and the remaining ' + fmtC(amount - 58523) + ' at 20.5%.'
-            : amount <= 181440
-              ? 'Your ' + fmtAmount + ' spans three brackets: 14% on $58,523, 20.5% on $58,523 to $117,045, and 26% on the ' + fmtC(amount - 117045) + ' above $117,045.'
-              : amount <= 220000
-                ? 'On ' + fmtAmount + ', you span four brackets up to 29% on the ' + fmtC(amount - 181440) + ' above $181,440.'
-                : 'Your ' + fmtAmount + ' hits all five brackets, with 33% on the ' + fmtC(amount - 220000) + ' above $220,000.') +
+        'Federal income tax on ' + fmtAmount + ' totals approximately ' + fmtC(onResult.federalIncomeTax) + ' after credits at 14% (BPA: ' + fmtC(Math.round(BASIC_PERSONAL_AMOUNT * FEDERAL_LOWEST_RATE)) + ', base CPP: ' + fmtC(Math.round(onResult.cpp * (0.0495 / 0.0595) * FEDERAL_LOWEST_RATE)) + ', EI: ' + fmtC(Math.round(onResult.ei * FEDERAL_LOWEST_RATE)) + ', Canada employment amount: ' + fmtC(Math.round(Math.min(amount, CANADA_EMPLOYMENT_AMOUNT) * FEDERAL_LOWEST_RATE)) + '). ' +
+        (amount <= FB[1]
+          ? 'Your ' + fmtAmount + ' taxable income sits entirely in the 14% first bracket (up to ' + fmtC(FB[1]) + '), with ' + fmtC(FB[1] - amount) + ' of room before hitting the 20.5% bracket.'
+          : amount <= FB[2]
+            ? 'On ' + fmtAmount + ', the first ' + fmtC(FB[1]) + ' is taxed at 14% and the remaining ' + fmtC(amount - FB[1]) + ' at 20.5%.'
+            : amount <= FB[3]
+              ? 'Your ' + fmtAmount + ' spans three brackets: 14% on ' + fmtC(FB[1]) + ', 20.5% on ' + fmtC(FB[1]) + ' to ' + fmtC(FB[2]) + ', and 26% on the ' + fmtC(amount - FB[2]) + ' above ' + fmtC(FB[2]) + '.'
+              : amount <= FB[4]
+                ? 'On ' + fmtAmount + ', you span four brackets up to 29% on the ' + fmtC(amount - FB[3]) + ' above ' + fmtC(FB[3]) + '.'
+                : 'Your ' + fmtAmount + ' hits all five brackets, with 33% on the ' + fmtC(amount - FB[4]) + ' above ' + fmtC(FB[4]) + '.') +
         ' For a Quebec resident earning ' + fmtAmount + ', the 16.5% abatement reduces federal tax by approximately ' + fmtC(Math.round(onResult.federalIncomeTax * 0.165)) + '. ' +
         'Your ' + fmtAmount + ' combined marginal rate (federal + Ontario) is ' + fmtP(onResult.marginalTaxRate) + '. ' +
-        (next ? 'At ' + fmtC(next) + ', federal tax rises by approximately ' + fmtC(Math.round((next - amount) * (amount < 58523 ? 0.15 : amount < 117045 ? 0.205 : amount < 181440 ? 0.26 : amount < 220000 ? 0.29 : 0.33))) + '.' : ''),
+        (next ? 'At ' + fmtC(next) + ', federal tax rises by approximately ' + fmtC(Math.round((next - amount) * (amount < FB[1] ? 0.14 : amount < FB[2] ? 0.205 : amount < FB[3] ? 0.26 : amount < FB[4] ? 0.29 : 0.33))) + '.' : ''),
     },
     {
       question: 'How can I reduce my taxes on a ' + fmtAmount + ' salary in Canada?',
@@ -452,7 +460,7 @@ export function getProgressionContext(
     'At ' + fmtC(amount) + ', an Ontario-to-Alberta move increases take-home by ' + fmtC(abSavings) + '/year (' + fmtC(abMonthly) + '/month), equivalent to a ' + fmtC(Math.round(abSavings / (1 - marginalRate / 100))) + ' pre-tax raise without changing jobs. ' +
     'Moving from Ontario to Quebec at this same ' + fmtC(amount) + ' salary costs ' + fmtC(qcCost) + ' annually (' + fmtC(qcMonthly) + '/month) due to higher QPP, QPIP, and provincial rates. ' +
     'Over 5 years at ' + fmtC(amount) + ', the Alberta advantage accumulates to ' + fmtC(abSavings * 5) + ' in additional take-home (before investment returns). ' +
-    'Alberta\u2019s flat 10% rate means your ' + fmtC(amount) + ' salary faces a provincial tax of just ' + fmtC(abResult.provincialTax) + ', compared to ' + fmtC(onResult.provincialTax) + ' in Ontario and ' + fmtC(qcResult.provincialTax) + ' in Quebec. ' +
+    'Alberta\u2019s rates, starting at ' + fmtRate(AB_BRACKETS[0].rate) + ', mean your ' + fmtC(amount) + ' salary faces a provincial tax of just ' + fmtC(abResult.provincialTax) + ', compared to ' + fmtC(onResult.provincialTax) + ' in Ontario and ' + fmtC(qcResult.provincialTax) + ' in Quebec. ' +
     'Additionally, Alberta\u2019s 0% provincial sales tax saves roughly ' + fmtC(Math.round(onResult.netAnnual * 0.5 * 0.08)) + ' per year on taxable purchases compared to Ontario\u2019s 8% provincial portion of HST.';
 
   const rrspImpact =
@@ -492,10 +500,10 @@ export function getEducationalContent(
   const { prev, next } = getAdjacentAmounts(amount);
 
   // Determine which brackets this salary spans
-  const bracketCount = amount <= 58523 ? 1 : amount <= 117045 ? 2 : amount <= 181440 ? 3 : amount <= 220000 ? 4 : 5;
+  const bracketCount = amount <= FB[1] ? 1 : amount <= FB[2] ? 2 : amount <= FB[3] ? 3 : amount <= FB[4] ? 4 : 5;
 
-  const roomToNextBracket = amount <= 58523 ? 58523 - amount : amount <= 117045 ? 117045 - amount : amount <= 181440 ? 181440 - amount : amount <= 220000 ? 220000 - amount : 0;
-  const nextBracketRate = amount <= 58523 ? '20.5%' : amount <= 117045 ? '26%' : amount <= 181440 ? '29%' : amount <= 220000 ? '33%' : '33%';
+  const roomToNextBracket = bracketCount < 5 ? FB[bracketCount] - amount : 0;
+  const nextBracketRate = amount <= FB[1] ? '20.5%' : amount <= FB[2] ? '26%' : amount <= FB[3] ? '29%' : '33%';
 
   const federalBrackets =
     'On ' + fmtAmount + ', Canada\u2019s progressive system taxes your income through ' + bracketCount + ' federal bracket' + (bracketCount > 1 ? 's' : '') + '. ' +
@@ -507,24 +515,29 @@ export function getEducationalContent(
           ? fmtAmount + ' spans three brackets: 14% on $58,523, 20.5% on $58,523, and 26% on the ' + fmtC(amount - 117045) + ' above $117,045. The 26% bracket applies to ' + ((amount - 117045) / amount * 100).toFixed(1) + '% of your income. '
           : bracketCount === 4
             ? 'On ' + fmtAmount + ': brackets of 14%, 20.5%, 26%, and 29% apply, with the 29% rate hitting the ' + fmtC(amount - 181440) + ' above $181,440 (' + ((amount - 181440) / amount * 100).toFixed(1) + '% of your salary). '
-            : fmtAmount + ' reaches all five brackets. The 33% top rate applies to ' + fmtC(amount - 220000) + ' (' + ((amount - 220000) / amount * 100).toFixed(1) + '% of income), producing ' + fmtC(Math.round((amount - 220000) * 0.33)) + ' in top-bracket tax alone. ') +
-    'The $16,452 Basic Personal Amount credit (' + fmtC(Math.round(16452 * 0.14)) + ' at 14%) shelters early income from tax on your ' + fmtAmount + ' salary. ' +
-    (amount > 177882
-      ? 'At ' + fmtAmount + ', your BPA is partially clawed back since income exceeds $177,882. '
-      : 'Your ' + fmtAmount + ' income qualifies for the full BPA\u2014no clawback applies below $177,882. ') +
+            : fmtAmount + ' reaches all five brackets. The 33% top rate applies to ' + fmtC(amount - FB[4]) + ' (' + ((amount - FB[4]) / amount * 100).toFixed(1) + '% of income), producing ' + fmtC(Math.round((amount - FB[4]) * 0.33)) + ' in top-bracket tax alone. ') +
+    'The ' + fmtC(BASIC_PERSONAL_AMOUNT) + ' Basic Personal Amount credit (' + fmtC(Math.round(BASIC_PERSONAL_AMOUNT * FEDERAL_LOWEST_RATE)) + ' at 14%) shelters early income from tax on your ' + fmtAmount + ' salary. ' +
+    (netIncome(amount, 'ON') > BPA_CLAWBACK_THRESHOLD
+      ? 'At ' + fmtAmount + ', your BPA is partially clawed back since net income exceeds ' + fmtC(BPA_CLAWBACK_THRESHOLD) + '. '
+      : 'Your ' + fmtAmount + ' income qualifies for the full BPA\u2014no clawback applies below ' + fmtC(BPA_CLAWBACK_THRESHOLD) + ' of net income. ') +
     'RRSP planning: sheltering $5,000 from your ' + fmtAmount + ' income saves ' + fmtC(Math.round(5000 * marginalRate / 100)) + ' in combined tax; the full ' + fmtC(rrspRoom) + ' RRSP room saves ' + fmtC(Math.round(rrspRoom * marginalRate / 100)) + '.';
 
-  const grossTaxBeforeCredits = onResult.federalIncomeTax + Math.round(16452 * 0.15) + Math.round((onResult.cpp + onResult.cpp2) * 0.15) + Math.round(onResult.ei * 0.15);
-  const totalCredits = Math.round(16452 * 0.15) + Math.round((onResult.cpp + onResult.cpp2) * 0.15) + Math.round(onResult.ei * 0.15);
+  // Credits as applied by the engine (14%): BPA, base CPP (4.95/5.95), EI, Canada employment amount
+  const bpaCredit = Math.round(BASIC_PERSONAL_AMOUNT * FEDERAL_LOWEST_RATE);
+  const cppCredit = Math.round(onResult.cpp * (0.0495 / 0.0595) * FEDERAL_LOWEST_RATE);
+  const eiCredit = Math.round(onResult.ei * FEDERAL_LOWEST_RATE);
+  const ceaCredit = Math.round(Math.min(amount, CANADA_EMPLOYMENT_AMOUNT) * FEDERAL_LOWEST_RATE);
+  const totalCredits = bpaCredit + cppCredit + eiCredit + ceaCredit;
+  const grossTaxBeforeCredits = onResult.federalIncomeTax + totalCredits;
   const fedEffRate = (onResult.federalIncomeTax / amount * 100).toFixed(1);
 
   const federalCalculation =
     'Calculating federal tax on ' + fmtAmount + ': with no RRSP deduction, the full ' + fmtAmount + ' is taxable. ' +
     'Gross federal tax on ' + fmtAmount + ' (before credits) is approximately ' + fmtC(grossTaxBeforeCredits) + '. ' +
-    'Credits reduce this by ' + fmtC(totalCredits) + ' (BPA: ' + fmtC(Math.round(16452 * 0.15)) + ' + CPP: ' + fmtC(Math.round((onResult.cpp + onResult.cpp2) * 0.15)) + ' + EI: ' + fmtC(Math.round(onResult.ei * 0.15)) + '), leaving net federal tax of ' + fmtC(onResult.federalIncomeTax) + ' on ' + fmtAmount + '. ' +
+    'Credits reduce this by ' + fmtC(totalCredits) + ' (BPA: ' + fmtC(bpaCredit) + ' + base CPP: ' + fmtC(cppCredit) + ' + EI: ' + fmtC(eiCredit) + ' + Canada employment amount: ' + fmtC(ceaCredit) + '), leaving net federal tax of ' + fmtC(onResult.federalIncomeTax) + ' on ' + fmtAmount + '. ' +
     'That ' + fmtC(onResult.federalIncomeTax) + ' represents a ' + fedEffRate + '% effective federal rate on your ' + fmtAmount + ' gross. ' +
-    'If you contributed ' + fmtC(rrspRoom) + ' to your RRSP, taxable income drops to ' + fmtC(amount - rrspRoom) + ' and federal tax falls by approximately ' + fmtC(Math.round(rrspRoom * (amount < 58523 ? 0.15 : amount < 117045 ? 0.205 : 0.26))) + '. ' +
-    (next ? 'Earning ' + fmtC(next) + ' instead of ' + fmtAmount + ' adds approximately ' + fmtC(Math.round((next - amount) * (amount < 58523 ? 0.15 : amount < 117045 ? 0.205 : amount < 181440 ? 0.26 : amount < 220000 ? 0.29 : 0.33))) + ' in federal tax on the extra ' + fmtC(next - amount) + '. ' : '');
+    'If you contributed ' + fmtC(rrspRoom) + ' to your RRSP, taxable income drops to ' + fmtC(amount - rrspRoom) + ' and federal tax falls by approximately ' + fmtC(Math.round(rrspRoom * (amount < FB[1] ? 0.14 : amount < FB[2] ? 0.205 : 0.26))) + '. ' +
+    (next ? 'Earning ' + fmtC(next) + ' instead of ' + fmtAmount + ' adds approximately ' + fmtC(Math.round((next - amount) * (amount < FB[1] ? 0.14 : amount < FB[2] ? 0.205 : amount < FB[3] ? 0.26 : amount < FB[4] ? 0.29 : 0.33))) + ' in federal tax on the extra ' + fmtC(next - amount) + '. ' : '');
 
   const onProvPct = (onResult.provincialTax / amount * 100).toFixed(1);
   const abProvPct = (abResult.provincialTax / amount * 100).toFixed(1);
@@ -533,12 +546,12 @@ export function getEducationalContent(
 
   const provincialTax =
     'On ' + fmtAmount + ', provincial income tax in Ontario totals ' + fmtC(onResult.provincialTax) + ' (' + onProvPct + '% of gross), calculated across ' +
-    (amount <= 51446 ? 'the first bracket at 5.05%' : amount <= 102894 ? 'two brackets (5.05% and 9.15%)' : amount <= 150000 ? 'three brackets (5.05%, 9.15%, and 11.16%)' : amount <= 220000 ? 'four brackets (5.05%, 9.15%, 11.16%, and 12.16%)' : 'all five brackets up to 13.16%') + '. ' +
+    (() => { const n = ON_BRACKETS.filter((b) => amount > b.min).length; const rates = ON_BRACKETS.slice(0, n).map((b) => fmtRate(b.rate)); return n === 1 ? 'the first bracket at ' + rates[0] : n + ' brackets (' + rates.join(', ') + ')'; })() + '. ' +
     (onResult.ontarioHealthPremium > 0 ? 'Ontario\u2019s Health Premium adds another ' + fmtC(onResult.ontarioHealthPremium) + ' to your ' + fmtAmount + ' tax bill. ' : '') +
-    'Alberta charges ' + fmtC(abResult.provincialTax) + ' (' + abProvPct + '% of your ' + fmtAmount + ' gross) under its flat 10% structure\u2014saving you ' + fmtC(onResult.provincialTax - abResult.provincialTax) + ' versus Ontario. ' +
+    'Alberta charges ' + fmtC(abResult.provincialTax) + ' (' + abProvPct + '% of your ' + fmtAmount + ' gross) under brackets starting at ' + fmtRate(AB_BRACKETS[0].rate) + '\u2014saving you ' + fmtC(onResult.provincialTax - abResult.provincialTax) + ' versus Ontario. ' +
     'Quebec\u2019s progressive brackets produce ' + fmtC(qcResult.provincialTax) + ' (' + qcProvPct + '%) on ' + fmtAmount + ', though the 16.5% federal abatement partially offsets this. ' +
     'The Alberta-to-Quebec provincial tax gap on your specific ' + fmtAmount + ' salary is ' + fmtC(provDiff) + '/year (' + fmtC(Math.round(provDiff / 12)) + '/month)\u2014equivalent to a ' + fmtC(Math.round(provDiff / (1 - marginalRate / 100))) + ' pre-tax raise. ' +
-    'British Columbia would charge approximately ' + fmtP(amount <= 47937 ? 5.06 : amount <= 95875 ? 7.7 : amount <= 110076 ? 10.5 : 12.29) + ' effective provincial rate on ' + fmtAmount + ', while Manitoba\u2019s system (10.8% to 17.4%) falls between Ontario and Quebec.';
+    'British Columbia would charge approximately ' + fmtP(calculateTakeHome({ grossAnnual: amount, provinceCode: 'BC', payFrequency: 'annual', _skipMarginal: true }).provincialTax / amount * 100) + ' effective provincial rate on ' + fmtAmount + ', while Manitoba\u2019s system (10.8% to 17.4%) falls between Ontario and Quebec.';
 
   const cppContrib = onResult.cpp;
   const cpp2Contrib = onResult.cpp2;
@@ -565,8 +578,8 @@ export function getEducationalContent(
     (reachedEiMax
       ? 'EI on ' + fmtAmount + ': capped at $1,123 since your salary exceeds the $68,900 insurable earnings maximum. '
       : 'EI on ' + fmtAmount + ': ' + fmtC(eiContrib) + ' (1.63% of your full ' + fmtAmount + ' salary, which is below the $68,900 maximum). ') +
-    'A Quebec resident earning ' + fmtAmount + ' would pay QPP at 6.3% plus QPIP of approximately ' + fmtC(Math.round(qpipEstimate)) + ', offset by the lower 1.248% EI rate. ' +
-    'On ' + fmtAmount + ', these mandatory deductions reduce your federal tax through credits: CPP credit of ' + fmtC(Math.round((cppContrib + cpp2Contrib) * 0.15)) + ' plus EI credit of ' + fmtC(Math.round(eiContrib * 0.15)) + ' (both at the 14% credit rate), saving you ' + fmtC(Math.round((cppContrib + cpp2Contrib + eiContrib) * 0.15)) + ' total.';
+    'A Quebec resident earning ' + fmtAmount + ' would pay QPP at 6.3% plus QPIP of approximately ' + fmtC(Math.round(qpipEstimate)) + ', offset by the lower 1.30% EI rate. ' +
+    'On ' + fmtAmount + ', these mandatory deductions reduce your federal tax: the base CPP gives a credit of ' + fmtC(Math.round(cppContrib * (0.0495 / 0.0595) * FEDERAL_LOWEST_RATE)) + ' and EI a credit of ' + fmtC(Math.round(eiContrib * FEDERAL_LOWEST_RATE)) + ' (both at the 14% credit rate), while the enhanced CPP and CPP2 (' + fmtC(Math.round(cppContrib / 0.0595 * 0.01 + cpp2Contrib)) + ') are deducted from taxable income.';
 
   const tfsaGrowth7yr = Math.round(7000 * 9.49); // 7% for 7 years future value of annuity
   const tfsaGrowth10yr = Math.round(7000 * 14.78); // 7% for 10 years

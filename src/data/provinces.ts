@@ -1,6 +1,8 @@
 /**
  * Canadian Provincial / Territorial Tax Data for 2026
- * Sources: CRA T4127, 122nd edition (effective January 1, 2026); Revenu Québec for Quebec.
+ * Sources: CRA T4127, 122nd edition (effective January 1, 2026) and 123rd edition (effective July 1, 2026),
+ * Tables 8.1 and 8.2, read 2026-10-31; Finances Québec / Revenu Québec for Quebec.
+ * Annual amounts are used (the July edition prorates mid-year changes for payroll only).
  */
 
 export interface TaxBracket {
@@ -21,6 +23,12 @@ export interface ProvinceConfig {
   isQuebec?: boolean;
   /** Additional health premium (Ontario) */
   healthPremium?: boolean;
+  /** Low-income tax reduction (BC style): max amount, phased out at `rate` above `threshold` of net income */
+  lowIncomeReduction?: { max: number; threshold: number; rate: number };
+  /** Ontario tax reduction: basic amount (S2), reduction = 2 x S2 - provincial tax, capped at the tax */
+  ontarioTaxReduction?: number;
+  /** Territorial Canada employment amount credit (Yukon) */
+  employmentAmount?: number;
   notes?: string;
 }
 
@@ -45,7 +53,8 @@ export const PROVINCES: Record<string, ProvinceConfig> = {
     abbreviation: 'BC',
     slug: 'british-columbia',
     brackets: [
-      { min: 0, max: 50363, rate: 0.0506 },
+      // 2026 annual rate 5.60% (BC Budget 2026); T4127 123rd ed. prorates 6.14% for July-December payrolls
+      { min: 0, max: 50363, rate: 0.056 },
       { min: 50363, max: 100728, rate: 0.077 },
       { min: 100728, max: 115648, rate: 0.105 },
       { min: 115648, max: 140430, rate: 0.1229 },
@@ -54,6 +63,8 @@ export const PROVINCES: Record<string, ProvinceConfig> = {
       { min: 265545, max: Infinity, rate: 0.205 },
     ],
     basicPersonalAmount: 13216,
+    // BC tax reduction 2026: $690 annual (T4127 123rd ed., Option 2), phased out at 3.56% above $25,570
+    lowIncomeReduction: { max: 690, threshold: 25570, rate: 0.0356 },
   },
   MB: {
     name: 'Manitoba',
@@ -92,7 +103,8 @@ export const PROVINCES: Record<string, ProvinceConfig> = {
       { min: 570638, max: 1141275, rate: 0.213 },
       { min: 1141275, max: Infinity, rate: 0.218 },
     ],
-    basicPersonalAmount: 11188,
+    // BPA raised to $13,094 effective January 1, 2026 (announced April 29, 2026; T4127 123rd ed.)
+    basicPersonalAmount: 13094,
   },
   NS: {
     name: 'Nova Scotia',
@@ -145,6 +157,8 @@ export const PROVINCES: Record<string, ProvinceConfig> = {
     basicPersonalAmount: 12989,
     surtax: { threshold1: 5818, rate1: 0.20, threshold2: 7446, rate2: 0.36 },
     healthPremium: true,
+    // Ontario tax reduction basic amount 2026 (T4127 Table 8.2, S2)
+    ontarioTaxReduction: 300,
     notes: 'Ontario levies an additional Health Premium on incomes above $20,000 and a surtax on provincial tax above certain thresholds.',
   },
   PE: {
@@ -156,7 +170,9 @@ export const PROVINCES: Record<string, ProvinceConfig> = {
       { min: 33928, max: 65820, rate: 0.1347 },
       { min: 65820, max: 106890, rate: 0.166 },
       { min: 106890, max: 142520, rate: 0.1762 },
-      { min: 142520, max: Infinity, rate: 0.19 },
+      { min: 142520, max: 200000, rate: 0.19 },
+      // New bracket for 2026 (announced April 14, 2026; T4127 123rd ed.): 20% above $200,000
+      { min: 200000, max: Infinity, rate: 0.20 },
     ],
     basicPersonalAmount: 15000,
   },
@@ -197,6 +213,7 @@ export const PROVINCES: Record<string, ProvinceConfig> = {
       { min: 500000, max: Infinity, rate: 0.15 },
     ],
     basicPersonalAmount: 16452,
+    employmentAmount: 1501,
   },
 };
 

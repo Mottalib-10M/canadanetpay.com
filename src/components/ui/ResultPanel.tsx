@@ -13,7 +13,7 @@ const T = {
     cpp: 'CPP (Canada Pension Plan)', ei: 'EI (Employment Insurance)',
     qpip: 'QPIP (Parental Insurance)', provincial: (p: string) => `${p} Provincial Tax`,
     ohp: 'Ontario Health Premium', total: 'Total Deductions', net: 'Net Annual Salary',
-    effective: 'Effective Tax Rate', marginal: 'Marginal Tax Rate',
+    effective: 'Effective Tax Rate', marginal: 'Marginal Tax Rate', qpp2: 'QPP2', cpp2: 'CPP2',
   },
   fr: {
     takeHome: 'Votre salaire net', perYear: 'par an', mo: '/mois', biWeekly: '/quinzaine',
@@ -21,9 +21,18 @@ const T = {
     cpp: 'RPC (Régime de pensions du Canada)', ei: 'AE (assurance-emploi)',
     qpip: 'RQAP (assurance parentale)', provincial: (p: string) => `Impôt provincial, ${p}`,
     ohp: 'Contribution-santé de l\'Ontario', total: 'Total des retenues', net: 'Salaire net annuel',
-    effective: "Taux d'imposition effectif", marginal: "Taux d'imposition marginal",
+    effective: "Taux d'imposition effectif", marginal: "Taux d'imposition marginal", qpp2: 'RRQ supplémentaire (2e palier)', cpp2: 'RPC supplémentaire (2e palier)',
   },
 } as const;
+
+/** Noms français des provinces et territoires (audit du 2026-10-28 : « Quebec » sans accent sur la page française) */
+export const PROVINCE_FR: Record<string, string> = {
+  'Alberta': 'Alberta', 'British Columbia': 'Colombie-Britannique', 'Manitoba': 'Manitoba',
+  'New Brunswick': 'Nouveau-Brunswick', 'Newfoundland and Labrador': 'Terre-Neuve-et-Labrador',
+  'Nova Scotia': 'Nouvelle-Écosse', 'Northwest Territories': 'Territoires du Nord-Ouest', 'Nunavut': 'Nunavut',
+  'Ontario': 'Ontario', 'Prince Edward Island': 'Île-du-Prince-Édouard', 'Quebec': 'Québec',
+  'Saskatchewan': 'Saskatchewan', 'Yukon': 'Yukon',
+};
 
 interface Props {
   result: CalculationResult;
@@ -54,15 +63,15 @@ export default function ResultPanel({ result, lang = 'en' }: Props) {
         <Row label={t.gross} value={result.grossAnnual} bold lang={lang} />
         <Divider />
         <Row label={t.federal} value={-result.federalIncomeTax} negative lang={lang} />
-        <Row label={result.qpip > 0 ? t.qpp : t.cpp} value={-result.cpp} negative />
+        <Row label={result.qpip > 0 ? t.qpp : t.cpp} value={-result.cpp} negative lang={lang} />
         {result.cpp2 > 0 && (
-          <Row label={result.qpip > 0 ? 'QPP2' : 'CPP2'} value={-result.cpp2} negative />
+          <Row label={result.qpip > 0 ? t.qpp2 : t.cpp2} value={-result.cpp2} negative lang={lang} />
         )}
         <Row label={t.ei} value={-result.ei} negative lang={lang} />
         {result.qpip > 0 && (
           <Row label={t.qpip} value={-result.qpip} negative lang={lang} />
         )}
-        <Row label={t.provincial(result.provinceName)} value={-result.provincialTax} negative lang={lang} />
+        <Row label={t.provincial(lang === 'fr' ? (PROVINCE_FR[result.provinceName] ?? result.provinceName) : result.provinceName)} value={-result.provincialTax} negative lang={lang} />
         {result.ontarioHealthPremium > 0 && (
           <Row label={t.ohp} value={-result.ontarioHealthPremium} negative lang={lang} />
         )}

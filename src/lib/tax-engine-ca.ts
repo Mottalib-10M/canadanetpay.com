@@ -35,6 +35,11 @@ import {
   EI_RATE_QUEBEC,
   EI_MAX_CONTRIBUTION_QUEBEC,
   QUEBEC_ABATEMENT,
+  CANADA_EMPLOYMENT_AMOUNT,
+  CPP_BASE_RATE,
+  QPP_BASE_RATE,
+  QC_WORKER_DEDUCTION_RATE,
+  QC_WORKER_DEDUCTION_MAX,
   PAY_PERIODS,
   type PayFrequency,
   type TaxBracket,
@@ -110,12 +115,32 @@ function calcBrackets(taxableIncome: number, brackets: TaxBracket[]): { total: n
   return { total: round2(total), bands };
 }
 
+// ─── Net income (line 23600) ─────────────────────────────────────────────────
+// Gross minus RRSP, minus the additional CPP/QPP contributions (first additional part and
+// CPP2/QPP2), which are deducted from income rather than credited (T4127, factor F5).
+// Correction 2026-10-31 (audit of 2026-10-28): these were not deducted.
+
+function contributionSplit(grossAnnual: number, isQuebec: boolean) {
+  const pension = calculateCPPContribution(grossAnnual, isQuebec);
+  const fullRate = isQuebec ? QPP_RATE : CPP_RATE;
+  const baseRate = isQuebec ? QPP_BASE_RATE : CPP_BASE_RATE;
+  const base = round2(pension.cpp * (baseRate / fullRate));
+  const enhanced = round2(pension.cpp - base + pension.cpp2);
+  const ei = calculateEIContribution(grossAnnual, isQuebec);
+  return { base, enhanced, ei: ei.ei, qpip: ei.qpip };
+}
+
+export function netIncome(grossAnnual: number, provinceCode: string, rrspContribution: number = 0): number {
+  const isQuebec = PROVINCES[provinceCode]?.isQuebec ?? false;
+  return round2(Math.max(0, grossAnnual - rrspContribution - contributionSplit(grossAnnual, isQuebec).enhanced));
+}
+
 // ─── Basic Personal Amount (with high-income clawback) ──────────────────────
 
-function getEffectiveBPA(grossAnnual: number): number {
-  if (grossAnnual <= BPA_CLAWBACK_THRESHOLD) return BASIC_PERSONAL_AMOUNT;
-  if (grossAnnual >= BPA_CLAWBACK_FULL) return BPA_MINIMUM;
-  const reduction = ((grossAnnual - BPA_CLAWBACK_THRESHOLD) / (BPA_CLAWBACK_FULL - BPA_CLAWBACK_THRESHOLD)) * (BASIC_PERSONAL_AMOUNT - BPA_MINIMUM);
+function getEffectiveBPA(netInc: number): number {
+  if (netInc <= BPA_CLAWBACK_THRESHOLD) return BASIC_PERSONAL_AMOUNT;
+  if (netInc >= BPA_CLAWBACK_FULL) return BPA_MINIMUM;
+  const reduction = ((netInc - BPA_CLAWBACK_THRESHOLD) / (BPA_CLAWBACK_FULL - BPA_CLAWBACK_THRESHOLD)) * (BASIC_PERSONAL_AMOUNT - BPA_MINIMUM);
   return round2(BASIC_PERSONAL_AMOUNT - reduction);
 }
 
@@ -126,22 +151,19 @@ export function calculateFederalTax(
   provinceCode: string,
   rrspContribution: number = 0,
 ): { total: number; taxableIncome: number; bands: TaxBandBreakdown[] } {
-  const taxableIncome = Math.max(0, grossAnnual - rrspContribution);
-  const { total: grossTax, bands } = calcBrackets(taxableIncome, FEDERAL_BRACKETS);
-
-  // BPA non-refundable credit at the lowest federal rate (14% in 2026)
-  const bpa = getEffectiveBPA(grossAnnual);
-  const bpaCredit = round2(bpa * FEDERAL_LOWEST_RATE);
-
-  // CPP/QPP credit
   const province = PROVINCES[provinceCode];
   const isQuebec = province?.isQuebec ?? false;
-  const cppCredit = round2(calculateCPPContribution(grossAnnual, isQuebec).total * FEDERAL_LOWEST_RATE);
+  const split = contributionSplit(grossAnnual, isQuebec);
+  const taxableIncome = netIncome(grossAnnual, provinceCode, rrspContribution);
+  const { total: grossTax, bands } = calcBrackets(taxableIncome, FEDERAL_BRACKETS);
 
-  // EI credit
-  const eiCredit = round2(calculateEIContribution(grossAnnual, isQuebec).ei * FEDERAL_LOWEST_RATE);
-
-  let federalTax = Math.max(0, grossTax - bpaCredit - cppCredit - eiCredit);
+  // Non-refundable credits at the lowest federal rate (14% in 2026):
+  // basic personal amount, base CPP/QPP, EI and QPIP premiums, Canada employment amount
+  const credits =
+    getEffectiveBPA(taxableIncome) +
+    split.base + split.ei + split.qpip +
+    Math.min(grossAnnual, CANADA_EMPLOYMENT_AMOUNT);
+  let federalTax = Math.max(0, grossTax - round2(credits * FEDERAL_LOWEST_RATE));
 
   // Quebec abatement
   if (isQuebec) {
@@ -201,15 +223,28 @@ export function calculateEIContribution(grossAnnual: number, isQuebec: boolean =
 export function calculateProvincialTax(grossAnnual: number, provinceCode: string, rrspContribution: number = 0): number {
   const province = PROVINCES[provinceCode];
   if (!province) return 0;
+  const isQuebec = province.isQuebec ?? false;
+  const split = contributionSplit(grossAnnual, isQuebec);
+  const lowestRate = province.brackets[0].rate;
 
-  const taxableIncome = Math.max(0, grossAnnual - rrspContribution);
+  if (isQuebec) {
+    // Quebec: deduction for workers (6%, max $1,450 in 2026) and additional QPP deducted from income;
+    // basic personal amount credited at 14%. No credit for QPP, EI or QPIP in Quebec.
+    const workerDeduction = Math.min(grossAnnual * QC_WORKER_DEDUCTION_RATE, QC_WORKER_DEDUCTION_MAX);
+    const taxable = Math.max(0, netIncome(grossAnnual, provinceCode, rrspContribution) - workerDeduction);
+    const { total } = calcBrackets(taxable, province.brackets);
+    return round2(Math.max(0, total - province.basicPersonalAmount * lowestRate));
+  }
+
+  const taxableIncome = netIncome(grossAnnual, provinceCode, rrspContribution);
   const { total: grossProvTax } = calcBrackets(taxableIncome, province.brackets);
 
-  // Provincial BPA credit at lowest bracket rate
-  const lowestRate = province.brackets[0].rate;
-  const bpaCredit = round2(province.basicPersonalAmount * lowestRate);
-
-  let provTax = Math.max(0, grossProvTax - bpaCredit);
+  // Credits at the lowest provincial rate: basic personal amount, base CPP and EI (T4127 K1P, K2P),
+  // territorial employment amount where it exists (Yukon)
+  const credits =
+    province.basicPersonalAmount + split.base + split.ei +
+    (province.employmentAmount ? Math.min(grossAnnual, province.employmentAmount) : 0);
+  let provTax = Math.max(0, grossProvTax - round2(credits * lowestRate));
 
   // Ontario surtax
   if (province.surtax) {
@@ -222,6 +257,19 @@ export function calculateProvincialTax(grossAnnual: number, provinceCode: string
       surtax += (provTax - threshold2) * rate2;
     }
     provTax = round2(provTax + surtax);
+  }
+
+  // Ontario tax reduction: lesser of the tax and (2 x basic amount - tax)
+  if (province.ontarioTaxReduction) {
+    const reduction = Math.max(0, Math.min(provTax, 2 * province.ontarioTaxReduction - provTax));
+    provTax = round2(provTax - reduction);
+  }
+
+  // BC-style low-income tax reduction, phased out above a net-income threshold
+  if (province.lowIncomeReduction) {
+    const { max, threshold, rate } = province.lowIncomeReduction;
+    const reduction = Math.max(0, max - Math.max(0, taxableIncome - threshold) * rate);
+    provTax = round2(Math.max(0, provTax - reduction));
   }
 
   return round2(provTax);
@@ -269,7 +317,7 @@ export function calculateTakeHome(input: CalculatorInput): CalculationResult {
   const provincialTax = calculateProvincialTax(grossAnnual, provinceCode, rrspContribution);
 
   // Ontario Health Premium
-  const ontarioHP = province?.healthPremium ? calculateOntarioHealthPremium(grossAnnual) : 0;
+  const ontarioHP = province?.healthPremium ? calculateOntarioHealthPremium(federal.taxableIncome) : 0;
 
   // Total deductions
   const totalDeductions = round2(
