@@ -27,9 +27,13 @@ interface Props {
    * promettre a Google un texte absent de la page (RECETTE §7).
    */
   faqs?: { question: string; answer: string }[];
+  /** Texte affiché sous le H1 quand il diffère de la meta description (terme-clé, §13). */
+  intro?: string;
+  /** Titre de la section FAQ, par défaut « Frequently asked questions ». */
+  faqTitle?: string;
 }
 
-const { title, description, publishDate, modifiedDate, breadcrumbs, lang = 'en', faqs = [], resume} = Astro.props;
+const { title, description, publishDate, modifiedDate, breadcrumbs, lang = 'en', faqs = [], resume, intro, faqTitle} = Astro.props;
 // Le resume se trouve par le chemin quand la page ne le fournit pas : une
 // seule table a tenir, pas quarante appels a modifier.
 const resumeAffiche = resume ?? RESUMES[Astro.url.pathname]
@@ -130,7 +134,7 @@ const articleSchema = buildArticleSchema(
     <article class="prose prose-lg dark:prose-invert max-w-none mt-4">
       <header class={`not-prose ${avecSimu ? 'mb-3' : 'mb-8'}`}>
         <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">{title}</h1>
-        <p class={`mt-3 text-gray-600 dark:text-gray-400 ${avecSimu ? 'text-base sm:text-lg' : 'text-lg'}`}>{description}</p>
+        <p class={`mt-3 text-gray-600 dark:text-gray-400 ${avecSimu ? 'text-base sm:text-lg' : 'text-lg'}`}>{intro ?? description}</p>
         {!avecSimu && <AuthorByline publishDate={publishDate} modifiedDate={modifiedDate} />}
       </header>
       {resumeAffiche && (avecSimu ? (
@@ -146,7 +150,7 @@ const articleSchema = buildArticleSchema(
 
       {faqs.length > 0 && (
         <section class="mt-12 border-t border-border pt-8">
-          <h2 id="faq">{lang === 'fr' ? 'Questions fréquentes' : 'Frequently asked questions'}</h2>
+          <h2 id="faq">{faqTitle ?? (lang === 'fr' ? 'Questions fréquentes' : 'Frequently asked questions')}</h2>
           <div class="mt-6 space-y-4 not-prose">
             {faqs.map((f) => (
               <details class="rounded-xl border border-border bg-white dark:bg-gray-900">

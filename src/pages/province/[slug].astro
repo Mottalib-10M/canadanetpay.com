@@ -55,7 +55,7 @@ import OfficialSources from '../../components/OfficialSources.astro';
   metaTitle={province.name.length <= 11 ? `${province.name} Salary After Tax Calculator 2026 | Net ${province.abbreviation} Pay` : province.name.length <= 16 ? `${province.name} Salary After Tax Calculator 2026 | ${province.abbreviation}` : `${province.name} Salary Calculator 2026 | After Tax`}
   metaDescription={province.name.length <= 8 ? `Calculate your 2026 take-home pay in ${province.name} (${province.abbreviation}) after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Free ${province.abbreviation} salary calculator with detailed breakdown.` : province.name.length <= 16 ? `Calculate your 2026 take-home pay in ${province.name} (${province.abbreviation}) after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.abbreviation} provincial tax. Free salary calculator with full tax breakdown.` : `Calculate your 2026 take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.abbreviation} provincial tax. Free salary calculator with full breakdown.`}
   h1={`${province.name} Salary After Tax Calculator 2026`}
-  intro={`Calculate your take-home pay in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Updated with 2026 ${province.abbreviation} tax brackets.`}
+  intro={`Calculate your take-home salary in ${province.name} after federal tax, ${province.isQuebec ? 'QPP' : 'CPP'}, EI, and ${province.name} provincial tax. Updated with 2026 ${province.abbreviation} tax brackets.`}
   faqs={faqs}
   resume={RESUMES_PROVINCES[province.slug]}
 >
@@ -93,7 +93,7 @@ import OfficialSources from '../../components/OfficialSources.astro';
       </div>
       <p><strong>Basic Personal Amount:</strong> {formatCurrency(province.basicPersonalAmount)}</p>
 
-      <h2>Take-Home Pay Examples in {province.name}</h2>
+      <h2>Salary After Tax Examples in {province.name}</h2>
       <div class="overflow-x-auto">
         <table>
           <thead><tr><th>Gross Salary</th><th>Net Annual</th><th>Net Monthly</th><th>Effective Rate</th></tr></thead>
