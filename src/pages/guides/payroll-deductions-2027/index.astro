@@ -1,0 +1,105 @@
+---
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import MiniSimAutonome from '../../../components/calc/MiniSimAutonome';
+import { CPP_RATE, CPP_MAX_PENSIONABLE_EARNINGS, CPP_MAX_CONTRIBUTION, CPP2_MAX_PENSIONABLE_EARNINGS, CPP2_MAX_CONTRIBUTION, EI_RATE, EI_MAX_INSURABLE_EARNINGS, EI_MAX_CONTRIBUTION, EI_RATE_QUEBEC, EI_MAX_CONTRIBUTION_QUEBEC, BASIC_PERSONAL_AMOUNT } from '../../../data/federal-tax-2025';
+import { CPP_2027, CPP2_2027, EI_2027, contributions2027 } from '../../../data/payroll-2027';
+import { calculateCPPContribution, calculateEIContribution } from '../../../lib/tax-engine-ca';
+import { formatCurrency } from '../../../lib/format';
+const $ = (x: number) => formatCurrency(Math.round(x));
+const $2 = (x: number) => '$' + x.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pc = (x: number) => (x * 100).toFixed(2).replace(/\.?0+$/, '') + '%';
+const old = (g: number) => calculateCPPContribution(g).total + calculateEIContribution(g).total;
+const rows = [40000, 60000, 80000, 100000, 150000].map((g) => ({ g, a: old(g), b: contributions2027(g).total }));
+const max26 = CPP_MAX_CONTRIBUTION + CPP2_MAX_CONTRIBUTION + EI_MAX_CONTRIBUTION;
+const max27 = CPP_2027.max + CPP2_2027.max + EI_2027.max;
+const SRC = [
+  { url: 'https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html', name: 'Canada Revenue Agency, CPP contribution rates, maximums and exemptions (2027 row, page modified 2026-11-09)' },
+  { url: 'https://www.canada.ca/en/employment-social-development/programs/ei/ei-list/reports/premium/rates2027.html', name: 'Employment and Social Development Canada, Summary of the 2027 Actuarial Report on the EI Premium Rate (2026-09-17)' },
+  { url: 'https://laws-lois.justice.gc.ca/eng/acts/c-8/', name: 'Canada Pension Plan Act: second earnings ceiling set at 114% of the YMPE' },
+  { url: 'https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html', name: 'Canada Revenue Agency, indexation of personal income tax and benefit amounts (2027 not yet published)' },
+];
+---
+
+<GuideLayout
+  title="Payroll Deductions 2027 Canada: CPP 5.75%, EI 1.64%"
+  intro="Payroll deductions 2027: the CPP, CPP2 and EI figures already set for January, what they do to a paycheque, and what the CRA has still to publish."
+  description="Payroll deductions 2027 in Canada: CPP falls to 5.75% on earnings up to $76,700, CPP2 to $87,400, EI at 1.64% up to $70,800. Calculator and 2026 comparison."
+  publishDate="2026-11-22"
+  modifiedDate="2026-11-22"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Payroll Deductions 2027' }]}
+  resume={`For 2027, the payroll deductions that come off every Canadian paycheque outside Quebec are already set. The Canada Revenue Agency has published a CPP employee rate of 5.75 percent, down from 5.95 percent, on earnings between the $3,500 exemption and a maximum of $76,700, for a maximum contribution of $4,209. The second ceiling for CPP2 rises to $87,400, with the 4 percent rate unchanged and a maximum of $428. The Canada Employment Insurance Commission set the EI premium at $1.64 per $100 of insurable earnings, up from $1.63, on earnings up to $70,800, a maximum of $1,161.12. Together, an employee at or above the ceilings pays at most ${$2(max27)} in 2027, against ${$2(max26)} in 2026. The indexed federal tax brackets and the basic personal amount for 2027 had not yet been published by the CRA on November 21, 2026.`}
+  faqs={[
+    { question: 'Will my CPP deductions go down in 2027?', answer: 'Yes, at every salary level. The rate falls from 5.95% to 5.75%, which more than offsets the higher ceiling: the maximum contribution moves from $4,230.45 to $4,209.00, and CPP and CPP2 together peak at $4,637 instead of $4,646.45. Your employer pays the same amount again, at the same rate.' },
+    { question: 'Why do my EI premiums rise in 2027?', answer: 'Two things move at once. The premium rate set by the Canada Employment Insurance Commission goes from $1.63 to $1.64 per $100 of insurable earnings, and the maximum insurable earnings rise from $68,900 to $70,800 with average wages. A worker at the ceiling pays $1,161.12, which is $38.05 more than in 2026.' },
+    { question: 'When will the 2027 federal tax brackets be published?', answer: 'The Canada Revenue Agency publishes the indexation rate and the new thresholds once the consumer price index for September is known, usually in November. Until then this site uses the 2026 brackets for income tax. The CPP and EI figures on this page are final and already used by payroll software for January.' },
+    { question: 'Do these figures apply in Quebec?', answer: 'Only the EI part. Quebec employees pay a reduced EI premium of $1.29 per $100 in 2027, at most $913.32, because the Quebec Parental Insurance Plan covers parental benefits. Instead of CPP they contribute to the Quebec Pension Plan, whose 2027 rates Retraite Québec had not yet posted when this page was written.' },
+  ]}
+>
+  <div slot="simulateur" data-chrome><MiniSimAutonome client:visible spacing="mb-4 mt-0" kind="payroll2027" lang="en" locale="en-CA" href="/" /></div>
+
+  <h2>Payroll deductions 2027 and 2026 side by side</h2>
+  <p>
+    Every figure in the 2027 column comes from the agency that sets it: the Canada Revenue Agency for the Canada Pension
+    Plan and Employment and Social Development Canada for Employment Insurance. The second CPP ceiling follows the rule
+    written into the Canada Pension Plan Act, 114 percent of the first ceiling rounded down to the hundred.
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead><tr><th>Item</th><th>2026</th><th>2027</th></tr></thead>
+      <tbody>
+        <tr><td>CPP employee rate</td><td>{pc(CPP_RATE)}</td><td>{pc(CPP_2027.rate)}</td></tr>
+        <tr><td>Maximum pensionable earnings (YMPE)</td><td>{$(CPP_MAX_PENSIONABLE_EARNINGS)}</td><td>{$(CPP_2027.ympe)}</td></tr>
+        <tr><td>Maximum CPP contribution</td><td>{$2(CPP_MAX_CONTRIBUTION)}</td><td>{$2(CPP_2027.max)}</td></tr>
+        <tr><td>Second ceiling (YAMPE)</td><td>{$(CPP2_MAX_PENSIONABLE_EARNINGS)}</td><td>{$(CPP2_2027.yampe)}</td></tr>
+        <tr><td>Maximum CPP2 contribution</td><td>{$2(CPP2_MAX_CONTRIBUTION)}</td><td>{$2(CPP2_2027.max)}</td></tr>
+        <tr><td>EI premium rate</td><td>{pc(EI_RATE)}</td><td>{pc(EI_2027.rate)}</td></tr>
+        <tr><td>Maximum insurable earnings</td><td>{$(EI_MAX_INSURABLE_EARNINGS)}</td><td>{$(EI_2027.mie)}</td></tr>
+        <tr><td>Maximum EI premium</td><td>{$2(EI_MAX_CONTRIBUTION)}</td><td>{$2(EI_2027.max)}</td></tr>
+        <tr><td>EI premium rate, Quebec</td><td>{pc(EI_RATE_QUEBEC)}</td><td>{pc(EI_2027.rateQuebec)}</td></tr>
+        <tr><td>Maximum EI premium, Quebec</td><td>{$2(EI_MAX_CONTRIBUTION_QUEBEC)}</td><td>{$2(EI_2027.maxQuebec)}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>What the 2027 changes do to a paycheque</h2>
+  <p>
+    The lower CPP rate is the change most employees will notice. On a salary of {$(60000)}, CPP falls by about
+    {$(calculateCPPContribution(60000).cpp - contributions2027(60000).cpp)} a year, while EI rises by about
+    {$(contributions2027(60000).ei - calculateEIContribution(60000).ei)}. Higher up, the new ceilings mean
+    deductions run a few weeks longer into the year before they stop: CPP now stops at {$(CPP_2027.ympe)} of earnings,
+    CPP2 at {$(CPP2_2027.yampe)} and EI at {$(EI_2027.mie)}.
+  </p>
+  <div class="overflow-x-auto">
+    <table>
+      <thead><tr><th>Salary</th><th>CPP, CPP2 and EI 2026</th><th>2027</th><th>Change</th></tr></thead>
+      <tbody>
+        {rows.map(({ g, a, b }) => <tr><td>{$(g)}</td><td>{$2(a)}</td><td>{$2(b)}</td><td>{(b - a >= 0 ? '+' : '−') + $2(Math.abs(b - a))}</td></tr>)}
+      </tbody>
+    </table>
+  </div>
+  <p>
+    The amounts are employee contributions outside Quebec. Employers match CPP and CPP2 dollar for dollar and pay
+    1.4 times the employee EI premium, so the employer side moves in the same direction. Both CPP figures also matter
+    at tax time: the base part of CPP gives a federal credit, while the enhanced part and CPP2 are deducted from income.
+  </p>
+
+  <h2>What is not yet known for 2027</h2>
+  <p>
+    Income tax is the larger deduction, and its 2027 parameters are still pending. Federal thresholds and credits such
+    as the basic personal amount ({$(BASIC_PERSONAL_AMOUNT)} in 2026) are indexed each January by the change in the
+    consumer price index over the twelve months to September. The Canada Revenue Agency publishes the resulting
+    figures, usually in November; on November 21, 2026 its indexation page still stopped at 2026. Provinces publish
+    their own indexed tables on a similar timetable. Until those tables are out, the salary calculator on this site
+    keeps using the 2026 brackets, and this page will add the 2027 thresholds as soon as they are official.
+  </p>
+  <p>
+    Quebec residents should also wait for Retraite Québec, which sets the Quebec Pension Plan rate and ceilings, and for
+    the Conseil de gestion de l'assurance parentale, which sets the QPIP premium. Neither had posted 2027 figures when
+    this page was written.
+  </p>
+
+  <h2>Sources</h2>
+  <ul>
+    {SRC.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.name}</a></li>)}
+  </ul>
+</GuideLayout>

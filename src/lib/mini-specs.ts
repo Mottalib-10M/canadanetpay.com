@@ -3,6 +3,7 @@ import { calculateTakeHome, calculateCPPContribution, calculateEIContribution, c
 import { PROVINCES } from '../data/provinces';
 import { formatCurrencyLang, formatPercentLang } from './format';
 import type { MiniSpec } from './mini-types';
+import { contributions2027 } from '../data/payroll-2027';
 import { oasPension, gis, gisIncome, recoveryTax, GIS_SITUATIONS } from './oas-engine';
 import { PAYMENT_DATES_2026, OAS_FULL_MONTHLY } from '../data/oas-2026';
 
@@ -20,6 +21,9 @@ const SPECS: Record<string, (l: L) => MiniSpec> = {
   } }; },
   cpp: (l) => { const $ = (x: number) => formatCurrencyLang(x, l); return { title: T(l, 'Your CPP and EI contributions', 'Vos cotisations RPC et AE'), cta: T(l, 'CPP calculator', 'Calculateur RPC'), inputs: [salary(l)], run: ({ s }) => {
     const c = calculateCPPContribution(s); const e = calculateEIContribution(s); return { head: [T(l, 'CPP and CPP2 per year', 'RPC et RPC2 par année'), $(c.total)], rows: [['CPP', $(c.cpp)], ['CPP2', $(c.cpp2)], [T(l, 'EI premiums', 'Cotisations d’AE'), $(e.total)]] };
+  } }; },
+  payroll2027: (l) => { const $ = (x: number) => formatCurrencyLang(x, l); return { title: T(l, 'Your CPP and EI deductions in 2027', 'Vos cotisations RPC et AE en 2027'), cta: T(l, 'Full salary calculator', 'Calculateur de salaire complet'), inputs: [salary(l)], run: ({ s }) => {
+    const n = contributions2027(s); const o = calculateCPPContribution(s).total + calculateEIContribution(s).total; return { head: [T(l, 'CPP, CPP2 and EI in 2027', 'RPC, RPC2 et AE en 2027'), $(n.total)], rows: [[T(l, 'Same salary in 2026', 'Même salaire en 2026'), $(o)], [T(l, 'Change', 'Écart'), $(n.total - o)], ['CPP / CPP2 / EI', `${$(n.cpp)} / ${$(n.cpp2)} / ${$(n.ei)}`]], note: T(l, 'Outside Quebec. Income tax for 2027 is not shown: the CRA has not yet published the indexed brackets.', 'Hors Québec. L’impôt 2027 n’est pas affiché : l’ARC n’a pas encore publié les tranches indexées.') };
   } }; },
   federal: (l) => { const $ = (x: number) => formatCurrencyLang(x, l); return { title: T(l, 'Federal tax on your income', 'Impôt fédéral sur votre revenu'), cta: T(l, 'Federal tax calculator', 'Calculateur d’impôt fédéral'), inputs: [salary(l)], run: ({ s }) => {
     const r = TH(s, ON); return { head: [T(l, 'Federal income tax', 'Impôt fédéral'), $(r.federalIncomeTax)], rows: [[T(l, 'Taxable income', 'Revenu imposable'), $(r.federalTaxableIncome)], [T(l, 'Share of salary', 'Part du salaire'), formatPercentLang(s ? r.federalIncomeTax / s * 100 : 0, l)]] };

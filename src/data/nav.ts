@@ -61,6 +61,7 @@ export const headerNavEn: NavGroup[] = [
     children: [
       { label: 'Federal Tax Brackets 2026', href: '/guides/federal-tax-brackets-2026/' },
       { label: 'CPP Explained', href: '/guides/cpp-explained/' },
+      { label: 'Payroll Deductions 2027', href: '/guides/payroll-deductions-2027/' },
       { label: 'RRSP Tax Savings', href: '/guides/rrsp-tax-savings/' },
       { label: 'Provincial Tax Comparison', href: '/guides/provincial-tax-comparison/' },
       { label: 'Minimum Wage Canada', href: '/guides/minimum-wage-canada/' },
@@ -129,6 +130,7 @@ export const footerProvinceLinksEn: NavLink[] = [
 export const footerGuideLinksEn: NavLink[] = [
   { label: 'Federal Tax Brackets 2026', href: '/guides/federal-tax-brackets-2026/' },
   { label: 'CPP Explained', href: '/guides/cpp-explained/' },
+  { label: 'Payroll Deductions 2027', href: '/guides/payroll-deductions-2027/' },
   { label: 'RRSP Tax Savings', href: '/guides/rrsp-tax-savings/' },
   { label: 'Provincial Comparison', href: '/guides/provincial-tax-comparison/' },
   { label: 'Marginal vs Effective Rate', href: '/guides/marginal-vs-effective-tax-rate/' },
