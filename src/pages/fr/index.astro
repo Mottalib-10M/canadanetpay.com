@@ -24,6 +24,10 @@ const faqs = [
     answer: 'Le taux marginal est le taux appliqué à votre dernier dollar de revenu. Le taux effectif est le taux moyen sur l\'ensemble de vos revenus (impôt total divisé par revenu brut). Grâce au système progressif, votre taux effectif est toujours inférieur à votre taux marginal.',
   },
   {
+    question: 'Qu\'est-ce qui change sur la paie en 2027?',
+    answer: 'Le RPC et l\'AE de 2027 sont publiés : RPC à 5,75 % jusqu\'à 76 700 $, RPC2 à 4 % jusqu\'à 87 400 $ et AE à 1,64 $ par 100 $ jusqu\'à 70 800 $. Les paliers fédéraux indexés de 2027 sont publiés par l\'ARC une fois connu l\'indice des prix de septembre, en général en novembre, et les provinces suivent selon un calendrier semblable. D\'ici là, ce calculateur applique les paliers de 2026.',
+  },
+  {
     question: 'Ce calculateur est-il précis?',
     answer: 'Ce calculateur utilise les données officielles de l\'ARC pour 2026. Il fournit une estimation précise de votre salaire net. Cependant, des facteurs individuels (REER, crédits d\'impôt, déductions) peuvent faire varier votre résultat réel. Il ne connaît pas non plus vos crédits personnels au-delà du montant de base ni un avantage imposable : traitez le résultat comme une référence fiable plutôt que comme un bulletin de paie.',
   },
@@ -60,6 +64,11 @@ import OfficialSources from '../../components/OfficialSources.astro';
         <li><strong>AE</strong>: Assurance-emploi (1,63 % jusqu'à 68 900 $). Les résidents du Québec paient un taux réduit plus le RQAP.</li>
         <li><strong>Impôt provincial</strong>: varie selon la province avec des paliers et taux propres.</li>
       </ol>
+
+      <h2>Salaire net 2027 au Canada : ce qui est fixé et ce qui reste à publier</h2>
+      <p>
+        Les retenues de 2027 sont déjà publiées : RPC à 5,75 % jusqu'à 76 700 $ et RPC2 à 4 % jusqu'à 87 400 $ (Agence du revenu du Canada), assurance-emploi à 1,64 $ par 100 $ jusqu'à 70 800 $ (Commission de l'assurance-emploi du Canada). Restent à publier les paliers fédéraux indexés et le montant personnel de base de 2027, que l'ARC publie une fois connu l'indice des prix à la consommation de septembre, en général en novembre, puis les tables provinciales indexées, publiées selon un calendrier semblable. D'ici là, ce calculateur applique les règles de 2026.
+      </p>
 
       <h2>Sources</h2>
       <ul>

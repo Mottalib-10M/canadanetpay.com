@@ -39,6 +39,10 @@ const faqs = [
     answer: 'Your marginal tax rate is the rate applied to your last dollar of income, meaning the combined federal and provincial rate for the highest bracket you fall into. Your effective tax rate is the average rate you pay across all income (total tax divided by gross income). Due to the progressive system, your effective rate is always lower than your marginal rate.'
   },
   {
+    question: 'What will change on my paycheque in 2027?',
+    answer: 'CPP and EI for 2027 are published: CPP at 5.75% up to $76,700, CPP2 at 4% up to $87,400 and EI at $1.64 per $100 up to $70,800. The indexed 2027 federal tax brackets are published by the Canada Revenue Agency once the September consumer price index is known, usually in November, and the provinces follow on a similar timetable. Until then this calculator uses the 2026 brackets.',
+  },
+  {
     question: 'How accurate is this Canadian salary calculator?',
     answer: 'This calculator uses the official 2026 CRA federal tax brackets, CPP/EI rates, and provincial tax data from each province\'s revenue department. It provides a close estimate of your take-home pay. However, individual circumstances (RRSP contributions, tax credits, deductions, union dues) may cause your actual paycheque to differ slightly. Quebec calculations include QPP, QPIP, and the federal abatement.'
   },
@@ -141,6 +145,11 @@ import OfficialSources from '../components/OfficialSources.astro';
       <h3>Provincial Income Tax</h3>
       <p>
         Provincial tax is calculated separately from federal tax, using each province's own brackets and rates. Most provinces use a progressive system similar to the federal government, though some have additional surtaxes (Ontario) or unique programs (Quebec's QPIP). Alberta historically had a flat tax but now uses a progressive system starting at 10%.
+      </p>
+
+      <h3>Canadian paycheque in 2027: what is set and what is still to come</h3>
+      <p>
+        The 2027 payroll deductions are already published: CPP at 5.75% up to $76,700 and CPP2 at 4% up to $87,400 (Canada Revenue Agency), and EI at $1.64 per $100 up to $70,800 (Canada Employment Insurance Commission). Still to come are the indexed 2027 federal tax brackets and basic personal amount, which the Canada Revenue Agency publishes once the September consumer price index is known, usually in November, and the provincial indexed tables, released on a similar timetable. Until they are out this calculator uses the 2026 rules; the <a href="/guides/payroll-deductions-2027/">payroll deductions 2027</a> guide already applies the new CPP and EI figures.
       </p>
 
       <h2>Tips to Maximize Your Take-Home Pay in Canada</h2>
