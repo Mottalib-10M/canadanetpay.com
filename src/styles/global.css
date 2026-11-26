@@ -141,3 +141,43 @@ select:not([multiple]):not([size]) {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23a89c9c' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 7.5l5 5 5-5'/%3E%3C/svg%3E");
   }
 }
+
+/* === Charte de page v3 (refonte identité du 2026-11-25, validée par l'éditeur) : en-tête plein, bandeau héros, simulateur en carte blanche, sections alternées, boutons pleins, chiffres-résultats, pied sombre. === */
+:root { --charte-forte: #C00520; --charte-seconde: #FDEEF0; }
+/* Canada Net Pay : couleur forte var(--charte-forte), seconde var(--charte-seconde) (rien d'appliqué) */
+:root, :host { --color-brand-50: #FBF0F2; --color-brand-100: #F7DEE2; --color-brand-200: #EDB9C1; --color-brand-300: #E18794; --color-brand-400: #D0465A; --color-brand-500: var(--charte-forte); --color-brand-600: #A5041C; --color-brand-700: #8A0417; --color-brand-800: #6F0313; --color-brand-900: #54020E; --color-navy-900: #1B1616; }
+body > header:has(nav), header nav { background: var(--charte-forte) !important; }
+@media (prefers-color-scheme: light) { main header { background: transparent !important; } }
+header nav { border-bottom: 4px solid var(--charte-seconde) !important; }
+.rwr { background: var(--charte-seconde) !important; }
+header nav a, header nav button, header nav span, header nav svg { color: #fff !important; }
+header nav a span span, header nav a > span > span { color: var(--charte-seconde) !important; }
+header nav .nav-dropdown-panel, #mobile-menu { background: #fff !important; }
+header nav .nav-dropdown-panel a, header nav .nav-dropdown-panel span, #mobile-menu a, #mobile-menu button, #mobile-menu span, #mobile-menu svg { color: #1B1616 !important; }
+header nav > div a:hover, header nav > div button:hover { background: rgba(255, 255, 255, .16) !important; }
+header nav .nav-dropdown-panel a:hover { background: #FBF0F2 !important; }
+header nav img[src^="data:"], header nav img[src$="logo.svg"] { background: #fff; border-radius: 8px; padding: 3px; }
+@media (prefers-color-scheme: light) { main h1 { color: var(--charte-forte); letter-spacing: -0.02em; } }
+@media (prefers-color-scheme: light) { main h2, main details summary { color: var(--charte-forte); } }
+@media (prefers-color-scheme: light) { main .bg-accent-50, main [class*="bg-accent-50"] { background: #FBF0F2 !important; border-left: 5px solid var(--charte-seconde); } }
+@media (prefers-color-scheme: light) { main a[class*="border-accent"] { background: var(--charte-forte) !important; color: #fff !important; border-color: var(--charte-forte) !important; border-radius: 10px; } }
+@media (prefers-color-scheme: light) { main table thead th { color: var(--charte-forte); border-bottom: 2px solid var(--charte-seconde) !important; } }
+@media (prefers-color-scheme: light) { main details { border-color: #EDB9C1 !important; } }
+@media (prefers-color-scheme: light) { main details[open] > summary, main details > summary:hover { background: #FBF0F2; } }
+@media (prefers-color-scheme: light) { main [class*="text-3xl"]:not(.text-white), main [class*="text-4xl"]:not(.text-white) { color: var(--charte-forte); } }
+body { --color-primary: var(--charte-forte); --color-primary-dark: #A8041A; } header { border-bottom: 3px solid var(--charte-forte) !important; }
+
+/* --- v3 (reprise du 2026-11-25) : bandeau héros rouge, carte simulateur, sections, pied sombre ; aplats sans ombre --- */
+@media (prefers-color-scheme: light) { main > div.mb-4:has(> h1), main > div.mb-4:has(> h1) + p { background:var(--charte-forte) !important; border-image:linear-gradient(var(--charte-forte) 0 0) fill 0 / 0 / 3rem 100vmax 0; border-style:solid; border-width:0; margin:0 !important; padding-top:1rem; padding-bottom:1rem; } }
+@media (prefers-color-scheme: light) { main > div.mb-4:has(> h1) :is(h1,p), main > div.mb-4:has(> h1) + p, main > div.mb-4:has(> h1) + p :is(span,label) { color:#fff !important; } }
+@media (prefers-color-scheme: light) { main > div.mb-4:has(> h1) + p label { text-decoration-color:var(--charte-seconde); } }
+@media (prefers-color-scheme: light) { main > div.mb-4:has(> h1) + p { border-image:linear-gradient(var(--charte-forte) 0 0) fill 0 / 0 / 0 100vmax 8rem; border-style:solid !important; border-width:0 !important; } }
+@media (prefers-color-scheme: light) { main > div.mb-4:has(> h1) + p + div[data-chrome] { position:relative; background:#fff !important; border-top:6px solid #2A0006 !important; border-radius:14px; padding:1rem; margin-top:1.5rem; margin-bottom:2.5rem; } }
+@media (prefers-color-scheme: light) { main [class*="text-brand-200"], main [class*="text-brand-100"] { color:#fff !important; } }
+@media (prefers-color-scheme: light) { main section[data-chrome]:nth-of-type(odd) { background:#FBF0F2; box-shadow:0 0 0 100vmax #FBF0F2; clip-path:inset(0 -100vmax); padding-top:1.5rem; padding-bottom:1.5rem; } }
+@media (prefers-color-scheme: light) { main h2 { border-left:8px solid var(--charte-forte); padding-left:.6rem; } }
+@media (prefers-color-scheme: light) { main .prose a, main p > a { color:#A5041C; text-decoration:underline; text-decoration-thickness:2px; } }
+footer { background:#2A0006 !important; border-top:6px solid var(--charte-forte) !important; }
+footer, footer *:not(svg):not(path) { color:#F1E4E6 !important; border-color:rgba(255,255,255,.18) !important; }
+footer *:not(svg):not(path) { background-color:transparent !important; }
+footer a { color:#fff !important; text-decoration:underline; text-decoration-color:#E18794; }
